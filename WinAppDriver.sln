@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra", "src\Infra\Infra.csproj", "{0AEB4D3B-2969-42B1-8B08-9577EB9C44EA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinAppDriver", "src\WinAppDriver\WinAppDriver.csproj", "{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0AEB4D3B-2969-42B1-8B08-9577EB9C44EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AEB4D3B-2969-42B1-8B08-9577EB9C44EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AEB4D3B-2969-42B1-8B08-9577EB9C44EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AEB4D3B-2969-42B1-8B08-9577EB9C44EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A4B826B3-F1FD-49B2-BB8B-4710AFD7CEF4}
+	EndGlobalSection
+EndGlobal
