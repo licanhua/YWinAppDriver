@@ -1,4 +1,7 @@
-﻿namespace WinAppDriver.Controllers
+﻿// Copyright (c) https://github.com/licanhua/WinAppDriver. All rights reserved.
+// Licensed under the MIT License.
+
+namespace WinAppDriver.Controllers
 {
   using Microsoft.AspNetCore.Mvc;
   using System;
@@ -7,46 +10,21 @@
 
   public abstract class WinAppDriverControllerBase : ControllerBase
   {
-    IActionResult ReplyOk(string sessionId, object value)
+    protected IActionResult ReplyOk(string sessionId, object value)
     {
       return Ok(
-        new Dictionary<string, object>() {
-          { "sessionId", sessionId },
-          { "status", 0 },
-          { "value", value }
-        }
+        new SessionOkResponse() { sessionId = sessionId, value = value }
         );
     }
 
     protected IActionResult ReplyFail(int httpCode, ResponseStatusCode statusCode, string message = null)
     {
-      return StatusCode(httpCode, new Dictionary<string, object>() {
-        { "status", (int)statusCode},
-        { "value", new Dictionary<string, object>(){
-          { "error", statusCode.ToString()},
-          { "message", message }}
-        }
+      return StatusCode(httpCode,
+       new SessionFailResponse() 
+       { 
+         status = (int)statusCode , 
+         value = new SessionFailDetail() { error = statusCode.ToString(), message = message } 
       });
-    }
-
-    protected IActionResult HandleCommand(string sessionId, Action action)
-    { 
-      return HandleCommand(sessionId, () => { action(); return null; });
-    }
-    protected IActionResult HandleCommand(string sessionId, Func<object> func)
-    {
-      try
-      {
-        return ReplyOk(sessionId, func());
-      }
-      catch (SessionException ex)
-      {
-        return ReplyFail(ex.HttpCode, ex.Status, ex.ErrorMessage);
-      }
-      catch (Exception)
-      {
-        return ReplyFail(500, ResponseStatusCode.UnknownError, "Unexpected error");
-      }
     }
   }
 }

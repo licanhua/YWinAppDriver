@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+// Copyright (c) https://github.com/licanhua/WinAppDriver. All rights reserved.
+// Licensed under the MIT License.
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WinAppDriver.Infra;
+using WinAppDriver.Infra.CommandHandler;
+using WinAppDriver.Infra.Communication;
 
 namespace WinAppDriver
 {
@@ -26,11 +27,11 @@ namespace WinAppDriver
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers().AddNewtonsoftJson();
-      services.AddSingleton<ISessionManager>((container) =>
-      {
-        var logger = container.GetRequiredService<ILogger<SessionManager>>();
-        return new SessionManager(() => { return new Session(); });
-      });
+      services.AddSingleton<ISessionManager>(new SessionManager(() => { return new Session(
+                                                                                     new ApplicationMananger()
+                                                                                    ); }));
+      services.AddSingleton<ICommandHandlers, CommandHandlers>();
+      services.AddSingleton<IElementCommandHandler, ElementCommandHandler>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +41,7 @@ namespace WinAppDriver
       {
         app.UseDeveloperExceptionPage();
       }
+      app.UsePathBase("/wd/hub");
 
       app.UseRouting();
 

@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) https://github.com/licanhua/WinAppDriver. All rights reserved.
+// Licensed under the MIT License.
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -57,7 +60,6 @@ namespace WinAppDriver.Infra
       { ResponseStatusCode.InvalidCookieDomain, 400},
       { ResponseStatusCode.InvalidElementState, 400},
       { ResponseStatusCode.InvalidSelector, 400},
-      { ResponseStatusCode.ElementNotInteractable, 400},
       { ResponseStatusCode.InvalidSessionId, 404},
       { ResponseStatusCode.JavaScriptError, 500},
       { ResponseStatusCode.MoveTargetOutOfBounds, 500},
@@ -74,8 +76,7 @@ namespace WinAppDriver.Infra
       { ResponseStatusCode.UnableToCaptureScreen, 500},
       { ResponseStatusCode.UnexpectedAlertOpen, 500},
       { ResponseStatusCode.UnknownCommand, 404},
-      { ResponseStatusCode.SessionNotCreateException, 500},
-      { ResponseStatusCode.UnknownCommand, 500},
+      { ResponseStatusCode.UnknownError, 500},
       { ResponseStatusCode.UnknownMethod, 400},
       { ResponseStatusCode.UnsupportedOperation, 500},
     };
@@ -93,13 +94,55 @@ namespace WinAppDriver.Infra
     public string ErrorMessage => _message;
   }
 
-  public class SessionNotCreated : SessionException
+  public class SessionNotCreatedException : SessionException
   {
-    public SessionNotCreated(string message = null): base(ResponseStatusCode.SessionNotCreateException, message){}
+    public SessionNotCreatedException(string message = null): base(ResponseStatusCode.SessionNotCreateException, message){}
   }
 
-  public class SessionNotFound : SessionException
+  public class InvalidSessionIdException : SessionException
   {
-    public SessionNotFound(string message = null) : base(ResponseStatusCode.InvalidSessionId, message) { }
+    public InvalidSessionIdException(string message = null) : base(ResponseStatusCode.InvalidSessionId, message) { }
+  }
+
+  public class InvalidArgumentException : SessionException
+  {
+    public InvalidArgumentException(string message = null) : base(ResponseStatusCode.InvalidArgument, message) { }
+  }
+
+  public class UnknownCommandException : SessionException
+  {
+    public UnknownCommandException(string message = null) : base(ResponseStatusCode.UnknownCommand, message) { }
+  }
+  public class AppLaunchException : SessionException
+  {
+    public AppLaunchException(string message = null) : base(ResponseStatusCode.SessionNotCreateException, message) { }
+  }
+
+  public class LocatorNotSupported : SessionException
+  {   
+    public LocatorNotSupported() : base(ResponseStatusCode.UnsupportedOperation, "Locator is not supported") { }
+  }
+
+  public class ElementNotFound : SessionException
+  {
+    public ElementNotFound(string message = null) : base(ResponseStatusCode.NoSuchElement, message) { }
+
+  }
+
+  public class StaleElementException : SessionException
+  {
+    public StaleElementException(string message = null) : base(ResponseStatusCode.StaleElementReference, message) { }
+  }
+
+  public class NotImplementedException : SessionException
+  {
+    public NotImplementedException() : base(ResponseStatusCode.UnsupportedOperation, "Interface is not implemented") { }
+
+  }
+
+  public class ElementOffScreen : SessionException
+  {
+    public ElementOffScreen() : base(ResponseStatusCode.ElementNotVisible, "Element is offscreen") { }
+
   }
 }

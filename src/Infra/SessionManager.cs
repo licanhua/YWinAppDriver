@@ -1,33 +1,35 @@
-﻿namespace WinAppDriver.Infra
+﻿// Copyright (c) https://github.com/licanhua/WinAppDriver. All rights reserved.
+// Licensed under the MIT License.
+
+namespace WinAppDriver.Infra
 {
   using System;
   using System.Collections.Generic;
+  using WinAppDriver.Infra.Communication;
+  using WinAppDriver.Infra.Result;
 
   public class SessionManager : ISessionManager
   {
-    private Dictionary<string, ISession> _sessions;
-
-    private Func<ISession> _createSessionFunc;
-
-    public SessionManager(Func<ISession> creatSessionFunc)
+    public const int MaxSessionSupported = 100;
+    private Dictionary<string, ISession> _sessions = new Dictionary<string, ISession>();
+    private Func<ISession> _sessionCreator;
+    public SessionManager(Func<ISession> sessionCreator) 
     {
-      _createSessionFunc = creatSessionFunc;
-      _sessions = new Dictionary<string, ISession>();
+      _sessionCreator = sessionCreator;
     }
-
-    public string CreateSession(object req)
+    public ISession NewSession()
     {
-      var session = _createSessionFunc();
-      if (session == null)
+      return _sessionCreator();
+    }
+    public void AddSession(ISession session)
+    {
+      if (_sessions.Count >= MaxSessionSupported)
       {
-        throw new SessionNotCreated("Fail to create session with parameter: " + req.ToString());
+        throw new SessionNotCreatedException("Max session reached");
       }
-
-      session.LaunchApplication();
 
       var sessionId = session.GetSessionId();
       _sessions[sessionId] = session;
-      return sessionId;
     }
 
     public void DeleteSession(string sessionId)
@@ -36,7 +38,6 @@
       {
         var session = _sessions[sessionId];
         _sessions.Remove(sessionId);
-        session.ExitApplication();
       }
     }
 
@@ -48,8 +49,20 @@
       }
       else
       {
-        throw new SessionNotFound("session id: " + sessionId);
+        throw new InvalidSessionIdException("session id: " + sessionId);
       }
+    }
+
+    public List<ISession> GetSessions()
+    {
+      List<ISession> sessions = new List<ISession>(_sessions.Values);
+      return sessions;
+    }
+
+    public bool ContainsSession(string sessionId)
+    {
+      if (String.IsNullOrEmpty(sessionId)) return false;
+      return _sessions.ContainsKey(sessionId);
     }
   }
 }

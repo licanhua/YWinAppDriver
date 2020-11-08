@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra", "src\Infra\Infra.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinAppDriver", "src\WinAppDriver\WinAppDriver.csproj", "{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinAppDriver.UnitTest", "test\WinAppDriver.UnitTest\WinAppDriver.UnitTest.csproj", "{498BB752-3DFF-4136-A6FC-D7BC64ABD5ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.UnitTest", "test\Infra.UnitTest\Infra.UnitTest.csproj", "{226C1DE1-6DB5-4DB3-90B1-BB430512EA8C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinAppDriver.IntegrationTest", "test\WinAppDriver.IntegrationTest\WinAppDriver.IntegrationTest.csproj", "{C7F910C5-3DBC-48A4-971F-6198F754CBC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +27,18 @@ Global
 		{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{498BB752-3DFF-4136-A6FC-D7BC64ABD5ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{498BB752-3DFF-4136-A6FC-D7BC64ABD5ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{498BB752-3DFF-4136-A6FC-D7BC64ABD5ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{498BB752-3DFF-4136-A6FC-D7BC64ABD5ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{226C1DE1-6DB5-4DB3-90B1-BB430512EA8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{226C1DE1-6DB5-4DB3-90B1-BB430512EA8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{226C1DE1-6DB5-4DB3-90B1-BB430512EA8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{226C1DE1-6DB5-4DB3-90B1-BB430512EA8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7F910C5-3DBC-48A4-971F-6198F754CBC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7F910C5-3DBC-48A4-971F-6198F754CBC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7F910C5-3DBC-48A4-971F-6198F754CBC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7F910C5-3DBC-48A4-971F-6198F754CBC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
