@@ -1,4 +1,4 @@
-﻿// Copyright (c) https://github.com/licanhua/WinAppDriver. All rights reserved.
+﻿// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
 // Licensed under the MIT License.
 
 using Microsoft.AspNetCore.Mvc;

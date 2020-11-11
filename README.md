@@ -20,7 +20,7 @@ Below features are not ready, but they are not blockers because WinUI already pr
 ### Download and compile 
 There are two ways to get teh WinAppDriver.exe:
 1. Clone this repo, then open the WinAppDriver.sln and build/run WinAppDriver project.
-2. Download it from https://github.com/licanhua/WinAppDriver/releases
+2. Download it from https://github.com/licanhua/YWinAppDriver/releases
 
 ### Lauch WinAppDriver.exe
 Please set your endpoint to http://localhost:4723/wd/hub
