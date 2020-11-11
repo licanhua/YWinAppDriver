@@ -1,13 +1,13 @@
 # Yet Another WinAppDriver (YWinAppDriver)
 
-[Microsoft WinAppDriver](https://raw.githubusercontent.com/microsoft/WinAppDriver) is the official application  to support Selenium-like UI Test Automation on Windows Applications. This service supports testing Universal Windows Platform (UWP), Windows Forms (WinForms), Windows Presentation Foundation (WPF), and Classic Windows (Win32) apps on Windows 10 PCs.
+[Microsoft WinAppDriver](https://github.com/Microsoft/WinAppDriver) is the official application  to support Selenium-like UI Test Automation on Windows Applications. This service supports testing Universal Windows Platform (UWP), Windows Forms (WinForms), Windows Presentation Foundation (WPF), and Classic Windows (Win32) apps on Windows 10 PCs.
 
 This repo is another WinAppDriver. It's functional compatible with Microsoft's WinAppDriver but open sourced. So I name it YWinAppDriver.
 
 ## Project Status: 0.1
-   Some basic functionality(Launch app, FindElement, FindElements, Click, DoubleClick, Value...) is ready. Please refer to [SessionController.cs](src\WinAppDriver\Controllers\SessionController.cs)
+   Some basic functionality(Launch app, FindElement, FindElements, Click, DoubleClick, Value...) is ready. Please refer to [SessionController.cs](/tree/main/src/WinAppDriver/Controllers/SessionController.cs)
 
-   I successfully made [CalculatorTest](examples\CalculatorTest) work which is come from https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest
+   I successfully made [CalculatorTest](/tree/main/examples/CalculatorTest) work which is come from https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest
 
 ## Not ready features
 Below features are not ready, but they are not blockers because WinUI already provides similar functionality.
@@ -51,6 +51,12 @@ Microsoft.Windows.Apps.Test has the public nuget and is binary open sourced.
 YWinAppDriver is based on Microsoft.Windows.Apps.Test too and used this library to interact with the testapp.
 
 Microsoft.Windows.Apps.Test documentation can be found here: [Microsoft.Windows.Apps.Test.chm](https://github.com/microsoft/Microsoft.Windows.Apps.Test/blob/master/docs/Microsoft.Windows.Apps.Test.chm).
+
+3. Protocols
+There are two protocols: [w3c webdriver](https://www.w3.org/TR/webdriver/) and [selenium JsonWire Protocol](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)
+JsonWire is obselete, but still there a lot of client/server doen't support w3c specification. So YWinAppDriver is trying to match with both protocols
+
+4. [Locators and capalibilites](https://github.com/microsoft/WinAppDriver/blob/master/Docs/AuthoringTestScripts.md) are the same/nearly the same with WinAppDriver.
 
 ## Background
 One week ago, another team reached to me to ask some advice to help them choose the UI automation tool. It makes me think: Although WinAppDriver is the de fact tool recommended by Microsoft, Is WinAppDriver the right tool for everybody?
