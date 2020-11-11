@@ -5,9 +5,9 @@
 This repo is another WinAppDriver. It's functional compatible with Microsoft's WinAppDriver but open sourced. So I name it YWinAppDriver.
 
 ## Project Status: 0.1
-   Some basic functionality(Launch app, FindElement, FindElements, Click, DoubleClick, Value...) is ready. Please refer to [SessionController.cs](/tree/main/src/WinAppDriver/Controllers/SessionController.cs)
+   Some basic functionality(Launch app, FindElement, FindElements, Click, DoubleClick, Value...) is ready. Please refer to [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs)
 
-   I successfully made [CalculatorTest](/tree/main/examples/CalculatorTest) work which is come from https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest
+   I successfully made [CalculatorTest](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest) work which is come from https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest
 
 ## Not ready features
 Below features are not ready, but they are not blockers because WinUI already provides similar functionality.
