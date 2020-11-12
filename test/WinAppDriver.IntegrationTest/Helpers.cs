@@ -23,6 +23,11 @@ namespace WinAppDriver.IntegrationTest
       return client.PostAsync(url, ToStringContent(obj));
     }
 
+    public static Task<HttpResponseMessage> PostMessage<T>(HttpClient client, string sessionId, string url, T obj)
+    {
+      return client.PostAsync("session/" + sessionId + "/" + url, ToStringContent(obj));
+    }
+
     public static StringContent ToStringContent<T>(T obj)
     {
       return new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
@@ -73,7 +78,7 @@ namespace WinAppDriver.IntegrationTest
       return JsonConvert.DeserializeObject<FindElementResult>(value);
     }
 
-    public static async Task<FindElementsResult> FindElements(HttpClient client, string sessionId, ElementsReqs req)
+    public static async Task<FindElementsResult> FindElements(HttpClient client, string sessionId, GetElementsReqs req)
     {
       var response = await PostMessage(client, "session/" + sessionId + "/elements", req);
 

@@ -108,12 +108,38 @@ namespace WinAppDriver.IntegrationTest
       {
         var sessionId = await Helpers.CreateNewSession(client, "Root");
 
-        var elements = await Helpers.FindElements(client, sessionId, new ElementsReqs()
+        var elements = await Helpers.FindElements(client, sessionId, new GetElementsReqs()
            {
              strategy = "name",
              value = "doesn't exist"
            });
         elements.Count.Should().Be(0);
+      }
+    }
+
+    [Theory]
+    [InlineData("timeouts")]
+    [InlineData("timeouts/implicit_wait")]
+    public async Task Test_SetTimeout(string endpoint)
+    {
+      using (var client = new TestClientProvider().Client)
+      {
+        var sessionId = await Helpers.CreateNewSession(client, "Root");
+        var response = await Helpers.PostMessage<SetImplicitTimeoutReq>(client, sessionId, endpoint, new SetImplicitTimeoutReq() { type = "implicit", ms= 1});
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+      }
+    }
+
+    [Theory]
+    [InlineData("timeouts")]
+    [InlineData("timeouts/async_script")]
+    public async Task Test_SetTimeout_WithUnsupportedType(string endpoint)
+    {
+      using (var client = new TestClientProvider().Client)
+      {
+        var sessionId = await Helpers.CreateNewSession(client, "Root");
+        var response = await Helpers.PostMessage<SetImplicitTimeoutReq>(client, sessionId, endpoint, new SetImplicitTimeoutReq() { type = "async_script", ms = 1 });
+        response.StatusCode.Should().NotBe(HttpStatusCode.OK);
       }
     }
   }

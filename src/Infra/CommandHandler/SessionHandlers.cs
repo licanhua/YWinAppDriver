@@ -3,10 +3,14 @@
 
 namespace WinAppDriver.Infra.CommandHandler
 {
-  class SetImplicitTimeoutHandler : SessionCommandHandlerBase<ImplicitTimeoutReq, object>
+  class SetImplicitTimeoutHandler : SessionCommandHandlerBase<SetImplicitTimeoutReq, object>
   {
-    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, ImplicitTimeoutReq req, string elementId)
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, SetImplicitTimeoutReq req, string elementId)
     {
+      if (req.type != null && req.type != "implicit")
+      {
+        throw new InvalidArgumentException("only type=implicit is supported");
+      }
       if (req.ms < 0)
       {
         throw new InvalidArgumentException("ms shoudl not be negative");

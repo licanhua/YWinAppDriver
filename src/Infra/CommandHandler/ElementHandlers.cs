@@ -10,9 +10,9 @@ using WinAppDriver.Infra.Result;
 namespace WinAppDriver.Infra.CommandHandler
 {
 
-  public class FindElementsHandler : SessionCommandHandlerBase<ElementsReqs, FindElementsResult>
+  public class FindElementsHandler : SessionCommandHandlerBase<GetElementsReqs, FindElementsResult>
   {
-    protected override FindElementsResult ExecuteSessionCommand(ISessionManager sessionManager, ISession session, ElementsReqs req, string elementId)
+    protected override FindElementsResult ExecuteSessionCommand(ISessionManager sessionManager, ISession session, GetElementsReqs req, string elementId)
     {
       var locator = Locator.BuildLocator(req.strategy, req.value);
       FindElementsResult result = new FindElementsResult();

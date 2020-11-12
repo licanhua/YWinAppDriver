@@ -16,9 +16,8 @@ namespace WinAppDriver
     public Capabilities desiredCapabilities;
   }
 
-  public class ImplicitTimeoutReq
+  public class SetImplicitTimeoutReq
   {
-    [JsonProperty(Required = Required.DisallowNull)]
     public string type;
 
     [JsonProperty(Required = Required.DisallowNull)]
