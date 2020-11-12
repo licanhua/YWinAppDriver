@@ -232,6 +232,13 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(Command.ActivateWindow, sessionId, content, null);
     }
 
+    [HttpDelete]
+    [Route("{sessionId}/window")]
+    public IActionResult DeleteWindow(string sessionId)
+    {
+      return ExecuteCommand(Command.DeleteWindow, sessionId, null, null);
+    }
+
     [HttpPost]
     [Route("{sessionId}/[action]")]
     public IActionResult Buttondown(string sessionId)

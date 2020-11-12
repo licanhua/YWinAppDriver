@@ -195,7 +195,29 @@ namespace WinAppDriver.IntegrationTest
       }
     }
 
+    [Fact]
+    public async Task Test_DeleteWindow()
+    {
+      using (var client = new TestClientProvider().Client)
+      {
+        var session = await Helpers.CreateNewSession(client, AppIds.AlarmClock);
 
+        var result = await Helpers.DeleteWindow(client, session);
+        result.statusCode.Should().Be(HttpStatusCode.OK);
+      }
+    }
+
+    [Fact]
+    public async Task Test_DeleteDesktopWindow_WillFail()
+    {
+      using (var client = new TestClientProvider().Client)
+      {
+        var session = await Helpers.CreateNewSession(client, AppIds.Root);
+
+        var result = await Helpers.DeleteWindow(client, session);
+        result.statusCode.Should().NotBe(HttpStatusCode.OK);
+      }
+    }
     [Fact]
     public async Task Test_ActivateWindow_Interactive()
     {

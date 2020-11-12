@@ -67,6 +67,15 @@ namespace WinAppDriver.Infra.CommandHandler
     }
   }
 
+  class CloseActiveWindowHandler : SessionCommandHandlerBase<object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      session.GetApplicationRoot().CloseActiveWindow();
+      return null;
+    }
+  }
+
   class GetWindowHandlesHandler : SessionCommandHandlerBase<object>
   {
     protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)

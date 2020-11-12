@@ -245,9 +245,20 @@ namespace WinAppDriver.Infra.Communication
       return _uiObject.IsEnabled;
     }
 
+    private UIObject GetActiveWindow()
+    {
+      if (UIObject.Focused.ProcessId != _uiObject.ProcessId)
+      {
+        return _uiObject;
+      }
+      else 
+      {
+        return UIObject.Focused;
+      }
+    }
     public string GetWindowHandle()
     {
-      return _uiObject.NativeWindowHandle.ToString();
+      return GetActiveWindow().NativeWindowHandle.ToString();
     }
 
     private IEnumerable<UIObject> GetWindows()
@@ -284,6 +295,17 @@ namespace WinAppDriver.Infra.Communication
         throw new NoSuchWindow();
       }
       found.SetFocus();
+    }
+
+    public void CloseActiveWindow()
+
+    {
+      var activeWindow = GetActiveWindow();
+      if (activeWindow == UIObject.Root)
+      {
+        throw new InvalidArgumentException("Not allow to close the desktop root window");
+      }
+      new Window(GetActiveWindow()).Close();
     }
   }
 }

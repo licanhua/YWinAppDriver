@@ -23,6 +23,7 @@ namespace WinAppDriver.Infra.Communication
     public string GetWindowHandle();
     public IEnumerable<string> GetWindowHandles();
     public void ActivateWindow(string window);
+    public void CloseActiveWindow();
     public void Click();
     public void DoubleClick();
     public void Clear();

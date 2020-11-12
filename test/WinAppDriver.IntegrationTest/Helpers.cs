@@ -114,5 +114,11 @@ namespace WinAppDriver.IntegrationTest
     {
       return PostSessionMessage<object, ActivateWindowReq>(client, sessionId, "window", new ActivateWindowReq() { name = windowId }) ;
     }
+
+    public static async Task<SessionResponse<object>> DeleteWindow(HttpClient client, string sessionId)
+    {
+      var response = await client.DeleteAsync("session/" + sessionId + "/window");
+      return await Helpers.TranslateResult<object>(response);
+    }
   }
 }
