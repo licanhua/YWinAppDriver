@@ -1,11 +1,12 @@
 ﻿// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
 // Licensed under the MIT License.
 
-namespace WinAppDriver.IntegrationTest
+namespace WinAppDriver.Infra.Result
 {
-  public class SessionId
+  public class GetLocationResult
   {
-    public string sessionId = null;
-  }
+    public int x;
 
+    public int y;
+  }
 }

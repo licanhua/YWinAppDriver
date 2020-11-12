@@ -87,9 +87,10 @@ namespace WinAppDriver.Controllers
 
     [HttpPost]
     [Route("{sessionId}/timeouts")]
-    public IActionResult Timeouts(string sessionId, [FromBody] object content)
+    [Route("{sessionId}/timeouts/implicit_wait")]
+    public IActionResult SetTimeouts(string sessionId, [FromBody] object content)
     {
-      return ExecuteCommand(Command.ImplicitTimeout, sessionId, content, null);
+      return ExecuteCommand(Command.SetImplicitTimeout, sessionId, content, null);
     }
 
     [HttpPost]
@@ -97,6 +98,20 @@ namespace WinAppDriver.Controllers
     public IActionResult FindElements(string sessionId, [FromBody] object content)
     {
       return ExecuteCommand(Command.FindElements, sessionId, content, null);
+    }
+
+    [HttpGet]
+    [Route("{sessionId}/window_handle")]
+    public IActionResult GetWindowHandle(string sessionId)
+    {
+      return ExecuteCommand(Command.GetWindowHandle, sessionId, null, null);
+    }
+
+    [HttpGet]
+    [Route("{sessionId}/window_handles")]
+    public IActionResult GetWindowHandles(string sessionId)
+    {
+      return ExecuteCommand(Command.GetWindowHandles, sessionId, null, null);
     }
 
     [HttpPost]
@@ -182,6 +197,13 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(sessionId, elementId, (element) => { return element.GetSize(); });
     }
 
+    [HttpGet]
+    [Route("{sessionId}/title")]
+    public IActionResult GetTitle(string sessionId)
+    {
+      return ExecuteCommand(Command.GetTitle, sessionId, null, null);
+    }
+
     [HttpPost]
     [Route("{sessionId}/element/{elementId}/clear")]
     public IActionResult ElementClear(string sessionId, string elementId)
@@ -211,6 +233,20 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpPost]
+    [Route("{sessionId}/window")]
+    public IActionResult ActivateWindow(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.ActivateWindow, sessionId, content, null);
+    }
+
+    [HttpDelete]
+    [Route("{sessionId}/window")]
+    public IActionResult DeleteWindow(string sessionId)
+    {
+      return ExecuteCommand(Command.DeleteWindow, sessionId, null, null);
+    }
+
+    [HttpPost]
     [Route("{sessionId}/[action]")]
     public IActionResult Buttondown(string sessionId)
     {
@@ -225,10 +261,41 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpPost]
-    [Route("{sessionId}/{unknown}", Order = 1)]
-    public IActionResult Unknown(string sessionId)
+    [Route("{sessionId}/timeouts/async_script")]
+    [Route("{sessionId}/url")]
+    [Route("{sessionId}/forward")]
+    [Route("{sessionId}/back")]
+    [Route("{sessionId}/refresh")]
+    [Route("{sessionId}/execute")]
+    [Route("{sessionId}/execute_async")]
+    [Route("{sessionId}/screenshot")]
+    [Route("{sessionId}/ime/{any}")]
+    [Route("{sessionId}/frame")]
+    [Route("{sessionId}/frame/parent")]
+    [Route("{sessionId}/cookie")]
+
+
+    public IActionResult UnknownPost(string sessionId)
     {
-      return Ok("Unknown SessionId " + sessionId);
+      return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
+    }
+
+    [HttpGet]
+    [Route("{sessionId}/url")]
+    [Route("{sessionId}/cookie")]
+
+    public IActionResult UnknownGet(string sessionId)
+    {
+      return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
+    }
+
+    [HttpDelete]
+    [Route("{sessionId}/cookie/{name}")]
+    [Route("{sessionId}/cookie")]
+
+    public IActionResult UnknownDelete(string sessionId)
+    {
+      return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
     }
 
   }

@@ -225,14 +225,14 @@ namespace WinAppDriver.Infra.Communication
       }
     }
 
-    public SizeResult GetSize()
+    public GetSizeResult GetSize()
     {
-      return new SizeResult() { height = _uiObject.BoundingRectangle.Height, width = _uiObject.BoundingRectangle.Width };
+      return new GetSizeResult() { height = _uiObject.BoundingRectangle.Height, width = _uiObject.BoundingRectangle.Width };
     }
 
-    public LocationResult GetLocation()
+    public GetLocationResult GetLocation()
     {
-      return new LocationResult() { x = _uiObject.BoundingRectangle.X, y = _uiObject.BoundingRectangle.Y };
+      return new GetLocationResult() { x = _uiObject.BoundingRectangle.X, y = _uiObject.BoundingRectangle.Y };
     }
 
     public bool IsDisplayed()
@@ -243,6 +243,74 @@ namespace WinAppDriver.Infra.Communication
     public bool IsEnabled()
     {
       return _uiObject.IsEnabled;
+    }
+
+    private UIObject GetActiveWindow()
+    {
+      if (UIObject.Focused.ProcessId != _uiObject.ProcessId)
+      {
+        return _uiObject;
+      }
+      else 
+      {
+        return UIObject.Focused;
+      }
+    }
+    public string GetWindowHandle()
+    {
+      return GetActiveWindow().NativeWindowHandle.ToString();
+    }
+
+    private IEnumerable<UIObject> GetWindows()
+    {
+      List<UIObject> result = new List<UIObject>();
+
+      var condition = UICondition.CreateFromClassName("Window").OrWith(UICondition.CreateFromClassName("ApplicationFrameWindow"));
+      foreach (var window in UIObject.Root.Descendants.FindMultiple(condition))
+      {
+        if (window.ProcessId == _uiObject.ProcessId || _uiObject == UIObject.Root || _uiObject.Parent == UIObject.Root) // root returns itself and all its child process window
+        {
+          result.Add(window);
+        }
+      }
+
+      return result;
+    }
+
+
+    public IEnumerable<string> GetWindowHandles()
+    {
+      return GetWindows().Select(window => window.NativeWindowHandle.ToString());
+    }
+
+    public void ActivateWindow(string window)
+    {
+      if (String.IsNullOrEmpty(window))
+      {
+        throw new InvalidArgumentException("name can't be empty");
+      }
+      var found = GetWindows().Where(w => { return w.NativeWindowHandle.ToString() == window; }).FirstOrDefault();
+      if (found == null)
+      {
+        throw new NoSuchWindow();
+      }
+      found.SetFocus();
+    }
+
+    public void CloseActiveWindow()
+
+    {
+      var activeWindow = GetActiveWindow();
+      if (activeWindow == UIObject.Root)
+      {
+        throw new InvalidArgumentException("Not allow to close the desktop root window");
+      }
+      new Window(GetActiveWindow()).Close();
+    }
+
+    public string GetTitle()
+    {
+      return _uiObject.Name;
     }
   }
 }

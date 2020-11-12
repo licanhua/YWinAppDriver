@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WinAppDriver.Infra.Result;
-// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
+﻿// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
 // Licensed under the MIT License.
 
 namespace WinAppDriver.Infra.CommandHandler
 {
-  class ImplicitTimeoutHandler : SessionCommandHandlerBase<ImplicitTimeoutReq, object>
+  class SetImplicitTimeoutHandler : SessionCommandHandlerBase<SetImplicitTimeoutReq, object>
   {
-    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, ImplicitTimeoutReq req, string elementId)
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, SetImplicitTimeoutReq req, string elementId)
     {
+      if (req.type != null && req.type != "implicit")
+      {
+        throw new InvalidArgumentException("only type=implicit is supported");
+      }
       if (req.ms < 0)
       {
         throw new InvalidArgumentException("ms shoudl not be negative");
@@ -19,30 +19,74 @@ namespace WinAppDriver.Infra.CommandHandler
       return null;
     }
   }
-  class NewSessionHandler : CommandHandlerBase<NewSessionReq, NewSessionIntermediateResult>, ICommandHandler
+
+  public class GetSourceHandler : ICommandHandler
   {
-#pragma warning disable IDE0060 // Remove unused parameter
     public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
-#pragma warning restore IDE0060 // Remove unused parameter
     {
-      try
-      {
-        NewSessionReq req = DeserializeType(body);
+      return sessionManager.GetSession(sessionId).GetSource();
+    }
+  }
 
-        var session = sessionManager.NewSession();
-        session.LaunchApplication(req);
-        sessionManager.AddSession(session);
+  public class UknownCommandHandler : ICommandHandler
+  {
+    public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
+    {
+      throw new UnknownCommandException();
+    }
+  }
 
-        return new NewSessionIntermediateResult()
-        {
-          sessionId = session.GetSessionId(),
-          capabilities = req.desiredCapabilities
-        };
-      }
-      catch (SessionException ex) 
+  class DeleteSessionHandler : ICommandHandler
+  {
+    public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
+    {
+      if (sessionManager.ContainsSession(sessionId))
       {
-        throw new SessionNotCreatedException(ex.ErrorMessage);
+        var session = sessionManager.GetSession(sessionId);
+        sessionManager.DeleteSession(sessionId);
+        session.QuitApplication();
       }
+      return null;
+    }
+  }
+
+  class GetWindowHandleHandler : SessionCommandHandlerBase<object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      return session.GetApplicationRoot().GetWindowHandle();
+    }
+  }
+
+  class ActivateWindowHandler : SessionCommandHandlerBase<ActivateWindowReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, ActivateWindowReq req, string elementId)
+    {
+      session.GetApplicationRoot().ActivateWindow(req.name);
+      return null;
+    }
+  }
+
+  class CloseActiveWindowHandler : SessionCommandHandlerBase<object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      session.GetApplicationRoot().CloseActiveWindow();
+      return null;
+    }
+  }
+  class GetTitleHandler : SessionCommandHandlerBase<string>
+  {
+    protected override string ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      return session.GetApplicationRoot().GetTitle();
+    }
+  }
+  class GetWindowHandlesHandler : SessionCommandHandlerBase<object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      return session.GetApplicationRoot().GetWindowHandles();
     }
   }
 }

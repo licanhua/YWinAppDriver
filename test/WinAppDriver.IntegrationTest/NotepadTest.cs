@@ -20,7 +20,7 @@ namespace WinAppDriver.IntegrationTest
     {
       using (var client = new TestClientProvider().Client)
       {
-        var response = await Helpers.PostMessage(client, "session", new NewSessionReq()
+        var sessionId = await Helpers.CreateNewSession(client, new NewSessionReq()
         {
           desiredCapabilities = new Capabilities()
           {
@@ -28,17 +28,8 @@ namespace WinAppDriver.IntegrationTest
           }
         });
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        var sessionOkResponse = await Helpers.FromBody<SessionOkResponse>(response);
-        sessionOkResponse.value.Should().NotBeNull();
-
-        var value = sessionOkResponse.value.ToString();
-        value.Should().NotBeNullOrEmpty();
-
-        sessionOkResponse.sessionId.Should().NotBeNullOrEmpty();
-
-        await Helpers.DeletSession(client, sessionOkResponse.sessionId);
+        sessionId.Should().NotBeNullOrEmpty();
+        await Helpers.DeletSession(client, sessionId);
       }
     }
   }

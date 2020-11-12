@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,52 @@ using WinAppDriver.Infra.Result;
 
 namespace WinAppDriver.IntegrationTest
 {
+  public class SessionResponse<T>
+  {
+    public HttpStatusCode statusCode;
+    public string sessionId;
+    public int status;
+    public T value;  
+  }
+
+  class AppIds
+  {
+    public const string Root = "Root";
+    public const string Calculator = "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App";
+    public const string Edge = "Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge";
+    public const string AlarmClock = "Microsoft.WindowsAlarms_8wekyb3d8bbwe!App";
+    public const string Notepad = "c:\\windows\\system32\\notepad.exe";
+  }
   class Helpers
   {
-    public static Task<HttpResponseMessage> PostMessage<T>(HttpClient client, string url, T obj)
+    public static async Task<SessionResponse<V>> TranslateResult<V>(HttpResponseMessage response)
     {
-      return client.PostAsync(url, ToStringContent(obj));
+      var body = await response.Content.ReadAsStringAsync();
+      var result = JsonConvert.DeserializeObject<SessionResponse<V>>(body);
+      result.statusCode = response.StatusCode;
+      return result;
+    }
+    public static async Task<SessionResponse<V>> PostMessage<V, U>(HttpClient client, string url, U obj)
+    {
+      var response = await client.PostAsync(url, ToStringContent(obj));
+      return await TranslateResult<V>(response);
     }
 
+    public static Task<SessionResponse<V>> PostSessionMessage<V, U>(HttpClient client, string sessionId, string url, U obj)
+    {
+      return PostMessage<V, U>(client, "session/" + sessionId + "/" + url, obj);
+    }
+
+    public static async Task<SessionResponse<V>> GetMessage<V>(HttpClient client, string url)
+    {
+      var response = await client.GetAsync(url);
+      return await TranslateResult<V>(response);
+    }
+
+    public static Task<SessionResponse<V>> GetSessionMessage<V>(HttpClient client, string sessionId, string url)
+    {
+      return GetMessage<V>(client, "session/" + sessionId + "/" + url);
+    }
     public static StringContent ToStringContent<T>(T obj)
     {
       return new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
@@ -30,12 +70,14 @@ namespace WinAppDriver.IntegrationTest
 
     public static async Task<T> FromBody<T>(HttpResponseMessage response)
     {
-      return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+      var body = await response.Content.ReadAsStringAsync();
+      Console.WriteLine(body);
+      return JsonConvert.DeserializeObject<T>(body);
     }
 
-    public static async Task<string> CreateNewSession(HttpClient client, string app)
+    public static Task<string> CreateNewSession(HttpClient client, string app)
     {
-      var response = await Helpers.PostMessage(client, "session", new NewSessionReq()
+      return CreateNewSession(client, new NewSessionReq()
       {
         desiredCapabilities = new Capabilities()
         {
@@ -43,13 +85,13 @@ namespace WinAppDriver.IntegrationTest
         }
       });
 
-      response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
 
-      var sessionOkResponse = await Helpers.FromBody<SessionOkResponse>(response);
-      sessionOkResponse.value.Should().NotBeNull();
-      
-      sessionOkResponse.sessionId.Should().NotBeNullOrEmpty();
-      return sessionOkResponse.sessionId;
+    public static async Task<string> CreateNewSession(HttpClient client, NewSessionReq req)
+    {
+      var response = await Helpers.PostMessage<object, NewSessionReq>(client, "session", req);
+
+      return response.sessionId;
     }
 
     public static async Task<HttpResponseMessage> DeletSession(HttpClient client, string sessionId)
@@ -58,30 +100,30 @@ namespace WinAppDriver.IntegrationTest
       return response;
     }
 
-    public static async Task<FindElementResult> FindElement(HttpClient client, string sessionId, FindElementReq req)
+    public static Task<SessionResponse<FindElementResult>> FindElement(HttpClient client, string sessionId, FindElementReq req)
     {
-      var response = await PostMessage(client, "session/" + sessionId + "/element", req);
-
-      response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-      var sessionOkResponse = await Helpers.FromBody<SessionOkResponse>(response);
-      sessionOkResponse.value.Should().NotBeNull();
-
-      var value = sessionOkResponse.value.ToString();
-      return JsonConvert.DeserializeObject<FindElementResult>(value);
+      return PostSessionMessage<FindElementResult, FindElementReq>(client, sessionId, "element", req);
     }
 
-    public static async Task<FindElementsResult> FindElements(HttpClient client, string sessionId, ElementsReqs req)
+    public static Task<SessionResponse<FindElementsResult>> FindElements(HttpClient client, string sessionId, FindElementsReqs req)
     {
-      var response = await PostMessage(client, "session/" + sessionId + "/elements", req);
+      return PostSessionMessage<FindElementsResult, FindElementsReqs>(client, sessionId, "elements", req);
+    }
 
-      response.StatusCode.Should().Be(HttpStatusCode.OK);
+    public static Task<SessionResponse<object>> ActivateWindow(HttpClient client, string sessionId, string windowId)
+    {
+      return PostSessionMessage<object, ActivateWindowReq>(client, sessionId, "window", new ActivateWindowReq() { name = windowId }) ;
+    }
 
-      var sessionOkResponse = await Helpers.FromBody<SessionOkResponse>(response);
-      sessionOkResponse.value.Should().NotBeNull();
+    public static Task<SessionResponse<string>> GetTitle(HttpClient client, string sessionId)
+    {
+      return GetSessionMessage<string>(client, sessionId, "title");
+    }
 
-      var value = sessionOkResponse.value.ToString();
-      return JsonConvert.DeserializeObject<FindElementsResult>(value);
+    public static async Task<SessionResponse<object>> DeleteWindow(HttpClient client, string sessionId)
+    {
+      var response = await client.DeleteAsync("session/" + sessionId + "/window");
+      return await Helpers.TranslateResult<object>(response);
     }
   }
 }

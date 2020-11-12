@@ -1,6 +1,7 @@
 ﻿// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace WinAppDriver.Infra.Communication
