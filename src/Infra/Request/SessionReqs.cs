@@ -29,4 +29,5 @@ namespace WinAppDriver
     [JsonProperty(Required = Required.DisallowNull)]
     public string name;
   }
+
 }

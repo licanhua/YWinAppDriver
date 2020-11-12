@@ -89,4 +89,12 @@ namespace WinAppDriver.Infra.CommandHandler
       return session.GetApplicationRoot().GetWindowHandles();
     }
   }
+
+  class GetFocusedElementHandler : SessionCommandHandlerBase<object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      return session.GetApplicationRoot().GetFocusedElement().GetId();
+    }
+  }
 }

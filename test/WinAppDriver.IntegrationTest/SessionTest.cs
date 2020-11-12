@@ -104,7 +104,7 @@ namespace WinAppDriver.IntegrationTest
       {
         var sessionId = await Helpers.CreateNewSession(client, "Root");
 
-        var response = await Helpers.FindElements(client, sessionId, new FindElementsReqs()
+        var response = await Helpers.FindElements(client, sessionId, new FindElementsReq()
            {
              strategy = "name",
              value = "doesn't exist"

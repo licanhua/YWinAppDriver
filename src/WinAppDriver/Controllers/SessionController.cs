@@ -134,6 +134,20 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(sessionId, elementId, (element) => { element.Click(); });
     }
 
+    [HttpGet]
+    [Route("{sessionId}/element/{elementId}/equals/{otherId}")]
+    public IActionResult ElementEquals(string sessionId, string elementId, string otherId)
+    {
+      return ExecuteCommand(Command.ElementEquals, sessionId, otherId, otherId);
+    }
+
+    [HttpGet]
+    [Route("{sessionId}/element/{elementId}/attribute/{propertyName}")]
+    public IActionResult ElementGetName(string sessionId, string elementId, string propertyName)
+    {
+      return ExecuteCommand(sessionId, elementId, (element) => { return element.GetAttribute(propertyName); });
+    }
+
     [HttpPost]
     [Route("{sessionId}/element/{elementId}/doubleclick")]
     public IActionResult ElementDoubleClick(string sessionId, string elementId)
@@ -141,18 +155,18 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(sessionId, elementId, (element) => { element.DoubleClick(); });
     }
 
-    [HttpPost]
-    [Route("{sessionId}/element/{elementId}/submit")]
-    public IActionResult ElementSubmit(string sessionId, string elementId)
-    {
-      return ExecuteCommand(sessionId, elementId, (element) => { throw new Infra.NotImplementedException(); });
-    }
+    //[HttpPost]
+    //[Route("{sessionId}/element/{elementId}/submit")]
+    //public IActionResult ElementSubmit(string sessionId, string elementId)
+    //{
+    //  return ExecuteCommand(sessionId, elementId, (element) => { throw new Infra.NotImplementedException(); });
+    //}
 
     [HttpGet]
     [Route("{sessionId}/element/{elementId}/name")]
-    public IActionResult ElementName(string sessionId, string elementId)
+    public IActionResult ElementGetTagName(string sessionId, string elementId)
     {
-      return ExecuteCommand(sessionId, elementId, (element) => { return element.GetName(); });
+      return ExecuteCommand(sessionId, elementId, (element) => { return element.GetTagName(); });
     }
 
     [HttpGet]
@@ -202,6 +216,20 @@ namespace WinAppDriver.Controllers
     public IActionResult GetTitle(string sessionId)
     {
       return ExecuteCommand(Command.GetTitle, sessionId, null, null);
+    }
+
+    [HttpGet]
+    [Route("{sessionId}/element/active")]
+    public IActionResult GetFocusedElement(string sessionId)
+    {
+      return ExecuteCommand(Command.GetFocusedElement, sessionId, null, null);
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/element/{elementId}/value")]
+    public IActionResult SetValue(string sessionId, string elementId,[FromBody] object body)
+    {
+      return ExecuteCommand(Command.ElementSetValue, sessionId, body, elementId);
     }
 
     [HttpPost]
@@ -273,6 +301,7 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/frame")]
     [Route("{sessionId}/frame/parent")]
     [Route("{sessionId}/cookie")]
+    [Route("{sessionId}/element/{elementId}/submit")]
 
 
     public IActionResult UnknownPost(string sessionId)
@@ -283,6 +312,7 @@ namespace WinAppDriver.Controllers
     [HttpGet]
     [Route("{sessionId}/url")]
     [Route("{sessionId}/cookie")]
+    [Route("{sessionId}/element/{id}/location_in_view")]
 
     public IActionResult UnknownGet(string sessionId)
     {

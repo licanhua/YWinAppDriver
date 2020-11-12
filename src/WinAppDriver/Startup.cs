@@ -43,7 +43,7 @@ namespace WinAppDriver
       {
         app.UseDeveloperExceptionPage();
       }
-      app.UsePathBase("/wd/hub");
+     // app.UsePathBase("/wd/hub");
 
       app.UseRouting();
 

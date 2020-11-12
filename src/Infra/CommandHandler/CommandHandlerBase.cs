@@ -17,6 +17,7 @@ namespace WinAppDriver.Infra.CommandHandler
       try
       {
         var req = JsonHelper.Deserialize<ReqType>(obj);
+
         // Serialize to valid the fields
         JsonHelper.Serialize(req);
         return req;
@@ -31,14 +32,12 @@ namespace WinAppDriver.Infra.CommandHandler
 
   public abstract class SessionCommandHandlerBase<ReqType, ResultType> : CommandHandlerBase<ReqType, ResultType>, ICommandHandler
   {
-    protected virtual void ValidateRequest(ReqType req) { }
     protected abstract ResultType ExecuteSessionCommand(ISessionManager sessionManager, ISession session, ReqType req, string elementId);
 
     public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
     {
       var session = sessionManager.GetSession(sessionId);
       ReqType req = DeserializeType(body);
-      ValidateRequest(req);
       return ExecuteSessionCommand(sessionManager, session, req, elementId);
     }
   }
@@ -56,13 +55,11 @@ namespace WinAppDriver.Infra.CommandHandler
 
   public abstract class NoSessionCommandHandlerBase<ReqType, ResultType> : CommandHandlerBase<ReqType, ResultType>, ICommandHandler
   {
-    protected virtual void ValidateRequest(ReqType req) { }
     protected abstract ResultType ExecuteNoSessionCommand(ISessionManager sessionManager, ReqType req, string elementId);
 
     public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
     {
       ReqType req = DeserializeType(body);
-      ValidateRequest(req);
       return ExecuteNoSessionCommand(sessionManager, req, elementId);
     }
   }

@@ -99,11 +99,19 @@ namespace WinAppDriver.Infra.Communication
       }
 
       EnsureTimeoutSettting(msTimeout);
-      var descendants = new UIBreadthFirstDescendants<UIObject>(_uiObject, UIObject.Factory);
-      var element = descendants.Find(condition);
-      if (element == null) throw new ElementNotFound("By " + locator.Strategy.ToString() + ":" + locator.Value);
 
-      return new Element(element);
+      try
+      {
+        var descendants = new UIBreadthFirstDescendants<UIObject>(_uiObject, UIObject.Factory);
+        var element = descendants.Find(condition);
+        if (element == null) throw new ElementNotFound("By " + locator.Strategy.ToString() + ":" + locator.Value);
+
+        return new Element(element);
+      }
+      catch (Exception e)
+      {
+        throw new ElementNotFound(e.Message);
+      }
     }
 
     public IEnumerable<IElement> FindElements(Locator locator, int msTimeout)
@@ -117,9 +125,17 @@ namespace WinAppDriver.Infra.Communication
       }
 
       EnsureTimeoutSettting(msTimeout);
-      var descendants = new UIBreadthFirstDescendants<UIObject>(_uiObject, UIObject.Factory);
-      result.AddRange(descendants.FindMultiple(condition).Select(element => new Element(element)));
-      return result;
+
+      try
+      { 
+        var descendants = new UIBreadthFirstDescendants<UIObject>(_uiObject, UIObject.Factory);
+        result.AddRange(descendants.FindMultiple(condition).Select(element => new Element(element)));
+        return result;
+      }
+      catch (Exception e)
+      {
+        throw new ElementNotFound(e.Message);
+      }
     }
 
     public string GetId()
@@ -129,7 +145,18 @@ namespace WinAppDriver.Infra.Communication
 
     public bool IsSelected()
     {
-      return Convert.ToBoolean(_uiObject.GetProperty(UIProperty.Get(ActionStrings.IsSelected)).ToString());
+      foreach (var pattern in _uiObject.GetSupportedPatterns())
+      {
+        if (pattern.Id == SelectionItemPattern.Pattern.Id)
+        {
+          return new ListViewItem(_uiObject).IsSelected; // ListView supports the ISelectItem.IsSelected
+        }
+        else if (pattern.Id == TogglePattern.Pattern.Id)
+        {
+          return new ToggleButton(_uiObject).ToggleState.ToString() == "On";
+        }
+      }
+      throw new NotImplementedException("Not implement yet, what control are you using>");
     }
 
     public void Click()
@@ -146,12 +173,20 @@ namespace WinAppDriver.Infra.Communication
 
     public bool IsStaleElement()
     {
-      if (_uiObject == null || !(_uiObject.ProcessId > 0 && _uiObject.LocalizedControlType != null))
+      try
+      {
+        if (_uiObject == null || !(_uiObject.ProcessId > 0 && _uiObject.LocalizedControlType != null))
+        {
+          return true;
+        }
+      }
+      catch
       {
         return true;
       }
+
       return false;
-    }
+      }
 
     public string GetText()
     {
@@ -185,7 +220,7 @@ namespace WinAppDriver.Infra.Communication
 
     private XmlNode BuildXmlNode(XmlDocument doc, UIObject obj)
     {
-      var element = doc.CreateElement(GetName());
+      var element = doc.CreateElement(GetTagName());
       element.SetAttribute("AccessibilityId", obj.AutomationId);
       element.SetAttribute("Location", obj.BoundingRectangle.ToString());
       element.SetAttribute("ClassName", obj.ClassName);
@@ -200,7 +235,7 @@ namespace WinAppDriver.Infra.Communication
       return element;
     }
 
-    public string GetName()
+    public string GetTagName()
     {
       return _uiObject.LocalizedControlType;
     }
@@ -208,7 +243,7 @@ namespace WinAppDriver.Infra.Communication
     public void Clear()
     {
       EnsureNotOffScreen();
-       new Edit(_uiObject).SetValue("");
+       new Edit(_uiObject).SetValue(String.Empty);
     }
 
     public void Value(string value)
@@ -311,6 +346,55 @@ namespace WinAppDriver.Infra.Communication
     public string GetTitle()
     {
       return _uiObject.Name;
+    }
+
+    public bool ElementEquals(IElement element)
+    {
+      return _uiObject == (UIObject)element.GetUIObject();
+    }
+
+    public object GetUIObject()
+    {
+      return _uiObject;
+    }
+
+    public IElement GetFocusedElement()
+    {
+      if (UIObject.Focused != null && UIObject.Focused.ProcessId != _uiObject.ProcessId) // Focus on other app
+      {
+        return null;
+      }
+      else
+      {
+        return new Element(UIObject.Focused);
+      }
+    }
+
+    public string GetAttribute(string attributeName)
+    {
+      // support https://github.com/microsoft/WinAppDriver/blob/master/Tests/WebDriverAPI/ElementAttribute.cs
+      if (attributeName == ActionStrings.RuntimeId)
+      {
+        return GetId();
+      }
+      else if (attributeName == "name")
+      {
+        return _uiObject.Name;
+      }
+      else if (UIProperty.Exists(attributeName))
+      {
+        return _uiObject.GetProperty(UIProperty.Get(attributeName)).ToString();
+      }
+      throw new NotSupportedException("attribute name: " + attributeName);
+    }
+
+    public void SendKeys(string keys)
+    {
+      var text = KeyboardHelper.TranslateKey(keys);
+      if (!String.IsNullOrEmpty(text))
+      {
+        _uiObject.SendKeys(text);
+      }
     }
   }
 }

@@ -132,5 +132,17 @@ namespace WinAppDriver.Infra
     {
       return _application.GetApplicationRoot();
     }
+
+    public bool IsElementEquals(string id, string other)
+    {
+      return id == other || FindElement(id).ElementEquals(FindElement(other));
+    }
+
+    public IElement GetFocusedElement()
+    {
+      var element = GetApplicationRoot().GetFocusedElement();
+      _cache.AddElement(element);
+      return element;
+    }
   }
 }

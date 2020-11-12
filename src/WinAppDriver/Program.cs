@@ -20,7 +20,7 @@ namespace WinAppDriver
             .ConfigureWebHostDefaults(webBuilder =>
             {
               webBuilder.UseStartup<Startup>();
-              webBuilder.UseUrls("http://localhost:4723");
+           //   webBuilder.UseUrls("http://localhost:4723");
             });
   }
 }

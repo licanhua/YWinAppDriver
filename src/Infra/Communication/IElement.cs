@@ -10,11 +10,13 @@ namespace WinAppDriver.Infra.Communication
 {
   public interface IElement
   {
+    public string GetAttribute(string attributeName);
     public bool IsStaleElement();
     public bool IsSelected();
     public string GetId();
     public void CloseWindow();
-    public string GetName();
+    public string GetTagName();
+    public void SendKeys(string keys);
     public string GetText();
     public XmlDocument GetXmlDocument();
     public IElement FindElement(Locator locator, int msTimeout);
@@ -32,5 +34,8 @@ namespace WinAppDriver.Infra.Communication
     GetLocationResult GetLocation();
     bool IsDisplayed();
     bool IsEnabled();
+    bool ElementEquals(IElement element);
+    object GetUIObject();
+    public IElement GetFocusedElement();
   }
 }

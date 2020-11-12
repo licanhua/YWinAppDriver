@@ -136,7 +136,7 @@ namespace WinAppDriver.Infra
 
   public class NotImplementedException : SessionException
   {
-    public NotImplementedException() : base(ResponseStatusCode.UnsupportedOperation, "Interface is not implemented") { }
+    public NotImplementedException(string message = "Interface is not implemented") : base(ResponseStatusCode.UnsupportedOperation, message) { }
 
   }
 

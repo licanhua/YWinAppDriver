@@ -12,11 +12,18 @@ namespace WinAppDriver.Infra
     Name,
     Id,
     TagName,
-    //Id,
-    //TagName,
-    //XPath,
+    XPath,
   }
 
+  public class Consts
+  {
+    public const string ID = "id";
+    public const string ACCESSIBILITY_ID = "accessibility id";
+    public const string CLASS_NAME = "class name";
+    public const string NAME = "name";
+    public const string XPATH = "xpath";
+    public const string TAG_NAME = "tag name";
+  }
   public class Locator
   {
     public LocatorStrategy Strategy { get; set; }
@@ -26,23 +33,23 @@ namespace WinAppDriver.Infra
     {
       Locator locator = new Locator() { Value = value, Strategy = LocatorStrategy.NotSupported };
 
-      if (strategy == "accessibility id")
+      if (strategy == Consts.ACCESSIBILITY_ID)
       {
         locator.Strategy = LocatorStrategy.AccessibilityId;
       }
-      else if (strategy == "class name")
+      else if (strategy == Consts.CLASS_NAME)
       {
         locator.Strategy = LocatorStrategy.ClassName;
       }
-      else if (strategy == "name")
+      else if (strategy == Consts.NAME)
       {
         locator.Strategy = LocatorStrategy.Name;
       }
-      else if (strategy == "id")
+      else if (strategy == Consts.ID)
       {
         locator.Strategy = LocatorStrategy.Id;
       }
-      else if (strategy == "tag name")
+      else if (strategy == Consts.TAG_NAME)
       {
         locator.Strategy = LocatorStrategy.TagName;
       }

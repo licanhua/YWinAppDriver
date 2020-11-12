@@ -23,6 +23,8 @@ namespace WinAppDriver.Infra
 
     public IElement FindElement(string startElement, Locator locator);
     public IEnumerable<IElement> FindElements(string startElement, Locator locator);
-    string GetSource();
+    public bool IsElementEquals(string id, string other);
+    public string GetSource();
+    public IElement GetFocusedElement();
   }
 }

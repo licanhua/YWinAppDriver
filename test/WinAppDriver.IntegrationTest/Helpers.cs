@@ -105,9 +105,9 @@ namespace WinAppDriver.IntegrationTest
       return PostSessionMessage<FindElementResult, FindElementReq>(client, sessionId, "element", req);
     }
 
-    public static Task<SessionResponse<FindElementsResult>> FindElements(HttpClient client, string sessionId, FindElementsReqs req)
+    public static Task<SessionResponse<FindElementsResult>> FindElements(HttpClient client, string sessionId, FindElementsReq req)
     {
-      return PostSessionMessage<FindElementsResult, FindElementsReqs>(client, sessionId, "elements", req);
+      return PostSessionMessage<FindElementsResult, FindElementsReq>(client, sessionId, "elements", req);
     }
 
     public static Task<SessionResponse<object>> ActivateWindow(HttpClient client, string sessionId, string windowId)
@@ -124,6 +124,16 @@ namespace WinAppDriver.IntegrationTest
     {
       var response = await client.DeleteAsync("session/" + sessionId + "/window");
       return await Helpers.TranslateResult<object>(response);
+    }
+
+    public static Task<SessionResponse<object>> PostElementMessage<U>(HttpClient client, string sessionId, string elementId, string action, U body)
+    {
+      return PostSessionMessage<object, U>(client, sessionId, "element/" + elementId + "/" + action, body);
+    }
+
+    public static Task<SessionResponse<object>> GetElementMessage(HttpClient client, string sessionId, string elementId, string action)
+    {
+      return GetSessionMessage<object>(client, sessionId, "element/" + elementId + "/" + action);
     }
   }
 }
