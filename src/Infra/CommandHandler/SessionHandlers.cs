@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WinAppDriver.Infra.Result;
-// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
+﻿// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
 // Licensed under the MIT License.
+
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using WinAppDriver.Infra.Result;
 
 namespace WinAppDriver.Infra.CommandHandler
 {
@@ -19,16 +20,12 @@ namespace WinAppDriver.Infra.CommandHandler
       return null;
     }
   }
-  class NewSessionHandler : CommandHandlerBase<NewSessionReq, NewSessionIntermediateResult>, ICommandHandler
+  class NewSessionHandler : NoSessionCommandHandlerBase<NewSessionReq, NewSessionIntermediateResult>
   {
-#pragma warning disable IDE0060 // Remove unused parameter
-    public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
-#pragma warning restore IDE0060 // Remove unused parameter
+    protected override NewSessionIntermediateResult ExecuteNoSessionCommand(ISessionManager sessionManager, NewSessionReq req, string elementId)
     {
       try
       {
-        NewSessionReq req = DeserializeType(body);
-
         var session = sessionManager.NewSession();
         session.LaunchApplication(req);
         sessionManager.AddSession(session);
@@ -43,6 +40,30 @@ namespace WinAppDriver.Infra.CommandHandler
       {
         throw new SessionNotCreatedException(ex.ErrorMessage);
       }
+    }
+  }
+  class StatusHandler : NoSessionCommandHandlerBase<object, StatusResult>
+  {
+    protected override object DeserializeType(object obj)
+    {
+      return null;
+    }
+    protected override StatusResult ExecuteNoSessionCommand(ISessionManager sessionManager, object req, string elementId)
+    {
+
+      Assembly execAssembly = Assembly.GetExecutingAssembly();
+      AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
+
+      var osName = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? "Windows" : "Not Windows";
+      return new StatusResult()
+      {
+        buildVersion = assemblyName.Version.ToString(),
+        buildTime = (new FileInfo(execAssembly.Location).CreationTime).ToString(),
+        buildRevision = assemblyName.Version.Revision.ToString(),
+        osArch = RuntimeInformation.OSArchitecture.ToString(),
+        osName = osName,
+        osVersion = RuntimeInformation.OSDescription
+      };
     }
   }
 }

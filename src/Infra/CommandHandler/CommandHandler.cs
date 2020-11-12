@@ -43,6 +43,19 @@ namespace WinAppDriver.Infra.CommandHandler
     }
   }
 
+  public abstract class NoSessionCommandHandlerBase<ReqType, ResultType> : CommandHandlerBase<ReqType, ResultType>, ICommandHandler
+  {
+    protected virtual void ValidateRequest(ReqType req) { }
+    protected abstract ResultType ExecuteNoSessionCommand(ISessionManager sessionManager, ReqType req, string elementId);
+
+    public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
+    {
+      ReqType req = DeserializeType(body);
+      ValidateRequest(req);
+      return ExecuteNoSessionCommand(sessionManager, req, elementId);
+    }
+  }
+
   public class ElementCommandHandler: IElementCommandHandler
   {
     public object ExecuteCommand(ISessionManager sessionManager, string sessionId, string elementId, Func<IElement, object> func)

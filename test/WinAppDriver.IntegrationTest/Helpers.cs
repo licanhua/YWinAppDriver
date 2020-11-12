@@ -30,7 +30,9 @@ namespace WinAppDriver.IntegrationTest
 
     public static async Task<T> FromBody<T>(HttpResponseMessage response)
     {
-      return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+      var body = await response.Content.ReadAsStringAsync();
+      Console.WriteLine(body);
+      return JsonConvert.DeserializeObject<T>(body);
     }
 
     public static async Task<string> CreateNewSession(HttpClient client, string app)

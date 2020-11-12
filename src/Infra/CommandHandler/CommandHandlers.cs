@@ -16,6 +16,7 @@ namespace WinAppDriver.Infra.CommandHandler
       { Command.FindElements, new FindElementsHandler() },
       { Command.GetSource, new GetSourceHandler() },
       { Command.ImplicitTimeout, new ImplicitTimeoutHandler() },
+      { Command.Status, new StatusHandler() },
     };
 
     public object ExecuteCommand(Command command, ISessionManager sessionManager, string sessionId, object req, string elementId)
