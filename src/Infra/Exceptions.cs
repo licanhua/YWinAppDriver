@@ -145,4 +145,9 @@ namespace WinAppDriver.Infra
     public ElementOffScreen() : base(ResponseStatusCode.ElementNotVisible, "Element is offscreen") { }
 
   }
+
+  public class NoSuchWindow : SessionException
+  {
+    public NoSuchWindow() : base(ResponseStatusCode.NoSucnWindow) { }
+  }
 }

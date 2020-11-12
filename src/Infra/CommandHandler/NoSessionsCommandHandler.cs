@@ -21,12 +21,13 @@ namespace WinAppDriver.Infra.CommandHandler
       return result;
     }
   }
-  class NewSessionHandler : NoSessionCommandHandlerBase<NewSessionReq, NewSessionIntermediateResult>
+  class NewSessionHandler : CommandHandlerBase<NewSessionReq, NewSessionIntermediateResult>, ICommandHandler
   {
-    protected override NewSessionIntermediateResult ExecuteNoSessionCommand(ISessionManager sessionManager, NewSessionReq req, string elementId)
+    public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
     {
       try
       {
+        NewSessionReq req = DeserializeType(body);
         var session = sessionManager.NewSession();
         session.LaunchApplication(req);
         sessionManager.AddSession(session);

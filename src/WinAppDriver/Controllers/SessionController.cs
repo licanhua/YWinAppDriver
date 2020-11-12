@@ -100,6 +100,20 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(Command.FindElements, sessionId, content, null);
     }
 
+    [HttpGet]
+    [Route("{sessionId}/window_handle")]
+    public IActionResult GetWindowHandle(string sessionId)
+    {
+      return ExecuteCommand(Command.GetWindowHandle, sessionId, null, null);
+    }
+
+    [HttpGet]
+    [Route("{sessionId}/window_handles")]
+    public IActionResult GetWindowHandles(string sessionId)
+    {
+      return ExecuteCommand(Command.GetWindowHandles, sessionId, null, null);
+    }
+
     [HttpPost]
     [Route("{sessionId}/element/{elementId}/element")]
     public IActionResult FindElementFromElement(string sessionId, string elementId, [FromBody] object content)
@@ -212,6 +226,13 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpPost]
+    [Route("{sessionId}/window")]
+    public IActionResult ActivateWindow(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.ActivateWindow, sessionId, content, null);
+    }
+
+    [HttpPost]
     [Route("{sessionId}/[action]")]
     public IActionResult Buttondown(string sessionId)
     {
@@ -226,11 +247,27 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpPost]
-    [Route("{sessionId}/{unknown}", Order = 1)]
-    public IActionResult Unknown(string sessionId)
+    [Route("{sessionId}/timeouts/async_script")]
+    [Route("{sessionId}/url")]
+    [Route("{sessionId}/forward")]
+    [Route("{sessionId}/back")]
+    [Route("{sessionId}/refresh")]
+    [Route("{sessionId}/execute")]
+    [Route("{sessionId}/execute_async")]
+    [Route("{sessionId}/screenshot")]
+    [Route("{sessionId}/ime/{any}")]
+    [Route("{sessionId}/frame")]
+    [Route("{sessionId}/frame/parent")]
+    public IActionResult UnknownPost(string sessionId)
     {
-      return Ok("Unknown SessionId " + sessionId);
+      return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
     }
 
+    [HttpGet]
+    [Route("{sessionId}/url")]
+    public IActionResult UnknownGet(string sessionId)
+    {
+      return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
+    }
   }
 }

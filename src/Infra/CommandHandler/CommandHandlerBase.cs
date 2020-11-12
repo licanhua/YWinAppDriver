@@ -43,6 +43,17 @@ namespace WinAppDriver.Infra.CommandHandler
     }
   }
 
+  public abstract class SessionCommandHandlerBase<ResultType> : CommandHandlerBase<object, ResultType>, ICommandHandler
+  {
+    protected abstract ResultType ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId);
+
+    public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
+    {
+      var session = sessionManager.GetSession(sessionId);
+      return ExecuteSessionCommand(sessionManager, session, elementId);
+    }
+  }
+
   public abstract class NoSessionCommandHandlerBase<ReqType, ResultType> : CommandHandlerBase<ReqType, ResultType>, ICommandHandler
   {
     protected virtual void ValidateRequest(ReqType req) { }

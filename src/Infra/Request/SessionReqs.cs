@@ -23,4 +23,10 @@ namespace WinAppDriver
     [JsonProperty(Required = Required.DisallowNull)]
     public double ms;
   }
+
+  public class ActivateWindowReq
+  {
+    [JsonProperty(Required = Required.DisallowNull)]
+    public string name;
+  }
 }

@@ -20,6 +20,9 @@ namespace WinAppDriver.Infra.Communication
     public IElement FindElement(Locator locator, int msTimeout);
     public IEnumerable<IElement> FindElements(Locator locator, int msTimeout);
 
+    public string GetWindowHandle();
+    public IEnumerable<string> GetWindowHandles();
+    public void ActivateWindow(string window);
     public void Click();
     public void DoubleClick();
     public void Clear();

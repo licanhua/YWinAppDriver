@@ -31,13 +31,12 @@ namespace WinAppDriver.Infra
 
   public class Session : ISession
   {
-    private string _sessionId = Guid.NewGuid().ToString();
+    private readonly string _sessionId = Guid.NewGuid().ToString();
     private Capabilities _capabilities;
     private IApplicationManager _applicationManager;
     private IApplication _application;
     private int _msTimeout = 0;
-
-    ElementCache _cache = new ElementCache();
+    readonly ElementCache _cache = new ElementCache();
 
     public Session(IApplicationManager applicationManager)
     {
@@ -71,14 +70,14 @@ namespace WinAppDriver.Infra
 
     public IElement FindElement(Locator locator)
     {
-      var element = _application.GetApplicationRoot().FindElement(locator, _msTimeout);
+      var element = GetApplicationRoot().FindElement(locator, _msTimeout);
       _cache.AddElement(element);
       return element;
     }
 
     public IEnumerable<IElement> FindElements(Locator locator)
     {
-      var elements = _application.GetApplicationRoot().FindElements(locator, _msTimeout);
+      var elements = GetApplicationRoot().FindElements(locator, _msTimeout);
       foreach (var element in elements)
       {
         _cache.AddElement(element);
@@ -117,7 +116,7 @@ namespace WinAppDriver.Infra
 
     public string GetSource()
     {
-      var xmlDoc = _application.GetApplicationRoot().GetXmlDocument();
+      var xmlDoc = GetApplicationRoot().GetXmlDocument();
       StringWriter sw = new StringWriter();
       XmlTextWriter xw = new XmlTextWriter(sw);
       xmlDoc.WriteTo(xw);
@@ -127,6 +126,11 @@ namespace WinAppDriver.Infra
     public void SetImplicitTimeout(int msTimeout)
     {
       _msTimeout = msTimeout;
+    }
+
+    public IElement GetApplicationRoot()
+    {
+      return _application.GetApplicationRoot();
     }
   }
 }

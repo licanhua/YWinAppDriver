@@ -28,6 +28,14 @@ namespace WinAppDriver.Infra.CommandHandler
     }
   }
 
+  public class UknownCommandHandler : ICommandHandler
+  {
+    public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
+    {
+      throw new UnknownCommandException();
+    }
+  }
+
   class DeleteSessionHandler : ICommandHandler
   {
     public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
@@ -39,6 +47,31 @@ namespace WinAppDriver.Infra.CommandHandler
         session.QuitApplication();
       }
       return null;
+    }
+  }
+
+  class GetWindowHandleHandler : SessionCommandHandlerBase<object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      return session.GetApplicationRoot().GetWindowHandle();
+    }
+  }
+
+  class ActivateWindowHandleHandler : SessionCommandHandlerBase<ActivateWindowReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, ActivateWindowReq req, string elementId)
+    {
+      session.GetApplicationRoot().ActivateWindow(req.name);
+      return null;
+    }
+  }
+
+  class GetWindowHandlesHandler : SessionCommandHandlerBase<object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      return session.GetApplicationRoot().GetWindowHandles();
     }
   }
 }

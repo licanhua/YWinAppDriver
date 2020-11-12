@@ -8,7 +8,7 @@ using System.Text;
 
 namespace WinAppDriver.Infra.Request
 {
-  public class GetElementsReqs
+  public class FindElementsReqs
   {
     [JsonProperty("using", Required = Required.DisallowNull)]
     public string strategy;

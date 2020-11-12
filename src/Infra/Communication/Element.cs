@@ -244,5 +244,46 @@ namespace WinAppDriver.Infra.Communication
     {
       return _uiObject.IsEnabled;
     }
+
+    public string GetWindowHandle()
+    {
+      return _uiObject.NativeWindowHandle.ToString();
+    }
+
+    private IEnumerable<UIObject> GetWindows()
+    {
+      List<UIObject> result = new List<UIObject>();
+
+      var condition = UICondition.CreateFromClassName("Window").OrWith(UICondition.CreateFromClassName("ApplicationFrameWindow"));
+      foreach (var window in UIObject.Root.Descendants.FindMultiple(condition))
+      {
+        if (window.ProcessId == _uiObject.ProcessId || _uiObject == UIObject.Root || _uiObject.Parent == UIObject.Root) // root returns itself and all its child process window
+        {
+          result.Add(window);
+        }
+      }
+
+      return result;
+    }
+
+
+    public IEnumerable<string> GetWindowHandles()
+    {
+      return GetWindows().Select(window => window.NativeWindowHandle.ToString());
+    }
+
+    public void ActivateWindow(string window)
+    {
+      if (String.IsNullOrEmpty(window))
+      {
+        throw new InvalidArgumentException("name can't be empty");
+      }
+      var found = GetWindows().Where(w => { return w.NativeWindowHandle.ToString() == window; }).FirstOrDefault();
+      if (found == null)
+      {
+        throw new NoSuchWindow();
+      }
+      found.SetFocus();
+    }
   }
 }

@@ -11,6 +11,7 @@ namespace WinAppDriver.Infra
 {
   public interface ISession
   {
+    IElement GetApplicationRoot();
     void SetImplicitTimeout(int msTimeout);
     string GetSessionId();
     void LaunchApplication(NewSessionReq req);
