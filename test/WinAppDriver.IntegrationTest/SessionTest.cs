@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System;
@@ -177,6 +179,45 @@ namespace WinAppDriver.IntegrationTest
         await Helpers.DeletSession(client, sessionId);
         response.statusCode.Should().Be(HttpStatusCode.OK);
         response.value.Count.Should().BeGreaterThan(1);
+      }
+    }
+
+    [Fact]
+    public async Task Test_ActivateWindow_WithWrongWindowId()
+    {
+      using (var client = new TestClientProvider().Client)
+      {
+        var session = await Helpers.CreateNewSession(client, AppIds.Root);
+        
+        var result = await Helpers.ActivateWindow(client, session, "Anything");
+        result.statusCode.Should().NotBe(HttpStatusCode.OK);
+        result.status.Should().Be((int)ResponseStatusCode.NoSucnWindow);
+      }
+    }
+
+
+    [Fact]
+    public async Task Test_ActivateWindow_Interactive()
+    {
+      using (var client = new TestClientProvider().Client)
+      {
+        var sessionAlarm = await Helpers.CreateNewSession(client, AppIds.AlarmClock);
+        var windowAlarm = (await Helpers.GetSessionMessage<string>(client, sessionAlarm, "window_handle")).value;
+
+        var sessionCalculator = await Helpers.CreateNewSession(client, AppIds.Calculator);
+        var windowCalcluator = (await Helpers.GetSessionMessage<string>(client, sessionCalculator, "window_handle")).value;
+
+        var result = await Helpers.ActivateWindow(client, sessionAlarm, windowAlarm);
+        result.statusCode.Should().Be(HttpStatusCode.OK);
+
+        Task.Delay(50).Wait();
+        result = await Helpers.ActivateWindow(client, sessionCalculator, windowCalcluator);
+        result.statusCode.Should().Be(HttpStatusCode.OK);
+
+        Task.Delay(50).Wait();
+        await Helpers.DeletSession(client, sessionAlarm);
+        await Helpers.DeletSession(client, sessionCalculator);
+        
       }
     }
   }

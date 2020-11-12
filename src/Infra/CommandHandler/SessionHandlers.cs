@@ -58,7 +58,7 @@ namespace WinAppDriver.Infra.CommandHandler
     }
   }
 
-  class ActivateWindowHandleHandler : SessionCommandHandlerBase<ActivateWindowReq, object>
+  class ActivateWindowHandler : SessionCommandHandlerBase<ActivateWindowReq, object>
   {
     protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, ActivateWindowReq req, string elementId)
     {

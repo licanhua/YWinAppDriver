@@ -109,5 +109,10 @@ namespace WinAppDriver.IntegrationTest
     {
       return PostSessionMessage<FindElementsResult, FindElementsReqs>(client, sessionId, "elements", req);
     }
+
+    public static Task<SessionResponse<object>> ActivateWindow(HttpClient client, string sessionId, string windowId)
+    {
+      return PostSessionMessage<object, ActivateWindowReq>(client, sessionId, "window", new ActivateWindowReq() { name = windowId }) ;
+    }
   }
 }
