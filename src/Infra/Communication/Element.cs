@@ -307,5 +307,10 @@ namespace WinAppDriver.Infra.Communication
       }
       new Window(GetActiveWindow()).Close();
     }
+
+    public string GetTitle()
+    {
+      return _uiObject.Name;
+    }
   }
 }

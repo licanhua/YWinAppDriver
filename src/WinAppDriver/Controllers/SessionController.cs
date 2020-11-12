@@ -197,6 +197,13 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(sessionId, elementId, (element) => { return element.GetSize(); });
     }
 
+    [HttpGet]
+    [Route("{sessionId}/title")]
+    public IActionResult GetTitle(string sessionId)
+    {
+      return ExecuteCommand(Command.GetTitle, sessionId, null, null);
+    }
+
     [HttpPost]
     [Route("{sessionId}/element/{elementId}/clear")]
     public IActionResult ElementClear(string sessionId, string elementId)
@@ -265,6 +272,9 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/ime/{any}")]
     [Route("{sessionId}/frame")]
     [Route("{sessionId}/frame/parent")]
+    [Route("{sessionId}/cookie")]
+
+
     public IActionResult UnknownPost(string sessionId)
     {
       return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
@@ -272,9 +282,21 @@ namespace WinAppDriver.Controllers
 
     [HttpGet]
     [Route("{sessionId}/url")]
+    [Route("{sessionId}/cookie")]
+
     public IActionResult UnknownGet(string sessionId)
     {
       return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
     }
+
+    [HttpDelete]
+    [Route("{sessionId}/cookie/{name}")]
+    [Route("{sessionId}/cookie")]
+
+    public IActionResult UnknownDelete(string sessionId)
+    {
+      return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
+    }
+
   }
 }

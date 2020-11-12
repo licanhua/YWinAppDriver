@@ -75,7 +75,13 @@ namespace WinAppDriver.Infra.CommandHandler
       return null;
     }
   }
-
+  class GetTitleHandler : SessionCommandHandlerBase<string>
+  {
+    protected override string ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      return session.GetApplicationRoot().GetTitle();
+    }
+  }
   class GetWindowHandlesHandler : SessionCommandHandlerBase<object>
   {
     protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)

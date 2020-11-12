@@ -208,6 +208,20 @@ namespace WinAppDriver.IntegrationTest
     }
 
     [Fact]
+    public async Task Test_GetTitle()
+    {
+      using (var client = new TestClientProvider().Client)
+      {
+        var session = await Helpers.CreateNewSession(client, AppIds.Root);
+
+        
+        var result = await Helpers.GetTitle(client, session);
+        result.statusCode.Should().Be(HttpStatusCode.OK);
+        result.value.Should().NotBeNullOrEmpty();
+      }
+    }
+
+    [Fact]
     public async Task Test_DeleteDesktopWindow_WillFail()
     {
       using (var client = new TestClientProvider().Client)

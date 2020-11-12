@@ -18,6 +18,7 @@ namespace WinAppDriver.Infra.CommandHandler
     GetWindowHandles,
     ActivateWindow,
     DeleteWindow,
+    GetTitle,
   }
 
   public interface ICommandHandlers

@@ -22,6 +22,7 @@ namespace WinAppDriver.Infra.CommandHandler
       { Command.UnknownCommand, new UknownCommandHandler() },
       { Command.ActivateWindow, new ActivateWindowHandler() },
       { Command.DeleteWindow, new CloseActiveWindowHandler() },
+      { Command.GetTitle, new GetTitleHandler() },
     };
 
     public object ExecuteCommand(Command command, ISessionManager sessionManager, string sessionId, object req, string elementId)
