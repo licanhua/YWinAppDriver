@@ -89,7 +89,7 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/timeouts")]
     public IActionResult Timeouts(string sessionId, [FromBody] object content)
     {
-      return ExecuteCommand(Command.ImplicitTimeout, sessionId, content, null);
+      return ExecuteCommand(Command.SetImplicitTimeout, sessionId, content, null);
     }
 
     [HttpPost]

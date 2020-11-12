@@ -23,8 +23,8 @@ namespace WinAppDriver.Infra.Communication
     public void Click();
     public void DoubleClick();
     public void Clear();
-    SizeResult GetSize();
-    LocationResult GetLocation();
+    GetSizeResult GetSize();
+    GetLocationResult GetLocation();
     bool IsDisplayed();
     bool IsEnabled();
   }

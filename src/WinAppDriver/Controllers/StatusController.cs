@@ -17,9 +17,9 @@ namespace WinAppDriver.Controllers
     }
     [HttpGet]
     [Route("")]
-    public IActionResult Status() 
+    public IActionResult GetStatus() 
     {
-      return ReplyOk(null, _handlers.ExecuteCommand(Command.Status, null, null, null, null));
+      return ReplyOk(null, _handlers.ExecuteCommand(Command.GetStatus, null, null, null, null));
     }
   }
 }

@@ -12,8 +12,8 @@ namespace WinAppDriver.Infra.CommandHandler
     FindElement,
     FindElements,
     GetSource,
-    ImplicitTimeout,
-    Status,
+    SetImplicitTimeout,
+    GetStatus,
   }
 
   public interface ICommandHandlers

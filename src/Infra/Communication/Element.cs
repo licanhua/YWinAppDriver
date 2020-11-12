@@ -225,14 +225,14 @@ namespace WinAppDriver.Infra.Communication
       }
     }
 
-    public SizeResult GetSize()
+    public GetSizeResult GetSize()
     {
-      return new SizeResult() { height = _uiObject.BoundingRectangle.Height, width = _uiObject.BoundingRectangle.Width };
+      return new GetSizeResult() { height = _uiObject.BoundingRectangle.Height, width = _uiObject.BoundingRectangle.Width };
     }
 
-    public LocationResult GetLocation()
+    public GetLocationResult GetLocation()
     {
-      return new LocationResult() { x = _uiObject.BoundingRectangle.X, y = _uiObject.BoundingRectangle.Y };
+      return new GetLocationResult() { x = _uiObject.BoundingRectangle.X, y = _uiObject.BoundingRectangle.Y };
     }
 
     public bool IsDisplayed()

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WinAppDriver.Infra.Result
 {
-  public class StatusResult
+  public class GetStatusResult
   {
     [JsonProperty("build.version")]
     public string buildVersion;
