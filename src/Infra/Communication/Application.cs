@@ -29,7 +29,11 @@ namespace WinAppDriver.Infra.Communication
 
     public void QuitApplication()
     {
-      if (_appRoot != null && _processId > 0 && _allowQuit)
+      if (_appRoot != null && _processId == 0) // window is closed before
+      {
+        throw new NoSuchWindow();
+      }
+      else if (_appRoot != null && _processId > 0 && _allowQuit)
       {
         try
         {
@@ -43,9 +47,11 @@ namespace WinAppDriver.Infra.Communication
         }
         catch { }
 
-        _appRoot = null;
+        _appRoot = new DummyElement();
         _processId = 0;
       }
+
+
     }
   }
 }

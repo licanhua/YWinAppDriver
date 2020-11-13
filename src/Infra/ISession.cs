@@ -15,6 +15,7 @@ namespace WinAppDriver.Infra
     void SetImplicitTimeout(int msTimeout);
     string GetSessionId();
     void LaunchApplication(NewSessionReq req);
+    void RelaunchApplication();
     void QuitApplication();
     Capabilities GetCapabilities();
     public IElement FindElement(Locator locator);

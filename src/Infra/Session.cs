@@ -27,6 +27,11 @@ namespace WinAppDriver.Infra
     {
       _cache.Remove(key);
     }
+
+    public void Clear()
+    {
+      _cache.Clear();
+    }
   }
 
   public class Session : ISession
@@ -48,7 +53,6 @@ namespace WinAppDriver.Infra
       if (_application != null) 
       {
         _application.QuitApplication();
-        _application = null;
       }
     }
 
@@ -143,6 +147,12 @@ namespace WinAppDriver.Infra
       var element = GetApplicationRoot().GetFocusedElement();
       _cache.AddElement(element);
       return element;
+    }
+
+    public void RelaunchApplication()
+    {
+      LaunchApplication(new NewSessionReq() { desiredCapabilities = _capabilities });
+      _cache.Clear();
     }
   }
 }

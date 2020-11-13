@@ -254,6 +254,13 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpPost]
+    [Route("{sessionId}/appium/app/close")]
+    public IActionResult AppiumAppClose(string sessionId)
+    {
+      return ExecuteCommand(Command.AppiumCloseApp, sessionId, null, null);
+    }
+
+    [HttpPost]
     [Route("{sessionId}/[action]")]
     public IActionResult Back(string sessionId, [FromBody] object content)
     {
@@ -271,7 +278,14 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/window")]
     public IActionResult DeleteWindow(string sessionId)
     {
-      return ExecuteCommand(Command.DeleteWindow, sessionId, null, null);
+      return ExecuteCommand(Command.AppiumCloseApp, sessionId, null, null);
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/appium/app/launch")]
+    public IActionResult AppLaunchApp(string sessionId)
+    {
+      return ExecuteCommand(Command.AppiumLaunchApp, sessionId, null, null);
     }
 
     [HttpPost]

@@ -50,6 +50,29 @@ namespace WinAppDriver.Infra.CommandHandler
     }
   }
 
+  class AppiumCloseAppHandler : ICommandHandler
+  {
+    public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
+    {
+      if (sessionManager.ContainsSession(sessionId))
+      {
+        var session = sessionManager.GetSession(sessionId);
+        session.QuitApplication();
+      }
+      return null;
+    }
+  }
+
+  class AppiumLaunchAppHandler : ICommandHandler
+  {
+    public object ExecuteCommand(ISessionManager sessionManager, string sessionId, object body, string elementId)
+    {
+      var session = sessionManager.GetSession(sessionId);
+      session.RelaunchApplication();
+      return null;
+    }
+  }
+
   class GetWindowHandleHandler : SessionCommandHandlerBase<object>
   {
     protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
