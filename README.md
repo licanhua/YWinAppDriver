@@ -6,7 +6,7 @@ This repo is an open source asp.net core implementation of WinAppDriver and it's
 
 I name this project YWinAppDriver(yet another WinAppDriver).
 
-## Project Status: 0.1
+## Project Status: 0.11
    Some basic functionality(Launch app, FindElement, FindElements, Click, DoubleClick, Value...) is ready. Please refer to [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs)
 
    I successfully made [CalculatorTest](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest) work which is come from https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest
@@ -15,7 +15,8 @@ I name this project YWinAppDriver(yet another WinAppDriver).
 Below features are not ready yet
 - logs
 - xpath locator
-- keyboard Input support. Similar functionality as WinUI did on [KeyboardHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/MUXTestInfra/Common/KeyboardHelper.cs#L109)
+- keyboard Input support. Part completed(/value endpoint) 
+Similar functionality as WinUI did on [KeyboardHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/MUXTestInfra/Common/KeyboardHelper.cs#L109)
 - Mouse Input support. WinUI functionality in [InputHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/master/test/testinfra/MUXTestInfra/Common/InputHelper.cs)
 - ExecuteScript
 
@@ -26,8 +27,10 @@ There are two ways to get the WinAppDriver.exe:
 2. or Download it from https://github.com/licanhua/YWinAppDriver/releases
 
 - Lauch WinAppDriver.exe
-Please set your test endpoint to http://localhost:4723/wd/hub
+Please set your test endpoint to http://127.0.0.1:4723
 If you want to use other port and url, please change these lines and rebuild the project
+
+If you launch it outside of Visual studio, run `WinAppDriver.exe --urls http://127.0.0.1/4723`
 
 ```
     webBuilder.UseUrls("http://localhost:4723");
