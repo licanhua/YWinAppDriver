@@ -229,7 +229,14 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/element/{elementId}/value")]
     public IActionResult SetValue(string sessionId, string elementId,[FromBody] object body)
     {
-      return ExecuteCommand(Command.ElementSetValue, sessionId, body, elementId);
+      return ExecuteCommand(Command.ElementSendKeys, sessionId, body, elementId);
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/keys")]
+    public IActionResult SendKeys(string sessionId, [FromBody] object body)
+    {
+      return ExecuteCommand(Command.SessionSendKeys, sessionId, body, null);
     }
 
     [HttpPost]
