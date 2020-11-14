@@ -13,12 +13,13 @@ I name this project YWinAppDriver(yet another WinAppDriver).
 
 ## Not ready features
 Below features are not ready yet
-- logs
 - xpath locator
 - keyboard Input support. Part completed(/value endpoint) 
 Similar functionality as WinUI did on [KeyboardHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/MUXTestInfra/Common/KeyboardHelper.cs#L109)
 - Mouse Input support. WinUI functionality in [InputHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/master/test/testinfra/MUXTestInfra/Common/InputHelper.cs)
+- Integration with appium
 - ExecuteScript
+
 
 ## Download & Run YWinAppDriver
 - Download and compile 
