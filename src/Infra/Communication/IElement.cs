@@ -10,7 +10,9 @@ namespace WinAppDriver.Infra.Communication
 {
   public interface IElement
   {
+    public IEnumerable<IElement> GetChildren();
     public string GetAttribute(string attributeName);
+    public string GetAttribute(LocatorStrategy locator);
     public bool IsStaleElement();
     public bool IsSelected();
     public string GetId();

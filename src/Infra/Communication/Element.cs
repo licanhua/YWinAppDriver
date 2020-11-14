@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using WinAppDriver.Infra.Result;
 
@@ -162,7 +163,16 @@ namespace WinAppDriver.Infra.Communication
     public void Click()
     {
       EnsureNotOffScreen();
+      foreach (var pattern in _uiObject.GetSupportedPatterns())
+      {
+        if (pattern.Id == InvokePattern.Pattern.Id)
+        {
+          new Button(_uiObject).Invoke(); // Invoke has better performance than click. I guess click is synchronized but invoke is not
+          return;
+        }
+      }
       _uiObject.Click();
+
     }
 
     public void DoubleClick()
@@ -233,6 +243,16 @@ namespace WinAppDriver.Infra.Communication
         element.AppendChild(BuildXmlNode(doc, e));
       }
       return element;
+    }
+
+    public string GetAttribute(LocatorStrategy locator)
+    {
+      if (locator == LocatorStrategy.Id) return id;
+      else if (locator == LocatorStrategy.AccessibilityId) return _uiObject.AutomationId;
+      else if (locator == LocatorStrategy.ClassName) return _uiObject.ClassName;
+      else if (locator == LocatorStrategy.TagName) return _uiObject.LocalizedControlType;
+      else if (locator == LocatorStrategy.Name) return _uiObject.Name;
+      return null;
     }
 
     public string GetTagName()
@@ -375,7 +395,7 @@ namespace WinAppDriver.Infra.Communication
       // support https://github.com/microsoft/WinAppDriver/blob/master/Tests/WebDriverAPI/ElementAttribute.cs
       if (attributeName == ActionStrings.RuntimeId)
       {
-        return GetId();
+        return id;
       }
       else if (attributeName == "name")
       {
@@ -395,6 +415,11 @@ namespace WinAppDriver.Infra.Communication
       {
         _uiObject.SendKeys(text);
       }
+    }
+
+    public IEnumerable<IElement> GetChildren()
+    {
+      return _uiObject.Children.Select(item => new Element(item));
     }
   }
 }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace Infra.UnitTest
       var application = CreateApplication();
       var applicationManager = new Mock<IApplicationManager>();
       applicationManager.Setup(app => app.LaunchApplication(It.Ref<Capabilities>.IsAny)).Returns(application);
-      var session =new Session(applicationManager.Object);
+      var session =new Session(applicationManager.Object, new LoggerFactory().CreateLogger<Session>());
       session.LaunchApplication(new NewSessionReq());
       return session;
     }

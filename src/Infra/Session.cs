@@ -1,6 +1,8 @@
 ﻿// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Extensions.Logging;
+using Microsoft.Windows.Apps.Test.Foundation;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,25 +14,73 @@ namespace WinAppDriver.Infra
 {
   internal class ElementCache
   {
-    private Dictionary<string, IElement> _cache = new Dictionary<string, IElement>();
+
+    private Dictionary<LocatorStrategy, Dictionary<string, IElement>> _cache = new Dictionary<LocatorStrategy, Dictionary<string, IElement>>();
+
+    public ElementCache()
+    {
+      _cache[LocatorStrategy.AccessibilityId] = new Dictionary<string, IElement>();
+      _cache[LocatorStrategy.ClassName] = new Dictionary<string, IElement>();
+      _cache[LocatorStrategy.Id] = new Dictionary<string, IElement>();
+      _cache[LocatorStrategy.Name] = new Dictionary<string, IElement>();
+      _cache[LocatorStrategy.TagName] = new Dictionary<string, IElement>();
+    }
+
     public void AddElement(IElement element) 
     {
-      _cache[element.GetId()] = element;
+      _cache[LocatorStrategy.Id][element.GetId()] = element;
+      var value = element.GetAttribute(LocatorStrategy.AccessibilityId);
+      if (!string.IsNullOrEmpty(value))
+      { _cache[LocatorStrategy.AccessibilityId][value] = element; 
+      }
+
+      value = element.GetAttribute(LocatorStrategy.ClassName);
+      if (!string.IsNullOrEmpty(value))
+      {
+        _cache[LocatorStrategy.ClassName][value] = element;
+      }
+
+      value = element.GetAttribute(LocatorStrategy.Name);
+      if (!string.IsNullOrEmpty(value))
+      {
+        _cache[LocatorStrategy.Name][value] = element;
+      }
+
+      value = element.GetAttribute(LocatorStrategy.TagName);
+      if (!string.IsNullOrEmpty(value))
+      {
+        _cache[LocatorStrategy.TagName][value] = element;
+      }
     }
 
-    public IElement GetOrDefault(string key)
+    public IElement GetOrDefault(LocatorStrategy locator, string key)
     {
-      return _cache.GetValueOrDefault(key);
+      var value = _cache[locator].GetValueOrDefault(key);
+
+      if (value != null && locator != LocatorStrategy.Id)
+      {
+        if (value.IsStaleElement() || value.GetAttribute(locator) != key)
+        {
+          // obselete cache
+          RemoveElement(locator, key);
+          return null;
+        }
+      }
+      return value;
     }
 
-    public void RemoveElement(string key)
+    public void RemoveElement(LocatorStrategy locator, string key)
     {
-      _cache.Remove(key);
+      _cache[locator].Remove(key);
     }
 
     public void Clear()
     {
-      _cache.Clear();
+      _cache[LocatorStrategy.AccessibilityId].Clear();
+      _cache[LocatorStrategy.ClassName].Clear();
+      _cache[LocatorStrategy.Id].Clear();
+      _cache[LocatorStrategy.Name].Clear();
+      _cache[LocatorStrategy.TagName].Clear();
     }
   }
 
@@ -41,16 +91,18 @@ namespace WinAppDriver.Infra
     private IApplicationManager _applicationManager;
     private IApplication _application;
     private int _msTimeout = 0;
+    private readonly ILogger _logger;
     readonly ElementCache _cache = new ElementCache();
 
-    public Session(IApplicationManager applicationManager)
+    public Session(IApplicationManager applicationManager, ILogger logger)
     {
       _applicationManager = applicationManager;
+      _logger = logger;
     }
 
     public void QuitApplication()
     {
-      if (_application != null) 
+      if (_application != null)
       {
         _application.QuitApplication();
       }
@@ -66,16 +118,42 @@ namespace WinAppDriver.Infra
       return _sessionId;
     }
 
+    void DFS(IElement element)
+    {
+      if (element != null)
+      {
+        _cache.AddElement(element);
+      }
+      foreach (var child in element.GetChildren())
+      {
+        DFS(child);
+      }
+    }
+    public void RebuildCache()
+    {
+      DFS(GetApplicationRoot());
+    }
     public void LaunchApplication(NewSessionReq req)
     {
       _capabilities = req.desiredCapabilities;
       _application = _applicationManager.LaunchApplication(_capabilities);
+      RebuildCache();
     }
 
     public IElement FindElement(Locator locator)
     {
+      // check cache first
+      var cached = _cache.GetOrDefault(locator.Strategy, locator.Value);
+      if (cached != null)
+      {
+        return cached;
+      }
+
+      _logger.LogError("Miss cache");
+
       var element = GetApplicationRoot().FindElement(locator, _msTimeout);
       _cache.AddElement(element);
+      RebuildCache();
       return element;
     }
 
@@ -95,14 +173,14 @@ namespace WinAppDriver.Infra
       {
         throw new ElementNotFound("element id is empty");
       }
-      var element = _cache.GetOrDefault(elementId);
+      var element = _cache.GetOrDefault(LocatorStrategy.Id, elementId);
       if (element == null)
       {
         throw new ElementNotFound("Didn't found the element in cache");
       }
       if (element.IsStaleElement())
       {
-        _cache.RemoveElement(element.GetId());
+        _cache.RemoveElement(LocatorStrategy.Id, element.GetId());
         throw new StaleElementException("stale element " + element.GetId());
       }
       return element;
@@ -152,7 +230,7 @@ namespace WinAppDriver.Infra
     public void RelaunchApplication()
     {
       LaunchApplication(new NewSessionReq() { desiredCapabilities = _capabilities });
-      _cache.Clear();
+      RebuildCache();
     }
   }
 }

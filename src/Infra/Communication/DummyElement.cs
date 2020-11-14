@@ -58,6 +58,16 @@ namespace WinAppDriver.Infra.Communication
       throw new NoSuchWindow();
     }
 
+    public string GetAttribute(LocatorStrategy locator)
+    {
+      throw new NoSuchWindow();
+    }
+
+    public IEnumerable<IElement> GetChildren()
+    {
+      return new List<IElement>();
+    }
+
     public IElement GetFocusedElement()
     {
       throw new NoSuchWindow();

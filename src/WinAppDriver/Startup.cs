@@ -27,17 +27,27 @@ namespace WinAppDriver
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers().AddNewtonsoftJson();
-      services.AddSingleton<ISessionManager>(new SessionManager(() => { return new Session(
-                                                                                     new ApplicationMananger()
+      services.AddSingleton<ISessionManager>((container) => new SessionManager(() => {    var logger = container.GetRequiredService<ILogger<Session>>();
+                                                                                          return new Session(
+                                                                                              new ApplicationMananger(), logger
                                                                                     ); }));
       services.AddSingleton<ICommandHandlers, CommandHandlers>();
       services.AddSingleton<IElementCommandHandler, ElementCommandHandler>();
 
       services.AddSwaggerDocument();
+
+      services.AddLogging(opt =>
+       {
+         opt.AddConsole(c =>
+         {
+           c.TimestampFormat = "[HH:mm:ss:fffffff] ";
+         });
+
+       });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+      public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
