@@ -53,6 +53,8 @@ namespace WinAppDriver
       app.UseOpenApi();
       app.UseSwaggerUi3();
 
+      app.UseMiddleware<RequestResponseLoggingMiddleware>();
+
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
