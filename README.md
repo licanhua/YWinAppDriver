@@ -10,12 +10,12 @@ I name this project YWinAppDriver(yet another WinAppDriver).
    Some basic functionality(Launch app, FindElement, FindElements, Click, DoubleClick, Value...) is ready. Please refer to [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs)
 
    I successfully made [CalculatorTest](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest) work which is come from https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest
+  - keyboard Input support. completed. Similar functionality as WinUI did on [KeyboardHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/MUXTestInfra/Common/KeyboardHelper.cs#L109)
+  - logs. Complete
 
 ## Not ready features
 Below features are not ready yet
 - xpath locator
-- keyboard Input support. Part completed(/value endpoint) 
-Similar functionality as WinUI did on [KeyboardHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/MUXTestInfra/Common/KeyboardHelper.cs#L109)
 - Mouse Input support. WinUI functionality in [InputHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/master/test/testinfra/MUXTestInfra/Common/InputHelper.cs)
 - Integration with appium
 - ExecuteScript

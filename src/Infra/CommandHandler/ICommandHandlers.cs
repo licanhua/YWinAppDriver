@@ -21,7 +21,8 @@ namespace WinAppDriver.Infra.CommandHandler
     GetTitle,
     ElementEquals,
     GetFocusedElement,
-    ElementSetValue,
+    ElementSendKeys,
+    SessionSendKeys,
     AppiumCloseApp,
     AppiumLaunchApp,
   }

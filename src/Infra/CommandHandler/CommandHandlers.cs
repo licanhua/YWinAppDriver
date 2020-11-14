@@ -25,9 +25,10 @@ namespace WinAppDriver.Infra.CommandHandler
       { Command.GetTitle, new GetTitleHandler() },
       { Command.ElementEquals, new ElementEqualsHandler() },
       { Command.GetFocusedElement, new GetFocusedElementHandler() },
-      { Command.ElementSetValue, new SetValueHandler() },
+      { Command.ElementSendKeys, new SetValueHandler() },
       { Command.AppiumCloseApp, new AppiumCloseAppHandler() },
       { Command.AppiumLaunchApp, new AppiumLaunchAppHandler() },
+      { Command.SessionSendKeys, new SessionSendKeysHandler() },
     };
 
     public object ExecuteCommand(Command command, ISessionManager sessionManager, string sessionId, object req, string elementId)

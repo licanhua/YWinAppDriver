@@ -7,11 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra", "src\Infra\Infra.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinAppDriver", "src\WinAppDriver\WinAppDriver.csproj", "{6A8F797A-3505-41E7-89D5-A9ECA7AF9E3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinAppDriver.UnitTest", "test\WinAppDriver.UnitTest\WinAppDriver.UnitTest.csproj", "{498BB752-3DFF-4136-A6FC-D7BC64ABD5ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinAppDriver.UnitTest", "test\WinAppDriver.UnitTest\WinAppDriver.UnitTest.csproj", "{498BB752-3DFF-4136-A6FC-D7BC64ABD5ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.UnitTest", "test\Infra.UnitTest\Infra.UnitTest.csproj", "{226C1DE1-6DB5-4DB3-90B1-BB430512EA8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra.UnitTest", "test\Infra.UnitTest\Infra.UnitTest.csproj", "{226C1DE1-6DB5-4DB3-90B1-BB430512EA8C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinAppDriver.IntegrationTest", "test\WinAppDriver.IntegrationTest\WinAppDriver.IntegrationTest.csproj", "{C7F910C5-3DBC-48A4-971F-6198F754CBC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{37A70166-F25D-4B38-ACAE-9A3E53A4B974}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

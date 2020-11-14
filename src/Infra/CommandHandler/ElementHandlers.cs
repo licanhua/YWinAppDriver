@@ -70,4 +70,28 @@ namespace WinAppDriver.Infra.CommandHandler
       return null;
     }
   }
+ public class SessionSendKeysHandler : SessionCommandHandlerBase<SetValueReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, SetValueReq req, string elementId)
+    {
+      StringBuilder sb = new StringBuilder();
+      foreach (var s in req.value)
+      {
+        sb.Append(s.ToString());
+      }
+
+      // compared to element/value, it doesn't depress the key
+      // https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidkeys
+      // sb.Append(KeyboardHelper.NULL); 
+
+      var element = session.GetFocusedElement();
+      if (element == null)
+      {
+        element = session.GetApplicationRoot();
+      }
+      element.SendKeys(sb.ToString());
+
+      return null;
+    }
+  }
 }
