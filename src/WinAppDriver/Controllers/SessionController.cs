@@ -155,13 +155,6 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(sessionId, elementId, (element) => { element.DoubleClick(); });
     }
 
-    //[HttpPost]
-    //[Route("{sessionId}/element/{elementId}/submit")]
-    //public IActionResult ElementSubmit(string sessionId, string elementId)
-    //{
-    //  return ExecuteCommand(sessionId, elementId, (element) => { throw new Infra.NotImplementedException(); });
-    //}
-
     [HttpGet]
     [Route("{sessionId}/element/{elementId}/name")]
     public IActionResult ElementGetTagName(string sessionId, string elementId)
@@ -268,13 +261,6 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpPost]
-    [Route("{sessionId}/[action]")]
-    public IActionResult Back(string sessionId, [FromBody] object content)
-    {
-      return Ok("Back SessionId " + sessionId + " " + content.ToString());
-    }
-
-    [HttpPost]
     [Route("{sessionId}/window")]
     public IActionResult ActivateWindow(string sessionId, [FromBody] object content)
     {
@@ -296,20 +282,6 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpPost]
-    [Route("{sessionId}/[action]")]
-    public IActionResult Buttondown(string sessionId)
-    {
-      return Ok("Buttondown SessionId" + sessionId);
-    }
-
-    [HttpPost]
-    [Route("{sessionId}/[action]")]
-    public IActionResult Click(string sessionId)
-    {
-      return Ok("Click SessionId" + sessionId);
-    }
-
-    [HttpPost]
     [Route("{sessionId}/timeouts/async_script")]
     [Route("{sessionId}/url")]
     [Route("{sessionId}/forward")]
@@ -323,8 +295,16 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/frame/parent")]
     [Route("{sessionId}/cookie")]
     [Route("{sessionId}/element/{elementId}/submit")]
-
-
+    [Route("{sessionId}/orientation")]
+    [Route("{sessionId}/alert_text")]
+    [Route("{sessionId}/accept_alert")]
+    [Route("{sessionId}/dismiss_alert")]
+    [Route("{sessionId}/alert_text")]
+    [Route("{sessionId}/location")]
+    [Route("{sessionId}/local_storage")]
+    [Route("{sessionId}/session_storage")]
+    [Route("{sessionId}/log")]
+    [Route("{sessionId}/local_storage")]
     public IActionResult UnknownPost(string sessionId)
     {
       return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
@@ -334,7 +314,18 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/url")]
     [Route("{sessionId}/cookie")]
     [Route("{sessionId}/element/{id}/location_in_view")]
-
+    [Route("{sessionId}/orientation")]
+    [Route("{sessionId}/alert_text")]
+    [Route("{sessionId}/location")]
+    [Route("{sessionId}/local_storage")]
+    [Route("{sessionId}/local_storage/key/{key}")]
+    [Route("{sessionId}/local_storage/size")]
+    [Route("{sessionId}/session_storage")]
+    [Route("{sessionId}/session_storage/key/{key}")]
+    [Route("{sessionId}/session_storage/size")]
+    [Route("{sessionId}/log/types")]
+    [Route("{sessionId}/application_cache/status")]
+    [Route("{sessionId}/element/{id}/css/{propertyName}")]
     public IActionResult UnknownGet(string sessionId)
     {
       return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
@@ -343,10 +334,32 @@ namespace WinAppDriver.Controllers
     [HttpDelete]
     [Route("{sessionId}/cookie/{name}")]
     [Route("{sessionId}/cookie")]
-
+    [Route("{sessionId}/local_storage")]
+    [Route("{sessionId}/local_storage/key/{key}")]
+    [Route("{sessionId}/session_storage")]
     public IActionResult UnknownDelete(string sessionId)
     {
       return ExecuteCommand(Command.UnknownCommand, sessionId, null, null);
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/moveto")]
+    [Route("{sessionId}/buttondown")]
+    [Route("{sessionId}/buttonup")]
+    [Route("{sessionId}/doubleclick")]
+    [Route("{sessionId}/touch/{action}")]
+    [Route("{sessionId}/moveto")]
+    public IActionResult TBD(string sessionId)
+    {
+      return ReplyFail(500, ResponseStatusCode.UnknownError, "Not implement yet");
+    }
+
+    [HttpGet]
+    [Route("{sessionId}/moveto")]
+
+    public IActionResult TBDGet(string sessionId)
+    {
+      return ReplyFail(500, ResponseStatusCode.UnknownError, "Not implement yet");
     }
 
   }
