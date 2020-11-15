@@ -14,6 +14,7 @@ using Xunit;
 
 namespace WinAppDriver.IntegrationTest
 {
+  [Collection("Sequential")]
   public class NotepadTest
   {
     string TextEditor = "Text Editor";
