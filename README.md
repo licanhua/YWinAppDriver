@@ -10,7 +10,9 @@ I name this project YWinAppDriver(yet another WinAppDriver).
    Most of functionalities(except Pen, Touch and Mouse) are ready and you should be able to switch from WinAppDriver to YWinAppDriver without any(or With little) change. [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs) defines all the endpoints.
 
    I successfully made [CalculatorTest](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest) and [WebDriverAPI](https://github.com/licanhua/YWinAppDriver/tree/main/test/WebDriverAPI) work which comes from [WinAppDriver samples](https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest) and [WinAppDriver test](https://github.com/microsoft/WinAppDriver/tree/master/Tests/WebDriverAPI)
-
+   
+   If you'd like to use JavaScript to author the test case, I verified [selenium appium example](https://github.com/react-native-windows/selenium-appium/tree/master/example), and it can integrate with YWinAppDriver.
+  
   - keyboard Input support. completed. Similar functionality as WinUI did on [KeyboardHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/MUXTestInfra/Common/KeyboardHelper.cs#L109)
   - logs. Complete
   - XPath. Complete. For the XPath syntax, refer to https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256086(v=vs.100)
@@ -22,9 +24,10 @@ Below features are not ready yet
 - ExecuteScript
 
 ## Download & Run YWinAppDriver
-- Download and compile 
+- Download and compile
+
 There are two ways to get the WinAppDriver.exe:
-1. Clone this repo, then open the WinAppDriver.sln and build/run WinAppDriver project.
+1. Clone this repo, then open the WinAppDriver.sln and build WinAppDriver project.
 2. or Download it from https://github.com/licanhua/YWinAppDriver/releases
 
 - Lauch WinAppDriver.exe
