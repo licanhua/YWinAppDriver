@@ -89,7 +89,13 @@ namespace WinAppDriver.Infra.CommandHandler
       return null;
     }
   }
-
+  class GetCapabilitesHandler : SessionCommandHandlerBase<Capabilities>
+  {
+    protected override Capabilities ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      return session.GetCapabilities();
+    }
+  }
   class CloseActiveWindowHandler : SessionCommandHandlerBase<object>
   {
     protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)

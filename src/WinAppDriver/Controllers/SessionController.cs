@@ -78,6 +78,13 @@ namespace WinAppDriver.Controllers
 
     }
 
+    [HttpGet]
+    [Route("{sessionId}")]
+    public IActionResult GetCapabilites(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.GetCapabilities, sessionId, null, null);
+    }
+
     [HttpPost]
     [Route("{sessionId}/element")]
     public IActionResult FindElement(string sessionId, [FromBody] object content)

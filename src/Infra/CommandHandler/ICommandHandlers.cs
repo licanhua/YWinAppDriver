@@ -25,6 +25,7 @@ namespace WinAppDriver.Infra.CommandHandler
     SessionSendKeys,
     AppiumCloseApp,
     AppiumLaunchApp,
+    GetCapabilities,
   }
 
   public interface ICommandHandlers
