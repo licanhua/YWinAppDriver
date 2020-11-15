@@ -14,6 +14,7 @@ using Xunit;
 
 namespace WinAppDriver.IntegrationTest
 {
+  [Collection("Sequential")]
   public class NotepadTest
   {
     string TextEditor = "Text Editor";
@@ -36,7 +37,9 @@ namespace WinAppDriver.IntegrationTest
         element.statusCode.Should().Be(HttpStatusCode.OK);
         string elementId = element.value.element;
         // set the value
-        var response = await Helpers.PostElementMessage(client, sessionId, elementId, "value", new List<string>() { "123", "456" });
+        var response = await Helpers.PostElementMessage(client, sessionId, elementId, "value", new Dictionary<string, object>()
+        {{"value", new List<string>() { "123", "456" }
+        } });
         response.statusCode.Should().Be(HttpStatusCode.OK);
 
         // get the value

@@ -3,8 +3,8 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- master
+pr:
+  - master
 
 pool:
   vmImage: 'windows-latest'
@@ -28,8 +28,13 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
+#- script: dotnet test test\WinAppDriver.IntegrationTest\WinAppDriver.IntegrationTest.csproj --logger trx
+- script: dotnet test test\WinAppDriver.UnitTest\WinAppDriver.UnitTest.csproj --logger trx
+- script: dotnet test test\Infra.UnitTest\Infra.UnitTest.csproj --logger trx
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
   inputs:
-    command: test
-    projects: 'test/*Test/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+    

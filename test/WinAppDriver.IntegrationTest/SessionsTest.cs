@@ -11,6 +11,7 @@ using Xunit;
 
 namespace WinAppDriver.IntegrationTest
 {
+  [Collection("Sequential")]
   public class SessionsTest
   {
     [Fact]

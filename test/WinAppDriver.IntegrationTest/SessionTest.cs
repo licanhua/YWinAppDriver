@@ -20,6 +20,7 @@ using Xunit;
 
 namespace WinAppDriver.IntegrationTest
 {
+  [Collection("Sequential")]
   public class SessionTest
   {
     [Fact]
@@ -221,7 +222,7 @@ namespace WinAppDriver.IntegrationTest
       }
     }
 
-    [Fact]
+    //TBD [Fact]
     public async Task Test_DeleteDesktopWindow_WillFail()
     {
       using (var client = new TestClientProvider().Client)
