@@ -148,7 +148,7 @@ If you run it from visual studio, there is no logs. If you want it, just remove 
 
 If you want to use other port and url, please change these lines and rebuild the project
 
-If you launch it outside of Visual studio, run `WinAppDriver.exe --urls http://127.0.0.1/4723`
+If you launch it outside of Visual studio, run `WinAppDriver.exe --urls http://127.0.0.1:4723`
 
 ```
     webBuilder.UseUrls("http://localhost:4723");

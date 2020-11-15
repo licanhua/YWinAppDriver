@@ -246,11 +246,11 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(sessionId, elementId, (element) => { element.Clear(); });
     }
 
-    [HttpPost]
+    [HttpGet]
     [Route("{sessionId}/source")]
-    public IActionResult GetSource(string sessionId, [FromBody] object content)
+    public IActionResult GetSource(string sessionId)
     {
-      return ExecuteCommand(Command.GetSource, sessionId, content, null);
+      return ExecuteCommand(Command.GetSource, sessionId, null, null);
     }
 
     [HttpDelete]

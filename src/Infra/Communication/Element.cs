@@ -11,14 +11,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 using WinAppDriver.Infra.Result;
 
 namespace WinAppDriver.Infra.Communication
 {
+
   public class Element : IElement
   {
+    static Regex TagNameRegExpr = new Regex("^[a-zA-Z0-9 ]*$");
+    const string TAGUNKNOWN = "Unknown";
+
     private readonly UIObject _uiObject;
     private readonly string id;
     private void EnsureTimeoutSettting(int msTimeout)
@@ -228,15 +233,29 @@ namespace WinAppDriver.Infra.Communication
       return doc;
     }
 
+    private string GetXamlNodeTag(UIObject obj)
+    {
+      var name = obj.LocalizedControlType.ToProperCase();
+
+      if (!string.IsNullOrWhiteSpace(name) && TagNameRegExpr.IsMatch(name))
+      {
+        return name;
+      }
+      else 
+      {
+        return TAGUNKNOWN;
+      }
+    }
+
     private XmlNode BuildXmlNode(XmlDocument doc, UIObject obj)
     {
-      var element = doc.CreateElement(GetTagName());
-      element.SetAttribute("AccessibilityId", obj.AutomationId);
-      element.SetAttribute("Location", obj.BoundingRectangle.ToString());
-      element.SetAttribute("ClassName", obj.ClassName);
-      element.SetAttribute("TagName", obj.LocalizedControlType);
-      element.SetAttribute("Name", obj.Name);
-      element.SetAttribute("id", obj.RuntimeId);
+      var element = doc.CreateElement(GetXamlNodeTag(obj));
+      element.SetAttribute("AccessibilityId", System.Net.WebUtility.HtmlEncode(obj.AutomationId));
+      element.SetAttribute("Location", System.Net.WebUtility.HtmlEncode(obj.BoundingRectangle.ToString()));
+      element.SetAttribute("ClassName", System.Net.WebUtility.HtmlEncode(obj.ClassName));
+      element.SetAttribute("TagName", System.Net.WebUtility.HtmlEncode(obj.LocalizedControlType));
+      element.SetAttribute("Name", System.Net.WebUtility.HtmlEncode(obj.Name));
+      element.SetAttribute("Id", System.Net.WebUtility.HtmlEncode(obj.RuntimeId));
 
       foreach (var e in obj.Children)
       {

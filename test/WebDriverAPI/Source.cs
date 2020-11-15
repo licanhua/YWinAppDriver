@@ -35,7 +35,7 @@ namespace WebDriverAPI
             TearDown();
         }
 
-        //TODO [TestMethod]
+        [TestMethod]
         public void GetSource()
         {
             var source = session.PageSource;
@@ -45,7 +45,7 @@ namespace WebDriverAPI
             Assert.IsTrue(xmlDoc.SelectNodes("//Button").Count > 0);
         }
 
-        //TODO [TestMethod]
+        //[TestMethod]
         public void GetSourceError_NoSuchWindow()
         {
             try
