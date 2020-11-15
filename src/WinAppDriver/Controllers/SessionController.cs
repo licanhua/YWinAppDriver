@@ -303,12 +303,10 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/cookie")]
     [Route("{sessionId}/element/{elementId}/submit")]
     [Route("{sessionId}/orientation")]
-    [Route("{sessionId}/alert_text")]
     [Route("{sessionId}/accept_alert")]
     [Route("{sessionId}/dismiss_alert")]
     [Route("{sessionId}/alert_text")]
     [Route("{sessionId}/location")]
-    [Route("{sessionId}/local_storage")]
     [Route("{sessionId}/session_storage")]
     [Route("{sessionId}/log")]
     [Route("{sessionId}/local_storage")]
@@ -355,7 +353,6 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/buttonup")]
     [Route("{sessionId}/doubleclick")]
     [Route("{sessionId}/touch/{action}")]
-    [Route("{sessionId}/moveto")]
     public IActionResult TBD(string sessionId)
     {
       return ReplyFail(500, ResponseStatusCode.UnknownError, "Not implement yet");
