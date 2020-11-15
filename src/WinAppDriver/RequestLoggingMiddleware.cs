@@ -54,8 +54,8 @@ namespace WinAppDriver
       context.Response.Body.Seek(0, SeekOrigin.Begin);
 
       _logger.LogInformation(
-                             $"Response: {context.Request.Host} " +
-                             $"{context.Request.Path} "+
+                             $"Response {context.Response.StatusCode}: {context.Request.Host} " +
+                             $"{context.Request.Path} " +
                              $"{Environment.NewLine}{text}");
 
       await responseBody.CopyToAsync(originalBodyStream);
