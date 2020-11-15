@@ -6,13 +6,80 @@ This repo is an open source asp.net core implementation of WinAppDriver and it's
 
 I name this project YWinAppDriver(yet another WinAppDriver).
 
-## Project Status: 0.2.1
-   Some basic functionality(Launch app, FindElement, FindElements, Click, DoubleClick, Value...) is ready. Please refer to [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs)
+## Project Status: 0.2.2
+   Most of functionalities(except Pen, Touch and Mouse) are ready and you should be able to switch from WinAppDriver to YWinAppDriver without any(or With little) change. [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs) defines all the endpoints.
 
-   I successfully made [CalculatorTest](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest) work which is come from https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest
+   I successfully made [CalculatorTest](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest) and [WebDriverAPI](https://github.com/licanhua/YWinAppDriver/tree/main/test/WebDriverAPI) work which comes from [WinAppDriver samples](https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest) and [WinAppDriver test](https://github.com/microsoft/WinAppDriver/tree/master/Tests/WebDriverAPI)
+
   - keyboard Input support. completed. Similar functionality as WinUI did on [KeyboardHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/MUXTestInfra/Common/KeyboardHelper.cs#L109)
   - logs. Complete
+  - XPath. Complete. For the XPath syntax, refer to https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256086(v=vs.100)
 
+## Not ready features
+Below features are not ready yet
+- Mouse/Pen/Touch Input support. WinUI functionality in [InputHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/master/test/testinfra/MUXTestInfra/Common/InputHelper.cs)
+- Integration with appium
+- ExecuteScript
+
+## Download & Run YWinAppDriver
+- Download and compile 
+There are two ways to get the WinAppDriver.exe:
+1. Clone this repo, then open the WinAppDriver.sln and build/run WinAppDriver project.
+2. or Download it from https://github.com/licanhua/YWinAppDriver/releases
+
+- Lauch WinAppDriver.exe
+Please set your test endpoint to http://127.0.0.1:4723. Logs are in `Logs/WinAppDriver-{Date}.txt`.
+If you run it from visual studio, there is no logs. If you want it, just remove `else` from below code 
+```
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
+      else
+      {
+        loggerFactory.AddFile("Logs/WinAppDriver-{Date}.txt");
+      }
+```
+
+If you want to use other port and url, please change these lines and rebuild the project
+
+If you launch it outside of Visual studio, run `WinAppDriver.exe --urls http://127.0.0.1:4723`
+
+```
+    webBuilder.UseUrls("http://localhost:4723");
+```
+and
+```
+    app.UsePathBase("/wd/hub");
+```
+
+
+- Build and run the CalcatorTest in [examples](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest)
+Please run the test, please make sure Calculator is in Standard mode.
+
+## Knowledge for contributors
+1. [Asp.Net Core](https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1) 
+
+This project is developed with Asp.Net Core and referred 3.1
+
+2. [Microsoft.Windows.Apps.Test](https://github.com/Microsoft/Microsoft.Windows.Apps.Test)
+
+In Windows, [UIAutomation](https://docs.microsoft.com/en-us/dotnet/framework/ui-automation/ui-automation-overview) is the technology which test driver could use to manipulate the UI.  
+
+Microsoft.Windows.Apps.Test is the core UI Automation library which is spinned from WinAppDriver, which allows user to interact with the testapp outside of WinAppDriver. [WinUI](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/) is the first public user which implements its own automation without WinAppDriver.
+
+Microsoft.Windows.Apps.Test has the public nuget and is binary open sourced.
+YWinAppDriver is based on Microsoft.Windows.Apps.Test too and used this library to interact with the testapp.
+
+Microsoft.Windows.Apps.Test documentation can be found here: [Microsoft.Windows.Apps.Test.chm](https://github.com/microsoft/Microsoft.Windows.Apps.Test/blob/master/docs/Microsoft.Windows.Apps.Test.chm).
+
+3. Protocols
+There are two protocols: [w3c webdriver](https://www.w3.org/TR/webdriver/) and [selenium JsonWire Protocol](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)
+JsonWire is obselete, but still there a lot of client/server doen't support w3c specification. So YWinAppDriver is trying to match with both protocols
+
+4. [Locators and capalibilites](https://github.com/microsoft/WinAppDriver/blob/master/Docs/AuthoringTestScripts.md) are the same/nearly the same with WinAppDriver.
+
+## API Supported
 Below is the table to match with [selenium json wire protocol](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#command-summary).
 Because YWinAppDriver is for desktop application other than browser, `no` below means it's not supported.
 `maybe` means it's possible to support it, but I didn't see any value to support it. 
@@ -22,7 +89,7 @@ Because YWinAppDriver is for desktop application other than browser, `no` below 
 | completed |GET	|/status    |	Query the server's current status.
 | completed |POST   |/session   |	Create a new session.
 | completed |GET    |/sessions  |	Returns a list of the currently active sessions.
-| in progress|GET	|/session/:sessionId	|   Retrieve the capabilities of the specified session.
+| completed |GET	|/session/:sessionId	|   Retrieve the capabilities of the specified session.
 | completed |DELETE |/session/:sessionId	|Delete the session.
 |completed  |POST   |	/session/:sessionId/timeouts	|Configure the amount of time that a particular type of operation can execute for before they are aborted and a
 | no|POST  |	/session/:sessionId/timeouts/async_script	|Set the amount of time, in milliseconds, that asynchronous scripts executed by /session/:sessionId/execute_async are permitted to run before they are aborted and a
@@ -117,72 +184,6 @@ Because YWinAppDriver is for desktop application other than browser, `no` below 
 |no|POST|	/session/:sessionId/log	|Get the log for a given log type.
 |no|GET|	/session/:sessionId/log/types	|Get available log types.
 |no|GET|	/session/:sessionId/application_cache/status	|Get the status of the html5 application cache.
-
-## Not ready features
-Below features are not ready yet
-- xpath locator
-- Mouse Input support. WinUI functionality in [InputHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/master/test/testinfra/MUXTestInfra/Common/InputHelper.cs)
-- Integration with appium
-- ExecuteScript
-
-
-## Download & Run YWinAppDriver
-- Download and compile 
-There are two ways to get the WinAppDriver.exe:
-1. Clone this repo, then open the WinAppDriver.sln and build/run WinAppDriver project.
-2. or Download it from https://github.com/licanhua/YWinAppDriver/releases
-
-- Lauch WinAppDriver.exe
-Please set your test endpoint to http://127.0.0.1:4723. Logs are in `Logs/WinAppDriver-{Date}.txt`.
-If you run it from visual studio, there is no logs. If you want it, just remove `else` from below code 
-```
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-      }
-      else
-      {
-        loggerFactory.AddFile("Logs/WinAppDriver-{Date}.txt");
-      }
-```
-
-If you want to use other port and url, please change these lines and rebuild the project
-
-If you launch it outside of Visual studio, run `WinAppDriver.exe --urls http://127.0.0.1:4723`
-
-```
-    webBuilder.UseUrls("http://localhost:4723");
-```
-and
-```
-    app.UsePathBase("/wd/hub");
-```
-
-
-- Build and run the CalcatorTest in [examples](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest)
-Please run the test, please make sure Calculator is in Standard mode.
-
-## Knowledge for contributors
-1. [Asp.Net Core](https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1) 
-
-This project is developed with Asp.Net Core and referred 3.1
-
-2. [Microsoft.Windows.Apps.Test](https://github.com/Microsoft/Microsoft.Windows.Apps.Test)
-
-In Windows, [UIAutomation](https://docs.microsoft.com/en-us/dotnet/framework/ui-automation/ui-automation-overview) is the technology which test driver could use to manipulate the UI.  
-
-Microsoft.Windows.Apps.Test is the core UI Automation library which is spinned from WinAppDriver, which allows user to interact with the testapp outside of WinAppDriver. [WinUI](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/) is the first public user which implements its own automation without WinAppDriver.
-
-Microsoft.Windows.Apps.Test has the public nuget and is binary open sourced.
-YWinAppDriver is based on Microsoft.Windows.Apps.Test too and used this library to interact with the testapp.
-
-Microsoft.Windows.Apps.Test documentation can be found here: [Microsoft.Windows.Apps.Test.chm](https://github.com/microsoft/Microsoft.Windows.Apps.Test/blob/master/docs/Microsoft.Windows.Apps.Test.chm).
-
-3. Protocols
-There are two protocols: [w3c webdriver](https://www.w3.org/TR/webdriver/) and [selenium JsonWire Protocol](https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol)
-JsonWire is obselete, but still there a lot of client/server doen't support w3c specification. So YWinAppDriver is trying to match with both protocols
-
-4. [Locators and capalibilites](https://github.com/microsoft/WinAppDriver/blob/master/Docs/AuthoringTestScripts.md) are the same/nearly the same with WinAppDriver.
 
 ## Background
 One week ago, another team reached to me to ask some advice to help them choose the UI automation tool. It makes me think: Although WinAppDriver is the de fact tool recommended by Microsoft, Is WinAppDriver the right tool for everybody? I didn't see other open source option yet, so I spent one weekend to create the 0.1 release.

@@ -96,7 +96,7 @@ namespace WebDriverAPI
             }
         }
 
-       //TODO [TestMethod]
+        [TestMethod]
         public void FindElements_ByXPath()
         {
             // Different Alarm & Clock application version uses different UI elements

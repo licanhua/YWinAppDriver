@@ -51,7 +51,7 @@ namespace CalculatorTest
             Assert.AreEqual("8", GetCalculatorResultText());
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void Multiplication()
         {
             // Find the buttons by their names using XPath and click them in sequence to perform 9 x 9 = 81
@@ -62,7 +62,7 @@ namespace CalculatorTest
             Assert.AreEqual("81", GetCalculatorResultText());
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void Subtraction()
         {
             // Find the buttons by their accessibility ids using XPath and click them in sequence to perform 9 - 1 = 8

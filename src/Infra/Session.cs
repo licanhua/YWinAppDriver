@@ -24,6 +24,7 @@ namespace WinAppDriver.Infra
       _cache[LocatorStrategy.Id] = new Dictionary<string, IElement>();
       _cache[LocatorStrategy.Name] = new Dictionary<string, IElement>();
       _cache[LocatorStrategy.TagName] = new Dictionary<string, IElement>();
+      _cache[LocatorStrategy.XPath] = new Dictionary<string, IElement>();
     }
 
     public void AddElement(IElement element) 

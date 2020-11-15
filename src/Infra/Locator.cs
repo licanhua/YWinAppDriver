@@ -53,6 +53,10 @@ namespace WinAppDriver.Infra
       {
         locator.Strategy = LocatorStrategy.TagName;
       }
+      else if (strategy == Consts.XPATH)
+      {
+        locator.Strategy = LocatorStrategy.XPath;
+      }
       else
       {
         throw new LocatorNotSupported();

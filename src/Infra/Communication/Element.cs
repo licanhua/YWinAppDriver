@@ -23,6 +23,7 @@ namespace WinAppDriver.Infra.Communication
   {
     static Regex TagNameRegExpr = new Regex("^[a-zA-Z0-9 ]*$");
     const string TAGUNKNOWN = "Unknown";
+    const string UNIQID = "UniqId";
 
     private readonly UIObject _uiObject;
     private readonly string id;
@@ -40,10 +41,10 @@ namespace WinAppDriver.Infra.Communication
       }
     }
 
-    public Element(UIObject uIObject)
+    public Element(UIObject uIObject, bool uniqId = false)
     {
       _uiObject = uIObject;
-      if (_uiObject != null)
+      if (_uiObject != null && !uniqId)
       {
         id = _uiObject.RuntimeId;
       }
@@ -70,7 +71,7 @@ namespace WinAppDriver.Infra.Communication
       catch { }
     }
 
-    private UICondition GetSearchCondition(Locator locator)
+    private UICondition GetUIObjectSearchCondition(Locator locator)
     {
       if (locator.Strategy == LocatorStrategy.AccessibilityId)
       {
@@ -98,7 +99,12 @@ namespace WinAppDriver.Infra.Communication
 
     public IElement FindElement(Locator locator,int msTimeout)
     {
-      var condition = GetSearchCondition(locator);
+      if (locator.Strategy == LocatorStrategy.XPath)
+      {
+        return FindElementByXPath(locator.Value);
+      }
+
+      var condition = GetUIObjectSearchCondition(locator);
       if (_uiObject.Matches(condition))
       {
         return this;
@@ -122,8 +128,13 @@ namespace WinAppDriver.Infra.Communication
 
     public IEnumerable<IElement> FindElements(Locator locator, int msTimeout)
     {
+      if (locator.Strategy == LocatorStrategy.XPath)
+      {
+        return FindElementsByXPath(locator.Value);
+      }
+
       List<IElement> result = new List<IElement>();
-      var condition = GetSearchCondition(locator);
+      var condition = GetUIObjectSearchCondition(locator);
 
       if (_uiObject.Matches(condition))
       {
@@ -228,9 +239,49 @@ namespace WinAppDriver.Infra.Communication
     public XmlDocument GetXmlDocument()
     {
       var doc = new XmlDocument();
-      var node = BuildXmlNode(doc, _uiObject);
+      var node = BuildXmlNode(doc, _uiObject, null);
       doc.AppendChild(node);
       return doc;
+    }
+
+    public IElement FindElementByXPath(string xpath)
+    {
+      Dictionary<string, IElement> uniqIdCache = new Dictionary<string, IElement>();
+      
+      var doc = new XmlDocument();
+      var xmlNode = BuildXmlNode(doc, _uiObject, uniqIdCache);
+      doc.AppendChild(xmlNode);
+
+      var node = doc.SelectSingleNode(xpath);
+      if (node == null)
+      {
+        throw new ElementNotFound();
+      }
+      else
+      {
+        var key = node.Attributes[UNIQID].Value;
+        return uniqIdCache[key];
+      }
+    }
+
+    public IEnumerable<IElement> FindElementsByXPath(string xpath)
+    {
+      List<IElement> elements = new List<IElement>();
+      Dictionary<string, IElement> uniqIdCache = new Dictionary<string, IElement>();
+
+      var doc = new XmlDocument();
+      var xmlNode = BuildXmlNode(doc, _uiObject, uniqIdCache);
+      doc.AppendChild(xmlNode);
+
+      var nodes = doc.SelectNodes(xpath);
+      foreach (XmlNode node in nodes)
+      {
+        if (node == null) continue;
+
+        var key = node.Attributes[UNIQID].Value;
+        elements.Add(uniqIdCache[key]);
+      }
+      return elements;
     }
 
     private string GetXamlNodeTag(UIObject obj)
@@ -247,19 +298,26 @@ namespace WinAppDriver.Infra.Communication
       }
     }
 
-    private XmlNode BuildXmlNode(XmlDocument doc, UIObject obj)
+    private XmlNode BuildXmlNode(XmlDocument doc, UIObject obj, Dictionary<string, IElement> uniqIdCache)
     {
       var element = doc.CreateElement(GetXamlNodeTag(obj));
-      element.SetAttribute("AccessibilityId", System.Net.WebUtility.HtmlEncode(obj.AutomationId));
+      element.SetAttribute("AutomationId", System.Net.WebUtility.HtmlEncode(obj.AutomationId));
       element.SetAttribute("Location", System.Net.WebUtility.HtmlEncode(obj.BoundingRectangle.ToString()));
       element.SetAttribute("ClassName", System.Net.WebUtility.HtmlEncode(obj.ClassName));
-      element.SetAttribute("TagName", System.Net.WebUtility.HtmlEncode(obj.LocalizedControlType));
+      element.SetAttribute("LocalizedControlType", System.Net.WebUtility.HtmlEncode(obj.LocalizedControlType));
       element.SetAttribute("Name", System.Net.WebUtility.HtmlEncode(obj.Name));
-      element.SetAttribute("Id", System.Net.WebUtility.HtmlEncode(obj.RuntimeId));
+      element.SetAttribute("RuntimeId", System.Net.WebUtility.HtmlEncode(obj.RuntimeId));
+
+      if (uniqIdCache != null)
+      {
+        var e = new Element(obj, true);
+        element.SetAttribute(UNIQID, e.GetId());
+        uniqIdCache[e.GetId()] = e;
+      }
 
       foreach (var e in obj.Children)
       {
-        element.AppendChild(BuildXmlNode(doc, e));
+        element.AppendChild(BuildXmlNode(doc, e, uniqIdCache));
       }
       return element;
     }
