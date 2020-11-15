@@ -22,7 +22,7 @@ using System;
 
 namespace WebDriverAPI
 {
-    [TestClass]
+    //TODO [TestClass]
     public class Mouse : CalculatorBase
     {
         [ClassInitialize]

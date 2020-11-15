@@ -20,7 +20,7 @@ using System;
 
 namespace WebDriverAPI
 {
-    [TestClass]
+   //TODO [TestClass]
     public class ElementText : AlarmClockBase
     {
         [ClassInitialize]

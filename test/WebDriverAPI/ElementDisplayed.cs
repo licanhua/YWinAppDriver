@@ -36,7 +36,7 @@ namespace WebDriverAPI
             TearDown();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementDisplayedState()
         {
             // Navigate to add alarm page
@@ -67,7 +67,7 @@ namespace WebDriverAPI
             DismissAddAlarmPage();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementDisplayedStateError_NoSuchWindow()
         {
             try
@@ -81,7 +81,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementDisplayedStateError_StaleElement()
         {
             try

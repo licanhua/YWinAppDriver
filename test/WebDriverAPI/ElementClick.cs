@@ -35,7 +35,7 @@ namespace WebDriverAPI
             TearDown();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void ClickElement()
         {
             // Open a new alarm page and try clicking on visible and non-visible element in the time picker
@@ -93,7 +93,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void ClickElementError_NoSuchWindow()
         {
             try
@@ -107,7 +107,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void ClickElementError_StaleElement()
         {
             try

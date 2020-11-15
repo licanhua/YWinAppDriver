@@ -55,7 +55,7 @@ namespace WebDriverAPI
             session = null;
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CloseWindowError_NoSuchWindow()
         {
             // Attempt to close the previously closed application window
@@ -80,7 +80,7 @@ namespace WebDriverAPI
             Assert.IsNotNull(windowHandle);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetWindowHandleError_NoSuchWindow()
         {
             try
@@ -105,7 +105,7 @@ namespace WebDriverAPI
             Assert.IsTrue(handles.Count > 0);
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void GetWindowHandles_Desktop()
         {
             session = Utility.CreateNewSession(CommonTestSettings.DesktopAppId);
@@ -116,7 +116,7 @@ namespace WebDriverAPI
             Assert.AreEqual(0, handles.Count);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetWindowHandles_ModernApp()
         {
             session = Utility.CreateNewSession(CommonTestSettings.EdgeAppId, "-private");
@@ -154,7 +154,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+       //TODO  [TestMethod]
         public void SwitchWindows()
         {
             session = Utility.CreateNewSession(CommonTestSettings.EdgeAppId, CommonTestSettings.EdgeAboutBlankURL);
@@ -192,7 +192,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void SwitchWindowsError_EmptyValue()
         {
             session = Utility.CreateNewSession(CommonTestSettings.CalculatorAppId);
@@ -208,7 +208,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void SwitchWindowsError_ForeignWindowHandle()
         {
             WindowsDriver<WindowsElement> mainSession = null;
@@ -246,7 +246,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void SwitchWindowsError_InvalidValue()
         {
             session = Utility.CreateNewSession(CommonTestSettings.CalculatorAppId);
@@ -262,7 +262,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void SwitchWindowsError_NonTopLevelWindowHandle()
         {
             session = Utility.CreateNewSession(CommonTestSettings.CalculatorAppId);
@@ -280,7 +280,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void SwitchWindowsError_NoSuchWindow()
         {
             session = Utility.CreateNewSession(CommonTestSettings.CalculatorAppId);
@@ -301,7 +301,7 @@ namespace WebDriverAPI
         }
     }
 
-    [TestClass]
+   // [TestClass]
     public class WindowTransform
     {
         protected static WindowsDriver<WindowsElement> WindowTransformSession;

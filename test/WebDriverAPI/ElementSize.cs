@@ -35,7 +35,7 @@ namespace WebDriverAPI
             TearDown();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementSize()
         {
             WindowsElement clearButton = session.FindElementByAccessibilityId("clearButton");
@@ -62,7 +62,7 @@ namespace WebDriverAPI
             Assert.IsTrue(applicationWindow.Size.Height > clearButton.Size.Height);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementSizeError_NoSuchWindow()
         {
             try
@@ -76,7 +76,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementSizeError_StaleElement()
         {
             try

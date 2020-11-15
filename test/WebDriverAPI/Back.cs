@@ -22,7 +22,7 @@ using System.Threading;
 
 namespace WebDriverAPI
 {
-    [TestClass]
+   //TODO  [TestClass]
     public class Back
     {
         private WindowsDriver<WindowsElement> session = null;

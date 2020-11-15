@@ -21,7 +21,7 @@ using System.Threading;
 
 namespace WebDriverAPI
 {
-    [TestClass]
+    //TODO [TestClass]
     public class TouchClick : EdgeBase
     {
         [ClassInitialize]

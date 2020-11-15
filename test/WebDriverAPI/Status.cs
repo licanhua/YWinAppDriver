@@ -24,7 +24,7 @@ namespace WebDriverAPI
     [TestClass]
     public class Status
     {
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetStatus()
         {
             var request = WebRequest.Create(CommonTestSettings.WindowsApplicationDriverUrl + "/status/");

@@ -44,7 +44,7 @@ namespace WebDriverAPI
             Assert.AreEqual(alarmTabElement, element);
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void FindElement_ByClassName()
         {
             WindowsElement element = session.FindElementByClassName(AlarmTabClassName);
@@ -68,21 +68,21 @@ namespace WebDriverAPI
             Assert.AreEqual(alarmTabElement, element);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElement_ByTagName()
         {
             WindowsElement element = session.FindElementByTagName("Button");
             Assert.IsNotNull(element);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElement_ByXPath()
         {
             WindowsElement element = session.FindElementByXPath("//Button[@AutomationId=\"MoreButton\"]");
             Assert.IsNotNull(element);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementError_NoSuchElementByAccessibilityId()
         {
             try
@@ -96,7 +96,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementError_NoSuchElementByClassName()
         {
             try
@@ -110,7 +110,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementError_NoSuchElementByName()
         {
             try
@@ -124,7 +124,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementError_NoSuchElementByRuntimeId()
         {
             try
@@ -138,7 +138,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+       //TODO  [TestMethod]
         public void FindElementError_NoSuchElementByTagName()
         {
             try
@@ -152,7 +152,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementError_NoSuchElementByTagNameMalformed()
         {
             try
@@ -166,7 +166,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementError_NoSuchElementByXPath()
         {
             try
@@ -180,7 +180,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementError_NoSuchWindow()
         {
             try
@@ -194,7 +194,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void FindElementError_UnsupportedLocatorCSSSelector()
         {
             try
@@ -208,7 +208,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementError_UnsupportedLocatorLinkText()
         {
             try
@@ -222,7 +222,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void FindElementError_UnsupportedLocatorPartialLinkText()
         {
             try
@@ -236,7 +236,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementError_XPathLookupErrorExpression()
         {
             try

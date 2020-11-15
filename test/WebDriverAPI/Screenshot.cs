@@ -23,7 +23,7 @@ using OpenQA.Selenium.Appium.Windows;
 
 namespace WebDriverAPI
 {
-    [TestClass]
+    //TODO [TestClass]
     public class Screenshot : AlarmClockBase
     {
         [ClassInitialize]

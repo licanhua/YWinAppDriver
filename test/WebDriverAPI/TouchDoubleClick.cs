@@ -21,7 +21,7 @@ using System;
 
 namespace WebDriverAPI
 {
-    [TestClass]
+    //TODO [TestClass]
     public class TouchDoubleClick : CalculatorBase
     {
         [ClassInitialize]
