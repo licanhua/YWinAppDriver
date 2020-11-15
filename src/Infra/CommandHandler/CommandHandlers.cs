@@ -29,6 +29,7 @@ namespace WinAppDriver.Infra.CommandHandler
       { Command.AppiumCloseApp, new AppiumCloseAppHandler() },
       { Command.AppiumLaunchApp, new AppiumLaunchAppHandler() },
       { Command.SessionSendKeys, new SessionSendKeysHandler() },
+      { Command.GetCapabilities, new GetCapabilitesHandler() },
     };
 
     public object ExecuteCommand(Command command, ISessionManager sessionManager, string sessionId, object req, string elementId)
