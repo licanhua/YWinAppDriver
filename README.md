@@ -133,7 +133,19 @@ There are two ways to get the WinAppDriver.exe:
 2. or Download it from https://github.com/licanhua/YWinAppDriver/releases
 
 - Lauch WinAppDriver.exe
-Please set your test endpoint to http://127.0.0.1:4723
+Please set your test endpoint to http://127.0.0.1:4723. Logs are in `Logs/WinAppDriver-{Date}.txt`.
+If you run it from visual studio, there is no logs. If you want it, just remove `else` from below code 
+```
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
+      else
+      {
+        loggerFactory.AddFile("Logs/WinAppDriver-{Date}.txt");
+      }
+```
+
 If you want to use other port and url, please change these lines and rebuild the project
 
 If you launch it outside of Visual studio, run `WinAppDriver.exe --urls http://127.0.0.1/4723`
@@ -145,6 +157,7 @@ and
 ```
     app.UsePathBase("/wd/hub");
 ```
+
 
 - Build and run the CalcatorTest in [examples](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest)
 Please run the test, please make sure Calculator is in Standard mode.
