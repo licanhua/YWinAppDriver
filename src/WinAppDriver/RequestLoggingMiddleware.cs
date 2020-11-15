@@ -33,7 +33,7 @@ namespace WinAppDriver
 
       await using var requestStream = _recyclableMemoryStreamManager.GetStream();
       await context.Request.Body.CopyToAsync(requestStream);
-      _logger.LogInformation(
+      _logger.LogInformation($"{context.Request.Method} " + 
                              $"Request: {context.Request.Host} " +
                              $"{context.Request.Path} " +
                              $"{Environment.NewLine}{ReadStreamInChunks(requestStream)}");
