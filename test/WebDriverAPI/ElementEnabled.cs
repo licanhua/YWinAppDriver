@@ -35,7 +35,7 @@ namespace WebDriverAPI
             TearDown();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementEnabledState()
         {
             WindowsElement storeMemoryButton = session.FindElementByAccessibilityId("memButton");
@@ -57,7 +57,7 @@ namespace WebDriverAPI
             Assert.IsFalse(clearMemoryButton.Enabled);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementEnabledStateError_NoSuchWindow()
         {
             try
@@ -71,7 +71,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementEnabledStateError_StaleElement()
         {
             try

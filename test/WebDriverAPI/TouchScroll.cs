@@ -20,7 +20,7 @@ using System.Threading;
 
 namespace WebDriverAPI
 {
-    [TestClass]
+    //TODO [TestClass]
     public class TouchScroll : AlarmClockBase
     {
         [ClassInitialize]
@@ -127,7 +127,7 @@ namespace WebDriverAPI
             DismissAddAlarmPage();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void TouchScrollOnElementError_StaleElement()
         {
             try

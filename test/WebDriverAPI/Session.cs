@@ -90,7 +90,7 @@ namespace WebDriverAPI
             Assert.IsTrue(session.Title.Contains("Calculator"));
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSession_SystemApp()
         {
             DesiredCapabilities appCapabilities = new DesiredCapabilities();
@@ -101,7 +101,7 @@ namespace WebDriverAPI
             Assert.IsTrue(session.Title == "File Explorer" || session.Title == "This PC");
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionError_EmptyAppId()
         {
             try
@@ -117,7 +117,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionError_InvalidAppIdClassicApp()
         {
             try
@@ -160,7 +160,7 @@ namespace WebDriverAPI
             catch { }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionError_MissingAppLaunchSpecifier()
         {
             try
@@ -176,7 +176,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionError_RedundantAppLaunchSpecifiers()
         {
             try
@@ -194,7 +194,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionFromExistingWindowHandle_ClassicApp()
         {
             // Get the top level window handle of a running application
@@ -213,7 +213,7 @@ namespace WebDriverAPI
             Assert.AreEqual(secondarySession.FindElementByClassName("Edit"), session.FindElementByClassName("Edit"));
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void CreateSessionFromExistingWindowHandle_ModernApp()
         {
             // Get the top level window handle of a running application
@@ -232,7 +232,7 @@ namespace WebDriverAPI
             Assert.AreEqual(secondarySession.FindCalculatorTitleByAccessibilityId(), session.FindCalculatorTitleByAccessibilityId());
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionFromExistingWindowHandleError_EmptyValue()
         {
             try
@@ -248,7 +248,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void CreateSessionFromExistingWindowHandleError_InvalidValue()
         {
             try
@@ -264,7 +264,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionFromExistingWindowHandleError_NonTopLevelWindowHandle()
         {
             // Get a non top level window element
@@ -284,7 +284,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionFromExistingWindowHandleError_StaleWindowHandle()
         {
             // Get a stale window handle from an orphaned session which window has been closed
@@ -304,7 +304,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionWithArguments_ClassicApp()
         {
             DesiredCapabilities appCapabilities = new DesiredCapabilities();
@@ -322,7 +322,7 @@ namespace WebDriverAPI
             Assert.IsTrue(session.Title.Contains("Notepad"));
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionWithArguments_ModernApp()
         {
             // Open about:blank page in Microsoft Edge using appArguments
@@ -337,7 +337,7 @@ namespace WebDriverAPI
             EdgeBase.CloseEdge(session);
         }
 
-        [TestMethod]
+       //TODO  [TestMethod]
         public void CreateSessionWithArguments_SystemApp()
         {
             DesiredCapabilities appCapabilities = new DesiredCapabilities();
@@ -349,7 +349,7 @@ namespace WebDriverAPI
             Assert.AreEqual("Documents", session.Title);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionWithWorkingDirectoryAndArguments()
         {
             // Use File Explorer to get the temporary folder full path
@@ -404,7 +404,7 @@ namespace WebDriverAPI
             Thread.Sleep(TimeSpan.FromSeconds(1));
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void CreateSessionWithWorkingDirectoryError_InvalidValue()
         {
             try
@@ -454,7 +454,7 @@ namespace WebDriverAPI
             session = null;
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void DeleteSession_SystemApp()
         {
             session = Utility.CreateNewSession(CommonTestSettings.ExplorerAppId);
@@ -465,7 +465,7 @@ namespace WebDriverAPI
             session = null;
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void MiscellaneousSession_GetSessionCapabilities()
         {
             session = Utility.CreateNewSession(CommonTestSettings.AlarmClockAppId);
@@ -491,7 +491,7 @@ namespace WebDriverAPI
             Assert.AreNotEqual(session.CurrentWindowHandle, secondarySession.CurrentWindowHandle);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void MiscellaneousSession_MultiSessionsSingleInstance()
         {
             session = Utility.CreateNewSession(CommonTestSettings.AlarmClockAppId);
@@ -506,7 +506,7 @@ namespace WebDriverAPI
             Assert.AreEqual(session.CurrentWindowHandle, secondarySession.CurrentWindowHandle);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void MiscellaneousSessionError_StaleSessionId()
         {
             try

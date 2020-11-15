@@ -36,7 +36,7 @@ namespace WebDriverAPI
             TearDown();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void TouchFlick_Arbitrary()
         {
             // Navigate to Edge about:flags page

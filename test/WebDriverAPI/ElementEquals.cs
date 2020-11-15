@@ -20,7 +20,7 @@ using System;
 
 namespace WebDriverAPI
 {
-    [TestClass]
+    //TODO [TestClass]
     public class ElementEquals : CalculatorBase
     {
         private static WindowsElement referenceElement = null;

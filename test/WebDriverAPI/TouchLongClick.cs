@@ -20,7 +20,7 @@ using System.Threading;
 
 namespace WebDriverAPI
 {
-    [TestClass]
+    //TODO [TestClass]
     public class TouchLongClick : AlarmClockBase
     {
         [ClassInitialize]

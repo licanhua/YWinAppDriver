@@ -50,14 +50,14 @@ namespace WebDriverAPI
             Assert.IsTrue(elementAlarmClock.Selected);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementSelectedState_UnselectableElement()
         {
             WindowsElement elementAddButton = session.FindElementByAccessibilityId("AddAlarmButton");
             Assert.IsFalse(elementAddButton.Selected);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementSelectedStateError_NoSuchWindow()
         {
             try
@@ -71,7 +71,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementSelectedStateError_StaleElement()
         {
             try

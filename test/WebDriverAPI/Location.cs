@@ -33,7 +33,7 @@ namespace WebDriverAPI
             TearDown();
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void GetLocation()
         {
             OpenQA.Selenium.Appium.Location geoLocation = session.Location;

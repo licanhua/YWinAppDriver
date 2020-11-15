@@ -95,7 +95,7 @@ namespace WebDriverAPI
             Assert.AreEqual("789789789", editBox.Text);
         }
 
-        [TestMethod]
+        //TODO[TestMethod]
         public void SendKeys_ModifierExplicitRelease()
         {
             // Keys persist all modifier between API call and requires ecplicit modifier release
@@ -112,7 +112,7 @@ namespace WebDriverAPI
             Assert.AreEqual("ABCDEFGHIJKLMNOPQRSTUVWXYZ\r\n!@#$%^&*()\t~_+{}|:\"<>?", editBox.Text); // Assumes 101 keys US Keyboard layout
         }
 
-        [TestMethod]
+        //TODO[TestMethod]
         public void SendKeys_ModifierWindowsKey()
         {
             WindowsDriver<WindowsElement> desktopSession = Utility.CreateNewSession(CommonTestSettings.DesktopAppId);
@@ -170,7 +170,7 @@ namespace WebDriverAPI
             Assert.AreEqual("`-=[]\\;',./~!@#$%^&*()_+{}|:\"<>?", editBox.Text);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void SendKeysError_NoSuchWindow()
         {
             try

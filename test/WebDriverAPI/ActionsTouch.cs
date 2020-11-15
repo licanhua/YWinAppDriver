@@ -31,7 +31,7 @@ using PointerInputDevice = OpenQA.Selenium.Appium.Interactions.PointerInputDevic
 
 namespace WebDriverAPI
 {
-    [TestClass]
+    //TODO [TestClass]
     public class ActionsTouch : AlarmClockBase
     {
         [ClassInitialize]

@@ -44,7 +44,7 @@ namespace WebDriverAPI
             Assert.IsTrue(elements.Contains(alarmTabElement));
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElements_ByClassName()
         {
             // There are 4 tabs element that can be ListItem or PivotItem depending on the
@@ -64,7 +64,7 @@ namespace WebDriverAPI
             Assert.AreEqual(1, elements.Count);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElements_ByRuntimeId()
         {
             var elements = session.FindElementsById(alarmTabElement.Id);
@@ -73,7 +73,7 @@ namespace WebDriverAPI
             Assert.IsTrue(elements.Contains(alarmTabElement));
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElements_ByTagName()
         {
             // Different Alarm & Clock application version uses different UI elements
@@ -96,7 +96,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void FindElements_ByXPath()
         {
             // Different Alarm & Clock application version uses different UI elements
@@ -144,7 +144,7 @@ namespace WebDriverAPI
             Assert.AreEqual(0, elements.Count);
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void FindElementsByNonExistent_RuntimeId()
         {
             var elements = session.FindElementsById("NonExistentRuntimeId");
@@ -160,7 +160,7 @@ namespace WebDriverAPI
             Assert.AreEqual(0, elements.Count);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementsByNonExistent_XPath()
         {
             var elements = session.FindElementsByXPath("//NonExistentElement");
@@ -168,7 +168,7 @@ namespace WebDriverAPI
             Assert.AreEqual(0, elements.Count);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementsError_NoSuchWindow()
         {
             try
@@ -182,7 +182,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementsError_UnsupportedLocatorCSSSelector()
         {
             try
@@ -196,7 +196,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+       //TODO  [TestMethod]
         public void FindElementsError_UnsupportedLocatorLinkText()
         {
             try
@@ -210,7 +210,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementsError_UnsupportedLocatorPartialLinkText()
         {
             try
@@ -224,7 +224,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void FindElementsError_XPathLookupErrorExpression()
         {
             try

@@ -54,7 +54,7 @@ namespace WebDriverAPI
             Assert.IsTrue(num8Button.Location.Y < num5Button.Location.Y);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementLocationError_NoSuchWindow()
         {
             try
@@ -68,7 +68,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetElementLocationError_StaleElement()
         {
             try

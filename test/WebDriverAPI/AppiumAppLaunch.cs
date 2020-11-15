@@ -53,7 +53,7 @@ namespace WebDriverAPI
             Assert.AreNotEqual(originalLaunchedWindowHandle, session.CurrentWindowHandle);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void Launch_ModernApp()
         {
             session = Utility.CreateNewSession(CommonTestSettings.CalculatorAppId);
@@ -75,7 +75,7 @@ namespace WebDriverAPI
             session.Close();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void Launch_SystemApp()
         {
             session = Utility.CreateNewSession(CommonTestSettings.ExplorerAppId);

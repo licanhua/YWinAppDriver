@@ -40,7 +40,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetSessions_SingleEntry()
         {
             WindowsDriver<WindowsElement> session = Utility.CreateNewSession(CommonTestSettings.AlarmClockAppId);
@@ -73,7 +73,7 @@ namespace WebDriverAPI
             session.Quit();
         }
 
-        [TestMethod]
+       //TODO  [TestMethod]
         public void GetSessions_MultipleEntry()
         {
             WindowsDriver<WindowsElement> calculatorSession = Utility.CreateNewSession(CommonTestSettings.CalculatorAppId);

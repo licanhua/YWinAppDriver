@@ -35,7 +35,7 @@ namespace WebDriverAPI
             TearDown();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void ClearElement()
         {
             // Open a new alarm page and clear the alarm name repeatedly
@@ -79,7 +79,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void ClearElementError_NoSuchWindow()
         {
             try
@@ -93,7 +93,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void ClearElementError_StaleElement()
         {
             try

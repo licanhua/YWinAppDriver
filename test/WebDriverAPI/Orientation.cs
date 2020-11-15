@@ -34,7 +34,7 @@ namespace WebDriverAPI
             TearDown();
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetOrientation()
         {
             var orientation = session.Orientation;
@@ -42,7 +42,7 @@ namespace WebDriverAPI
             Assert.IsTrue(orientation == OpenQA.Selenium.ScreenOrientation.Landscape || orientation == OpenQA.Selenium.ScreenOrientation.Portrait);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetOrientationError_NoSuchWindow()
         {
             try
