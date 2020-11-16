@@ -24,16 +24,17 @@ namespace WinAppDriver.Infra.Communication
     public IElement FindElement(Locator locator, int msTimeout);
     public IEnumerable<IElement> FindElements(Locator locator, int msTimeout);
 
-    public string GetWindowHandle();
-    public IEnumerable<string> GetWindowHandles();
-    public void ActivateWindow(string window);
+    public IElement GetWindowHandle();
+    public IEnumerable<IElement> GetWindowHandles();
+    public IElement GetWindow(string windowId);
+    public void SetFocus();
     public void CloseActiveWindow();
     public string GetTitle();
     public void Click();
     public void DoubleClick();
     public void Clear();
-    GetSizeResult GetSize();
-    GetLocationResult GetLocation();
+    SizeResult GetSize();
+    XYResult GetLocation();
     bool IsDisplayed();
     bool IsEnabled();
     bool ElementEquals(IElement element);

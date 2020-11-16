@@ -357,14 +357,14 @@ namespace WinAppDriver.Infra.Communication
       }
     }
 
-    public GetSizeResult GetSize()
+    public SizeResult GetSize()
     {
-      return new GetSizeResult() { height = _uiObject.BoundingRectangle.Height, width = _uiObject.BoundingRectangle.Width };
+      return new SizeResult() { height = _uiObject.BoundingRectangle.Height, width = _uiObject.BoundingRectangle.Width };
     }
 
-    public GetLocationResult GetLocation()
+    public XYResult GetLocation()
     {
-      return new GetLocationResult() { x = _uiObject.BoundingRectangle.X, y = _uiObject.BoundingRectangle.Y };
+      return new XYResult() { x = _uiObject.BoundingRectangle.X, y = _uiObject.BoundingRectangle.Y };
     }
 
     public bool IsDisplayed()
@@ -388,9 +388,9 @@ namespace WinAppDriver.Infra.Communication
         return UIObject.Focused;
       }
     }
-    public string GetWindowHandle()
+    public IElement GetWindowHandle()
     {
-      return GetActiveWindow().NativeWindowHandle.ToString();
+      return new Element(GetActiveWindow(), true);
     }
 
     private IEnumerable<UIObject> GetWindows()
@@ -410,23 +410,27 @@ namespace WinAppDriver.Infra.Communication
     }
 
 
-    public IEnumerable<string> GetWindowHandles()
+    public IEnumerable<IElement> GetWindowHandles()
     {
-      return GetWindows().Select(window => window.NativeWindowHandle.ToString());
+      return GetWindows().Select(window => new Element(window, true));
     }
 
-    public void ActivateWindow(string window)
+    public void SetFocus()
     {
-      if (String.IsNullOrEmpty(window))
+      _uiObject.SetFocus();
+    }
+    public IElement GetWindow(string windowId)
+    {
+      if (String.IsNullOrEmpty(windowId))
       {
         throw new InvalidArgumentException("name can't be empty");
       }
-      var found = GetWindows().Where(w => { return w.NativeWindowHandle.ToString() == window; }).FirstOrDefault();
+      var found = GetWindows().Where(w => { return w.NativeWindowHandle.ToString() == windowId; }).FirstOrDefault();
       if (found == null)
       {
         throw new NoSuchWindow();
       }
-      found.SetFocus();
+      return new Element(found);
     }
 
     public void CloseActiveWindow()

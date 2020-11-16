@@ -274,6 +274,41 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(Command.ActivateWindow, sessionId, content, null);
     }
 
+    [HttpPost]
+    [Route("{sessionId}/window/{windowHandle}/size")]
+    public IActionResult SetWindowSize(string sessionId, string windowHandle, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SetWindowSize, sessionId, content, windowHandle);
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/window/{windowHandle}/position")]
+    public IActionResult SetWindowPosition(string sessionId, string windowHandle, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SetWindowPosition, sessionId, content, windowHandle);
+    }
+
+
+    [HttpGet]
+    [Route("{sessionId}/window/{windowHandle}/size")]
+    public IActionResult GetWindowSize(string sessionId, string windowHandle)
+    {
+      return ExecuteCommand(Command.GetWindowSize, sessionId, null, windowHandle);
+    }
+
+    [HttpGet]
+    [Route("{sessionId}/window/{windowHandle}/position")]
+    public IActionResult GetWindowPosition(string sessionId, string windowHandle)
+    {
+      return ExecuteCommand(Command.GetWindowPosition, sessionId, null, windowHandle);
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/window/{windowHandle}/maximize")]
+    public IActionResult MaximizeWindow(string sessionId, string windowHandle, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.MaximizeWindow, sessionId, content, windowHandle);
+    }
     [HttpDelete]
     [Route("{sessionId}/window")]
     public IActionResult DeleteWindow(string sessionId)

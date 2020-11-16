@@ -34,6 +34,11 @@ namespace WinAppDriver.Infra.CommandHandler
       { Command.SessionMouseAction, new SessionMouseActionHandler() },
       { Command.SessionTouchActionOnElement, new SessionTouchActionOnElementHandler() },
       { Command.SessionTouchUpDownMove, new SessionTouchUpDownMoveHandler() },
+      { Command.MaximizeWindow, new MaximizeWindowHandler() },
+      { Command.GetWindowPosition, new GetWindowPositionHandler() },
+      { Command.SetWindowPosition, new SetWindowPositionHandler() },
+      { Command.GetWindowSize, new GetWindowSizeHandler() },
+      { Command.SetWindowSize, new SetWindowSizeHandler() },
     };
 
     public object ExecuteCommand(Command command, ISessionManager sessionManager, string sessionId, object req, string elementId)

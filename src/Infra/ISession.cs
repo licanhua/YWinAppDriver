@@ -27,5 +27,9 @@ namespace WinAppDriver.Infra
     public bool IsElementEquals(string id, string other);
     public string GetSource();
     public IElement GetFocusedElement();
+
+    public string GetWindowHandle();
+    public IEnumerable<string> GetWindowHandles();
+    public IElement GetWindow(string windowId);
   }
 }

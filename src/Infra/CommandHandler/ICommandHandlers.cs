@@ -30,6 +30,11 @@ namespace WinAppDriver.Infra.CommandHandler
     SessionTouchActionOnElement,
     SessionTouchUpDownMove,
     SessionMouseAction,
+    SetWindowSize,
+    SetWindowPosition,
+    GetWindowSize,
+    GetWindowPosition,
+    MaximizeWindow,
   }
 
   public interface ICommandHandlers

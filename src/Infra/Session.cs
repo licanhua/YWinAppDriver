@@ -6,6 +6,7 @@ using Microsoft.Windows.Apps.Test.Foundation;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using WinAppDriver.Infra.Communication;
@@ -16,7 +17,7 @@ namespace WinAppDriver.Infra
   {
 
     private Dictionary<LocatorStrategy, Dictionary<string, IElement>> _cache = new Dictionary<LocatorStrategy, Dictionary<string, IElement>>();
-
+    private Dictionary<string, IElement> _windowCache = new Dictionary<string, IElement>();
     public ElementCache()
     {
       _cache[LocatorStrategy.AccessibilityId] = new Dictionary<string, IElement>();
@@ -27,6 +28,21 @@ namespace WinAppDriver.Infra
       _cache[LocatorStrategy.XPath] = new Dictionary<string, IElement>();
     }
 
+    public void AddWindow(string key, IElement element)
+    {
+      _windowCache[key] = element;
+    }
+
+    public IElement GetWindowOrDefault(string windowId)
+    {
+      var window = _windowCache.GetValueOrDefault(windowId);
+      if (window != null && window.IsStaleElement())
+      {
+        _windowCache.Remove(windowId);
+        window = null;
+      }
+      return window;
+    }
     public void AddElement(IElement element) 
     {
       _cache[LocatorStrategy.Id][element.GetId()] = element;
@@ -82,6 +98,7 @@ namespace WinAppDriver.Infra
       _cache[LocatorStrategy.Id].Clear();
       _cache[LocatorStrategy.Name].Clear();
       _cache[LocatorStrategy.TagName].Clear();
+      //_windowCache.Clear();
     }
   }
 
@@ -232,6 +249,56 @@ namespace WinAppDriver.Infra
     {
       LaunchApplication(new NewSessionReq() { desiredCapabilities = _capabilities });
       RebuildCache();
+    }
+
+    private IElement GetWindowFromCache(string windowId)
+    {
+      return _cache.GetWindowOrDefault(windowId);
+    }
+
+    private void SaveWindowToCache(string key, IElement element)
+    {
+      _cache.AddWindow(key, element);
+    }
+
+    public string GetWindowHandle()
+    {
+      IElement e = GetApplicationRoot().GetWindowHandle();
+      var uiObject = (UIObject)(e.GetUIObject());
+      var key = uiObject.NativeWindowHandle.ToString();
+      SaveWindowToCache(key, e);
+      return key;
+    }
+
+    public IEnumerable<string> GetWindowHandles()
+    {
+      IEnumerable<IElement> handles = GetApplicationRoot().GetWindowHandles();
+      return handles.Select(e => {
+        var uiObject = (UIObject)(e.GetUIObject());
+        var key = uiObject.NativeWindowHandle.ToString();
+        SaveWindowToCache(key, e);
+        return key;
+      });
+    }
+
+    public IElement GetWindow(string windowId)
+    {
+      if (windowId == "current")
+      {
+        return GetApplicationRoot();
+      }
+
+      var cached = GetWindowFromCache(windowId);
+      if (cached != null)
+      {
+        return cached;
+      }
+      else
+      {
+        var window = GetApplicationRoot().GetWindow(windowId);
+        SaveWindowToCache(windowId, window);
+        return window;
+      }
     }
   }
 }

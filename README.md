@@ -126,11 +126,11 @@ Because YWinAppDriver is for desktop application other than browser, `no` below 
 |no|POST|	/session/:sessionId/frame/parent	|Change focus to the parent context.
 |completed|POST|	/session/:sessionId/window	|Change focus to another window.
 |completed|DELETE|	/session/:sessionId/window	|Close the current window.
-|in progress|POST|	/session/:sessionId/window/:windowHandle/size	|Change the size of the specified window.
-|in progress|GET|	/session/:sessionId/window/:windowHandle/size	|Get the size of the specified window.
-|in progress|POST|	/session/:sessionId/window/:windowHandle/position	|Change the position of the specified window.
-|in progress|GET|	/session/:sessionId/window/:windowHandle/position	|Get the position of the specified window.
-|in progress|POST|	/session/:sessionId/window/:windowHandle/maximize	|Maximize the specified window if not already maximized.
+|completed|POST|	/session/:sessionId/window/:windowHandle/size	|Change the size of the specified window.
+|completed|GET|	/session/:sessionId/window/:windowHandle/size	|Get the size of the specified window.
+|completed|POST|	/session/:sessionId/window/:windowHandle/position	|Change the position of the specified window.
+|completed|GET|	/session/:sessionId/window/:windowHandle/position	|Get the position of the specified window.
+|completed|POST|	/session/:sessionId/window/:windowHandle/maximize	|Maximize the specified window if not already maximized.
 |no|GET|	/session/:sessionId/cookie	|Retrieve all cookies visible to the current page.
 |no|POST|	/session/:sessionId/cookie	|Set a cookie.
 |no|DELETE|	/session/:sessionId/cookie	|Delete all cookies visible to the current page.
@@ -217,3 +217,12 @@ To adopt WinAppDriver, we need to resolve these problems first. Then we introduc
 We finished the prototype. Because the legal concern and there is no business value from leader's aspect, we didn't make it into the end user.
 
 I think YWinAppDriver is able to address above problems, and possible make every body happy.
+
+
+## Known issue
+
+### Window is not moved exactly the position you want.
+
+The window is moved, but it didn't pass the API testing. I guess the Window position is not the same as the control position, so there is some adjustment before the move. But I didn't find this API yet.'
+/session/:sessionId/window/:windowHandle/position
+/session/:sessionId/window/:windowHandle/size
