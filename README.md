@@ -165,19 +165,19 @@ Because YWinAppDriver is for desktop application other than browser, `no` below 
 |no|POST|	/session/:sessionId/alert_text	|Sends keystrokes to a JavaScript prompt() dialog.
 |no|POST|	/session/:sessionId/accept_alert	|Accepts the currently displayed alert dialog.
 |no|POST|	/session/:sessionId/dismiss_alert	|Dismisses the currently displayed alert dialog.
-|in progress|POST|	/session/:sessionId/moveto	|Move the mouse by an offset of the specificed element.
+|completed|POST|	/session/:sessionId/moveto	|Move the mouse by an offset of the specificed element.
 |completed|POST|	/session/:sessionId/click	|Click any mouse button (at the coordinates set by the last moveto command).
-|in progress|POST|	/session/:sessionId/buttondown	|Click and hold the left mouse button (at the coordinates set by the last moveto command).
-|in progress|POST|	/session/:sessionId/buttonup	|Releases the mouse button previously held (where the mouse is currently at).
-|in progress|POST|	/session/:sessionId/doubleclick	|Double-clicks at the current mouse coordinates (set by moveto).
-|in progress|POST|	/session/:sessionId/touch/click	|Single tap on the touch enabled device.
-|in progress|POST|	/session/:sessionId/touch/down	|Finger down on the screen.
-|in progress|POST|	/session/:sessionId/touch/up	|Finger up on the screen.
-|in progress|POST|	session/:sessionId/touch/move	|Finger move on the screen.
+|completed|POST|	/session/:sessionId/buttondown	|Click and hold the left mouse button (at the coordinates set by the last moveto command).
+|completed|POST|	/session/:sessionId/buttonup	|Releases the mouse button previously held (where the mouse is currently at).
+|completed|POST|	/session/:sessionId/doubleclick	|Double-clicks at the current mouse coordinates (set by moveto).
+|not tested|POST|	/session/:sessionId/touch/click	|Single tap on the touch enabled device.
+|not tested|POST|	/session/:sessionId/touch/down	|Finger down on the screen.
+|not tested|POST|	/session/:sessionId/touch/up	|Finger up on the screen.
+|not tested|POST|	session/:sessionId/touch/move	|Finger move on the screen.
 |in progress|POST|	session/:sessionId/touch/scroll	|Scroll on the touch screen using finger based motion events.
 |in progress|POST|	session/:sessionId/touch/scroll	|Scroll on the touch screen using finger based motion events.
-|in progress|POST|	session/:sessionId/touch/doubleclick	|Double tap on the touch screen using finger motion events.
-|in progress|POST|	session/:sessionId/touch/longclick	|Long press on the touch screen using finger motion events.
+|not testeds|POST|	session/:sessionId/touch/doubleclick	|Double tap on the touch screen using finger motion events.
+|not tested|POST|	session/:sessionId/touch/longclick	|Long press on the touch screen using finger motion events.
 |in progress|POST|	session/:sessionId/touch/flick	|Flick on the touch screen using finger motion events.
 |in progress|POST|	session/:sessionId/touch/flick	|Flick on the touch screen using finger motion events.
 |no|GET	|/session/:sessionId/location	|Get the current geo location.

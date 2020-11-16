@@ -30,4 +30,35 @@ namespace WinAppDriver
     public string name;
   }
 
+  public class MoveToReq
+  {
+    public string element;
+
+    public object xoffset;
+    public object yoffset;
+  }
+
+  [Flags]
+  public enum MouseButton
+  {
+    LEFT = 0,
+    MIDDLE = 1, 
+    RIGHT = 2
+  }
+  public class MouseActionReq
+  {
+    public MouseButton button;
+  }
+
+  public class ElementReq
+  {
+    [JsonProperty(Required = Required.DisallowNull)]
+    public string element;
+  }
+
+  public class XYReq
+  {
+    public double x;
+    public double y;
+  }
 }

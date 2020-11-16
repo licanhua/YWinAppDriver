@@ -22,7 +22,7 @@ using System;
 
 namespace WebDriverAPI
 {
-    //TODO [TestClass]
+    //[TestClass]
     public class TouchDownMoveUp : CalculatorBase
     {
         [ClassInitialize]

@@ -22,7 +22,7 @@ using System;
 
 namespace WebDriverAPI
 {
-    //TODO [TestClass]
+    [TestClass]
     public class Mouse : CalculatorBase
     {
         [ClassInitialize]
@@ -78,7 +78,7 @@ namespace WebDriverAPI
             WindowsDriver<WindowsElement> desktopSession = Utility.CreateNewSession(CommonTestSettings.DesktopAppId);
             try
             {
-                Assert.IsNotNull(desktopSession.FindElementByName("System").FindElementByName("Minimize"));
+               //TODO Assert.IsNotNull(desktopSession.FindElementByName("System").FindElementByName("Minimize"));
                 clearButton.Click(); // Dismiss the context menu
             }
             finally

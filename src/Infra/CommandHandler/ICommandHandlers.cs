@@ -26,6 +26,10 @@ namespace WinAppDriver.Infra.CommandHandler
     AppiumCloseApp,
     AppiumLaunchApp,
     GetCapabilities,
+    SessionMoveTo,
+    SessionTouchActionOnElement,
+    SessionTouchUpDownMove,
+    SessionMouseAction,
   }
 
   public interface ICommandHandlers
