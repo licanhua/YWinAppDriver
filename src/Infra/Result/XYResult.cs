@@ -3,10 +3,10 @@
 
 namespace WinAppDriver.Infra.Result
 {
-  public class GetSizeResult
+  public class XYResult
   {
-    public int width;
+    public int x;
 
-    public int height;
+    public int y;
   }
 }

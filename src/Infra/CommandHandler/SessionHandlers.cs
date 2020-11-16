@@ -1,8 +1,11 @@
 ﻿// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Linq;
 using Microsoft.Windows.Apps.Test.Foundation;
+using System.Collections.Generic;
 using WinAppDriver.Infra.Communication;
+using WinAppDriver.Infra.Result;
 
 namespace WinAppDriver.Infra.CommandHandler
 {
@@ -80,7 +83,7 @@ namespace WinAppDriver.Infra.CommandHandler
   {
     protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
     {
-      return session.GetApplicationRoot().GetWindowHandle();
+      return session.GetWindowHandle();
     }
   }
 
@@ -88,7 +91,7 @@ namespace WinAppDriver.Infra.CommandHandler
   {
     protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, ActivateWindowReq req, string elementId)
     {
-      session.GetApplicationRoot().ActivateWindow(req.name);
+      session.GetWindow(req.name).SetFocus();
       return null;
     }
   }
@@ -118,7 +121,7 @@ namespace WinAppDriver.Infra.CommandHandler
   {
     protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
     {
-      return session.GetApplicationRoot().GetWindowHandles();
+      return session.GetWindowHandles();
     }
   }
 
@@ -176,4 +179,46 @@ namespace WinAppDriver.Infra.CommandHandler
     }
   }
 
+  class GetWindowPositionHandler : SessionCommandHandlerBase<XYResult>
+  {
+    protected override XYResult ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string windowHandle)
+    {
+      return session.GetWindow(windowHandle).GetWindowPosition();
+    }
+  }
+
+  class SetWindowPositionHandler : SessionCommandHandlerBase<XYReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, XYReq req, string windowHandle)
+    {
+      session.GetWindow(windowHandle).SetWindowPosition(req);
+      return null;
+    }
+  }
+
+  class GetWindowSizeHandler : SessionCommandHandlerBase<SizeResult>
+  {
+    protected override SizeResult ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string windowHandle)
+    {
+      return session.GetWindow(windowHandle).GetWindowSize();
+    }
+  }
+
+  class SetWindowSizeHandler : SessionCommandHandlerBase<SizeReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, SizeReq req, string windowHandle)
+    {
+      session.GetWindow(windowHandle).SetWindowSize(req);
+      return null;
+    }
+  }
+
+  class MaximizeWindowHandler : SessionCommandHandlerBase<object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string windowHandle)
+    {
+      session.GetWindow(windowHandle).MaximizeWindow();
+      return null;
+    }
+  }
 }

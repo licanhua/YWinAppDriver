@@ -61,4 +61,11 @@ namespace WinAppDriver
     public double x;
     public double y;
   }
+
+  public class SizeReq
+  {
+    public double width;
+
+    public double height;
+  }
 }

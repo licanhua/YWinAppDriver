@@ -301,7 +301,7 @@ namespace WebDriverAPI
         }
     }
 
-   // [TestClass]
+   [TestClass]
     public class WindowTransform
     {
         protected static WindowsDriver<WindowsElement> WindowTransformSession;
@@ -344,7 +344,7 @@ namespace WebDriverAPI
             Assert.AreEqual(OriginalPosition, WindowTransformSession.Manage().Window.Position);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void GetWindowPosition()
         {
             var windowPosition = WindowTransformSession.Manage().Window.Position;

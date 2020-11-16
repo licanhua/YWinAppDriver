@@ -1,9 +1,13 @@
-﻿using Microsoft.Windows.Apps.Test.Foundation;
+﻿using Microsoft.Windows.Apps.Test.Automation;
+using Microsoft.Windows.Apps.Test.Foundation;
+using Microsoft.Windows.Apps.Test.Foundation.Controls;
+using Microsoft.Windows.Apps.Test.Foundation.Patterns;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 using WinAppDriver.Infra.Communication;
+using WinAppDriver.Infra.Result;
 
 namespace WinAppDriver.Infra
 {
@@ -185,6 +189,51 @@ namespace WinAppDriver.Infra
 
       }
       else throw new InvalidArgumentException();
+    }
+
+    public static UIObject UI(this IElement element)
+    {
+      return (UIObject)element.GetUIObject();
+    }
+    public static XYResult GetWindowPosition(this IElement window)
+    {
+      var rect = window.UI().BoundingRectangle;
+      return new XYResult() { x = rect.X, y = rect.Y };
+    }
+
+    public static SizeResult GetWindowSize(this IElement window)
+    {
+      var rect = window.UI().BoundingRectangle;
+      return new SizeResult() { width = rect.Width, height = rect.Height };
+    }
+
+    public static int ToInt(this double value)
+    {
+      return (int)value;
+    }
+
+    public static WindowImplementation Window(this IElement window)
+    {
+      return new WindowImplementation(window.UI());
+    }
+
+    public static void SetWindowPosition(this IElement window, XYReq req)
+    {
+      window.Window().SetWindowVisualState(WindowVisualState.Normal); // can't move maximize and minimize window
+      TransformImplementation transform = new TransformImplementation(window.UI());
+      transform.Move(req.x, req.x);
+    }
+
+    public static void SetWindowSize(this IElement window, SizeReq req)
+    {
+      window.Window().SetWindowVisualState(WindowVisualState.Normal); // can't move maximize and minimize window
+      TransformImplementation transform = new TransformImplementation(window.UI());
+      transform.Resize(req.width, req.height);
+    }
+
+    public static void MaximizeWindow(this IElement window)
+    {
+      window.Window().SetWindowVisualState(WindowVisualState.Maximized);
     }
   }
 }

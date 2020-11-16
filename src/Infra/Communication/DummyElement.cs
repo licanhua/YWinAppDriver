@@ -8,7 +8,7 @@ namespace WinAppDriver.Infra.Communication
 {
   public class DummyElement : IElement
   {
-    public void ActivateWindow(string window)
+    public void SetFocus()
     {
       throw new NoSuchWindow();
     }
@@ -78,12 +78,12 @@ namespace WinAppDriver.Infra.Communication
       return "NoThisElement";
     }
 
-    public GetLocationResult GetLocation()
+    public XYResult GetLocation()
     {
       throw new NoSuchWindow();
     }
 
-    public GetSizeResult GetSize()
+    public SizeResult GetSize()
     {
       throw new NoSuchWindow();
     }
@@ -108,14 +108,19 @@ namespace WinAppDriver.Infra.Communication
       throw new NoSuchWindow();
     }
 
-    public string GetWindowHandle()
+    public IElement GetWindow(string windowId)
     {
       throw new NoSuchWindow();
     }
 
-    public IEnumerable<string> GetWindowHandles()
+    public IElement GetWindowHandle()
     {
-      return new List<string>();
+      throw new NoSuchWindow();
+    }
+
+    public IEnumerable<IElement> GetWindowHandles()
+    {
+      return new List<IElement>();
     }
 
     public XmlDocument GetXmlDocument()
