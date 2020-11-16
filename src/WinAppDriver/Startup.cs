@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using WinAppDriver.Infra;
 using WinAppDriver.Infra.CommandHandler;
 using WinAppDriver.Infra.Communication;
@@ -57,8 +58,18 @@ namespace WinAppDriver
       {
         loggerFactory.AddFile("Logs/WinAppDriver-{Date}.txt");
       }
-      // app.UsePathBase("/wd/hub");
 
+      var basepath = Configuration["BasePath"];
+      var urls = Configuration["Urls"];
+      if (!string.IsNullOrEmpty(basepath))
+      {
+        Console.WriteLine("Launch " + urls + basepath);
+        app.UsePathBase(basepath);
+      }
+      else 
+      {
+        Console.WriteLine("Launch " + urls);
+      }
       app.UseRouting();
 
       app.UseAuthorization();

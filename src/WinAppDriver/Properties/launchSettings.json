@@ -16,6 +16,15 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "IIS Express /wd/hub": {
+      "commandName": "IISExpress",
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "BasePath": "/wd/hub"
+      }
     }
   }
 }

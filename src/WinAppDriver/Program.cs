@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace WinAppDriver
 {
@@ -17,10 +18,15 @@ namespace WinAppDriver
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((hostingContext, config) =>
+            {
+              config.AddCommandLine(args, new Dictionary<string, string>() {
+                                            { "--basepath", "BasePath"}
+                                          });
+            })
             .ConfigureWebHostDefaults(webBuilder =>
             {
               webBuilder.UseStartup<Startup>();
-           //   webBuilder.UseUrls("http://localhost:4723");
             });
   }
 }
