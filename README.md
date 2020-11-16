@@ -19,9 +19,9 @@ I name this project YWinAppDriver(yet another WinAppDriver).
 
 ## Not ready features
 Below features are not ready yet
-- Mouse/Pen/Touch Input support. WinUI functionality in [InputHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/master/test/testinfra/MUXTestInfra/Common/InputHelper.cs)
-- Integration with appium
-- ExecuteScript
+- Mouse and Touch Input code completed, but I didn't fully test it. WinUI functionality in [InputHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/master/test/testinfra/MUXTestInfra/Common/InputHelper.cs)
+- Integration testing with appium
+- Extension the WinAppDriver functionality by ExecuteScript
 
 ## Download & Run YWinAppDriver
 - Download and compile
