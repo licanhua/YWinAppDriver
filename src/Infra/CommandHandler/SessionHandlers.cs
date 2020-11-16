@@ -1,6 +1,9 @@
 ﻿// Copyright (c) https://github.com/licanhua/YWinAppDriver. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.Windows.Apps.Test.Foundation;
+using WinAppDriver.Infra.Communication;
+
 namespace WinAppDriver.Infra.CommandHandler
 {
   class SetImplicitTimeoutHandler : SessionCommandHandlerBase<SetImplicitTimeoutReq, object>
@@ -126,4 +129,51 @@ namespace WinAppDriver.Infra.CommandHandler
       return session.GetApplicationRoot().GetFocusedElement().GetId();
     }
   }
+
+  class SessionMoveToHandler : SessionCommandHandlerBase<MoveToReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, MoveToReq req, string elementId)
+    {
+      if ((req.xoffset == null || req.yoffset == null) && req.element == null)
+      {
+        throw new InvalidArgumentException("element and xoffset/yoffset can't all be null");
+      }
+
+      IElement element = null;
+      if (req.element != null)
+      {
+        element = session.FindElement(req.element);
+      }
+
+      element.MouseMoveTo(req.xoffset, req.yoffset);
+      return null;
+    }
+  }
+
+  class SessionMouseActionHandler : SessionCommandHandlerBase<MouseActionReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, MouseActionReq req, string action)
+    {
+      req.button.MouseAction(action);
+      return null;
+    }
+  }
+  class SessionTouchActionOnElementHandler : SessionCommandHandlerBase<ElementReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, ElementReq req, string action)
+    {
+      session.FindElement(req.element).TouchActionOnElement(action);
+      return null;
+    }
+  }
+
+  class SessionTouchUpDownMoveHandler : SessionCommandHandlerBase<XYReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, XYReq req, string action)
+    {
+      req.TouchUpDownMove(action);
+      return null;
+    }
+  }
+
 }

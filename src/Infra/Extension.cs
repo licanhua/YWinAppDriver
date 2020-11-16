@@ -1,9 +1,30 @@
-﻿using System;
+﻿using Microsoft.Windows.Apps.Test.Foundation;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
+using WinAppDriver.Infra.Communication;
 
 namespace WinAppDriver.Infra
 {
+  public enum TouchAction
+  { 
+    Click,
+    DoubleClick,
+    PressAndHold,
+    Down,
+    Up,
+    Move,
+  }
+
+  public enum MouseAction
+  {
+    Up,
+    Down,
+    Click,
+    DoubleClick,
+  }
+
   static class Extension
   {
     // Convert the string to camel case.
@@ -36,6 +57,134 @@ namespace WinAppDriver.Infra
       var camelCase = ToCamelCase(the_string);
       if (string.IsNullOrEmpty(camelCase)) return camelCase;
       return char.ToUpper(camelCase[0]) + camelCase.Substring(1);
+    }
+
+    static Point ToPoint(object x, object y)
+    {
+      if (x == null || y == null)
+      {
+        throw new InvalidArgumentException("x or y is null");
+      }
+      return new Point() { X = (int)Double.Parse(x.ToString()), Y = (int)Double.Parse(y.ToString()) };
+    }
+
+    static Point ToPoint(double x, double y)
+    {
+      return new Point() { X = (int)x, Y = (int)y };
+    }
+
+    public static void MouseMoveTo(this IElement element, object x, object y)
+    {
+      if (element == null)
+      {
+        PointerInput.Move(ToPoint(x, y));
+      }
+      else
+      {
+        UIObject uiObject = (UIObject)element.GetUIObject();
+        if (x == null || y == null)
+        {
+          PointerInput.Move(uiObject, Double.Parse(x.ToString()), Double.Parse(y.ToString()));
+        }
+        else
+        {
+          PointerInput.Move(uiObject);
+        }
+
+      }
+    }
+
+    private static PointerButtons ToPointerButton(this MouseButton button)
+    {
+      if (button == MouseButton.LEFT)
+      {
+        return PointerButtons.Primary;
+      }
+      else if (button == MouseButton.RIGHT)
+      {
+        return PointerButtons.Secondary;
+      }
+      else return PointerButtons.Middle;
+    }
+
+    public static void MouseAction(this MouseButton button, string action)
+    {
+      MouseAction mouseAction = (MouseAction)Enum.Parse(typeof(MouseAction), action);
+      if (mouseAction == Infra.MouseAction.Down)
+      {
+        PointerInput.Press(ToPointerButton(button));
+      }
+      else if (mouseAction == Infra.MouseAction.Up)
+      {
+        PointerInput.Release(ToPointerButton(button));
+      }
+      else if (mouseAction == Infra.MouseAction.Click)
+      {
+        PointerInput.Click(button.ToPointerButton(), 1);
+      }
+      else if (mouseAction == Infra.MouseAction.DoubleClick)
+      {
+        PointerInput.Click(button.ToPointerButton(), 2);
+      }
+      else
+      {
+        throw new InvalidArgumentException();
+      }
+    }
+
+  
+    public static void TouchActionOnElement(this IElement element, string action)
+    {
+      UIObject uiObject = (UIObject)element.GetUIObject();
+
+      TouchAction touchAction = (TouchAction)Enum.Parse(typeof(TouchAction), action);
+      if (touchAction == TouchAction.Click)
+      {
+        uiObject.Tap();
+      }
+      else if (touchAction == TouchAction.DoubleClick)
+      {
+        uiObject.DoubleTap();
+      }
+      else if (touchAction == TouchAction.PressAndHold)
+      {
+        uiObject.TapAndHold();
+      }
+      else
+      {
+        throw new InvalidArgumentException();
+      }
+    }
+
+    public static void TouchUpDownMove(this XYReq req, string action)
+    {
+      TouchAction touchAction = (TouchAction)Enum.Parse(typeof(TouchAction), action);
+      if (touchAction == TouchAction.Up)
+      {
+        using (InputController.Activate(PointerInputType.MultiTouch))
+        {
+          PointerInput.Move(ToPoint(req.x, req.y));
+          PointerInput.Release(PointerButtons.Primary);
+        }
+
+      }
+      else if (touchAction == TouchAction.Move)
+      {
+        using (InputController.Activate(PointerInputType.MultiTouch))
+        {
+          PointerInput.Move(ToPoint(req.x, req.y));
+        }
+      }
+      else if (touchAction == TouchAction.Down)
+      {
+        using (InputController.Activate(PointerInputType.MultiTouch))
+        {
+          PointerInput.Move(ToPoint(req.x, req.y));
+          PointerInput.Press(PointerButtons.Primary);
+        }
+
+      }
+      else throw new InvalidArgumentException();
     }
   }
 }

@@ -30,6 +30,10 @@ namespace WinAppDriver.Infra.CommandHandler
       { Command.AppiumLaunchApp, new AppiumLaunchAppHandler() },
       { Command.SessionSendKeys, new SessionSendKeysHandler() },
       { Command.GetCapabilities, new GetCapabilitesHandler() },
+      { Command.SessionMoveTo, new SessionMoveToHandler() },
+      { Command.SessionMouseAction, new SessionMouseActionHandler() },
+      { Command.SessionTouchActionOnElement, new SessionTouchActionOnElementHandler() },
+      { Command.SessionTouchUpDownMove, new SessionTouchUpDownMoveHandler() },
     };
 
     public object ExecuteCommand(Command command, ISessionManager sessionManager, string sessionId, object req, string elementId)

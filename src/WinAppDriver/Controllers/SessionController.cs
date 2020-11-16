@@ -349,19 +349,83 @@ namespace WinAppDriver.Controllers
 
     [HttpPost]
     [Route("{sessionId}/moveto")]
-    [Route("{sessionId}/buttondown")]
-    [Route("{sessionId}/buttonup")]
-    [Route("{sessionId}/doubleclick")]
-    [Route("{sessionId}/touch/{action}")]
-    public IActionResult TBD(string sessionId)
+    public IActionResult SessionMoveTo(string sessionId, [FromBody] object content)
     {
-      return ReplyFail(500, ResponseStatusCode.UnknownError, "Not implement yet");
+      return ExecuteCommand(Command.SessionMoveTo, sessionId, content, null);
     }
 
-    [HttpGet]
-    [Route("{sessionId}/moveto")]
+    [HttpPost]
+    [Route("{sessionId}/click")]
+    public IActionResult SessionClick(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionMouseAction, sessionId, content, MouseAction.Click.ToString());
+    }
 
-    public IActionResult TBDGet(string sessionId)
+    [HttpPost]
+    [Route("{sessionId}/buttondown")]
+    public IActionResult SessionButtonDown(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionMouseAction, sessionId, content, MouseAction.Down.ToString());
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/buttonup")]
+    public IActionResult SessionButtonUp(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionMouseAction, sessionId, content, MouseAction.Up.ToString());
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/doubleclick")]
+    public IActionResult SessionDoubleClick(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionMouseAction, sessionId, content, MouseAction.DoubleClick.ToString());
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/touch/click")]
+    public IActionResult SessionTouchClick(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionTouchActionOnElement, sessionId, content, TouchAction.Click.ToString());
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/touch/doubleclick")]
+    public IActionResult SessionTouchDoubleClick(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionTouchActionOnElement, sessionId, content, TouchAction.DoubleClick.ToString());
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/touch/longclick")]
+    public IActionResult SessionTouchLongClick(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionTouchActionOnElement, sessionId, content, TouchAction.PressAndHold.ToString());
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/touch/up")]
+    public IActionResult SessionTouchUp(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionTouchUpDownMove, sessionId, content, TouchAction.Up.ToString());
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/touch/down")]
+    public IActionResult SessionTouchDown(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionTouchUpDownMove, sessionId, content, TouchAction.Down.ToString());
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/touch/move")]
+    public IActionResult SessionTouchMove(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.SessionTouchUpDownMove, sessionId, content, TouchAction.Move.ToString());
+    }
+    [HttpPost]
+    [Route("{sessionId}/touch/{action}", Order = 10)]
+    public IActionResult TBD(string sessionId)
     {
       return ReplyFail(500, ResponseStatusCode.UnknownError, "Not implement yet");
     }
