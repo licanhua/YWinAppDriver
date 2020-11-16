@@ -84,11 +84,11 @@ namespace WinAppDriver.Infra
         UIObject uiObject = (UIObject)element.GetUIObject();
         if (x == null || y == null)
         {
-          PointerInput.Move(uiObject, Double.Parse(x.ToString()), Double.Parse(y.ToString()));
+          PointerInput.Move(uiObject);
         }
         else
         {
-          PointerInput.Move(uiObject);
+          PointerInput.Move(uiObject, Double.Parse(x.ToString()), Double.Parse(y.ToString()));
         }
 
       }

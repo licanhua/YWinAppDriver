@@ -170,14 +170,14 @@ Because YWinAppDriver is for desktop application other than browser, `no` below 
 |completed|POST|	/session/:sessionId/buttondown	|Click and hold the left mouse button (at the coordinates set by the last moveto command).
 |completed|POST|	/session/:sessionId/buttonup	|Releases the mouse button previously held (where the mouse is currently at).
 |completed|POST|	/session/:sessionId/doubleclick	|Double-clicks at the current mouse coordinates (set by moveto).
-|completed|POST|	/session/:sessionId/touch/click	|Single tap on the touch enabled device.
-|completed|POST|	/session/:sessionId/touch/down	|Finger down on the screen.
-|completed|POST|	/session/:sessionId/touch/up	|Finger up on the screen.
-|completed|POST|	session/:sessionId/touch/move	|Finger move on the screen.
+|not tested|POST|	/session/:sessionId/touch/click	|Single tap on the touch enabled device.
+|not tested|POST|	/session/:sessionId/touch/down	|Finger down on the screen.
+|not tested|POST|	/session/:sessionId/touch/up	|Finger up on the screen.
+|not tested|POST|	session/:sessionId/touch/move	|Finger move on the screen.
 |in progress|POST|	session/:sessionId/touch/scroll	|Scroll on the touch screen using finger based motion events.
 |in progress|POST|	session/:sessionId/touch/scroll	|Scroll on the touch screen using finger based motion events.
-|completed|POST|	session/:sessionId/touch/doubleclick	|Double tap on the touch screen using finger motion events.
-|completed|POST|	session/:sessionId/touch/longclick	|Long press on the touch screen using finger motion events.
+|not testeds|POST|	session/:sessionId/touch/doubleclick	|Double tap on the touch screen using finger motion events.
+|not tested|POST|	session/:sessionId/touch/longclick	|Long press on the touch screen using finger motion events.
 |in progress|POST|	session/:sessionId/touch/flick	|Flick on the touch screen using finger motion events.
 |in progress|POST|	session/:sessionId/touch/flick	|Flick on the touch screen using finger motion events.
 |no|GET	|/session/:sessionId/location	|Get the current geo location.
