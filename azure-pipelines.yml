@@ -37,4 +37,18 @@ steps:
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
-    
+
+- task: DotNetCoreCLI@2
+  condition: succeeded()
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+
+# this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
+- task: PublishBuildArtifacts@1
+  condition: succeeded()
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)\WinAppDriver.zip' 
+    artifactName: 'drop'
