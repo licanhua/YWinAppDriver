@@ -13,7 +13,6 @@ variables:
   solution: 'WinAppDriver.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  MajorVersion: '0.1'
 
 steps:
 - task: NuGetToolInstaller@1
