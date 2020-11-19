@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Windows.Apps.Test.Foundation;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -298,6 +300,22 @@ namespace WinAppDriver.Infra
         var window = GetApplicationRoot().GetWindow(windowId);
         SaveWindowToCache(windowId, window);
         return window;
+      }
+    }
+
+    public string TakeScreenshot()
+    {
+      using var bitmap = new Bitmap(1920, 1080);
+      using (var g = Graphics.FromImage(bitmap))
+      {
+        g.CopyFromScreen(0, 0, 0, 0,
+        bitmap.Size, CopyPixelOperation.SourceCopy);
+      }
+
+      using (MemoryStream ms = new MemoryStream())
+      {
+        bitmap.Save(ms, ImageFormat.Png);
+        return System.Convert.ToBase64String(ms.ToArray());
       }
     }
   }

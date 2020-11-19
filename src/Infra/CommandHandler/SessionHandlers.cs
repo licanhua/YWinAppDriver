@@ -196,6 +196,14 @@ namespace WinAppDriver.Infra.CommandHandler
     }
   }
 
+  class TakeScreenshotHandler : SessionCommandHandlerBase<string>
+  {
+    protected override string ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string ignored)
+    {
+      return session.TakeScreenshot();
+    }
+  }
+
   class GetWindowSizeHandler : SessionCommandHandlerBase<SizeResult>
   {
     protected override SizeResult ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string windowHandle)

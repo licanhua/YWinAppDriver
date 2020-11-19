@@ -227,7 +227,7 @@ namespace WinAppDriver.Controllers
 
     [HttpPost]
     [Route("{sessionId}/element/{elementId}/value")]
-    public IActionResult SetValue(string sessionId, string elementId,[FromBody] object body)
+    public IActionResult SetValue(string sessionId, string elementId, [FromBody] object body)
     {
       return ExecuteCommand(Command.ElementSendKeys, sessionId, body, elementId);
     }
@@ -323,7 +323,14 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(Command.AppiumLaunchApp, sessionId, null, null);
     }
 
-    [HttpPost]
+    [HttpGet]
+    [Route("{sessionId}/screenshot")]
+    public IActionResult TakeScreenshot(string sessionId)
+    {
+      return ExecuteCommand(Command.TakeScreenshot, sessionId, null, null);
+    }
+
+  [HttpPost]
     [Route("{sessionId}/timeouts/async_script")]
     [Route("{sessionId}/url")]
     [Route("{sessionId}/forward")]
@@ -331,7 +338,6 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/refresh")]
     [Route("{sessionId}/execute")]
     [Route("{sessionId}/execute_async")]
-    [Route("{sessionId}/screenshot")]
     [Route("{sessionId}/ime/{any}")]
     [Route("{sessionId}/frame")]
     [Route("{sessionId}/frame/parent")]
@@ -351,6 +357,7 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpGet]
+    [Route("{sessionId}/element/{elementId}/screenshot")]
     [Route("{sessionId}/url")]
     [Route("{sessionId}/cookie")]
     [Route("{sessionId}/element/{id}/location_in_view")]
