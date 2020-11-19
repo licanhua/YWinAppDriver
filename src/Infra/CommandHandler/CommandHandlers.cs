@@ -39,6 +39,7 @@ namespace WinAppDriver.Infra.CommandHandler
       { Command.SetWindowPosition, new SetWindowPositionHandler() },
       { Command.GetWindowSize, new GetWindowSizeHandler() },
       { Command.SetWindowSize, new SetWindowSizeHandler() },
+      { Command.TakeScreenshot, new TakeScreenshotHandler() },
     };
 
     public object ExecuteCommand(Command command, ISessionManager sessionManager, string sessionId, object req, string elementId)

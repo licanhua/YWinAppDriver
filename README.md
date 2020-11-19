@@ -116,7 +116,7 @@ Because YWinAppDriver is for desktop application other than browser, `no` below 
 |maybe|POST	|/session/:sessionId/refresh	|Refresh the current page.
 |maybe|POST	|/session/:sessionId/execute	|Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.
 |maybe|POST|	/session/:sessionId/execute_async	|Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.
-|maybe|GET|	/session/:sessionId/screenshot	|Take a screenshot of the current page.
+|complete|GET|	/session/:sessionId/screenshot	|Take a screenshot of the current page.(Implementation: Full screen snapshot only)
 |no|GET|	/session/:sessionId/ime/available_engines	|List all available engines on the machine.
 |no|GET|	/session/:sessionId/ime/active_engine	|Get the name of the active IME engine.
 |no|GET|	/session/:sessionId/ime/activated	|Indicates whether IME input is active at the moment (not if it's available.
