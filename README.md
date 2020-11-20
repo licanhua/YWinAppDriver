@@ -218,6 +218,31 @@ We finished the prototype. Because the legal concern and there is no business va
 
 I think YWinAppDriver is able to address above problems, and possible make every body happy.
 
+## Supported Locators to Find UI Elements
+
+Windows Application Driver supports various locators to find UI element in the application session. The table below shows all supported locator strategies with their corresponding UI element attributes shown in **inspect.exe**.
+
+| Client API                   	| Locator Strategy 	| Matched Attribute in inspect.exe       	| Example      	|
+|------------------------------	|------------------	|----------------------------------------	|--------------	|
+| FindElementByAccessibilityId 	| accessibility id 	| AutomationId                           	| AppNameTitle 	|
+| FindElementByClassName       	| class name       	| ClassName                              	| TextBlock    	|
+| FindElementById              	| id               	| RuntimeId (decimal)                    	| 42.333896.3.1	|
+| FindElementByName            	| name             	| Name                                   	| Calculator   	|
+| FindElementByTagName         	| tag name         	| LocalizedControlType (upper camel case)	| Text         	|
+| FindElementByXPath           	| xpath            	| Any                                    	| //Button[0]  	|
+
+## Supported Capabilities
+
+Below are the capabilities that can be used to create Windows Application Driver session.
+
+| Capabilities       	| Descriptions                                          	| Example                                               	|
+|--------------------	|-------------------------------------------------------	|-------------------------------------------------------	|
+| app                	| Application identifier or executable full path        	| Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge   	|
+| appArguments       	| Application launch arguments                          	| https://github.com/Microsoft/WinAppDriver             	|
+| attachToTopLevelWindowClassName  	| app should be "Root", Existing application top level window to attach to. if you are using WinAppDriver, please use appTopLevelWindow    	| `0xB822E2`                                            	|
+| appWorkingDir      	| Application working directory (Classic apps only)     	| `C:\Temp`                                             	|
+| forceMatchAppTitle	| If app is launched, but have problem to match it, YWinAppDriver do the last try to match with the application title	| Calculator                                               	|
+| forceMatchClassName	| If app is launched, but have problem to match it, YWinAppDriver do the last try to match with the class name	| Calculator                                               	|
 
 ## Known issue
 
