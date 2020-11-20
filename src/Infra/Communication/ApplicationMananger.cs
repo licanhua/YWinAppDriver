@@ -24,18 +24,30 @@ namespace WinAppDriver.Infra.Communication
       return uiObject;
     }
 
+    private UICondition GetForceMatchTitleCondition(string forceMatchAppTitle)
+    {
+      return string.IsNullOrEmpty(forceMatchAppTitle) ? null : UICondition.CreateFromName(forceMatchAppTitle);
+    }
+
     // refer https://github.com/microsoft/microsoft-ui-xaml/blob/40531c714f8003bf0d341a0729fa04dd2ed87710/test/testinfra/MUXTestInfra/Infra/Application.cs#L269
-    public IApplication LaunchModernApp(string appName)
+    public IApplication LaunchModernApp(string appName, string forceMatchAppTitle)
     {
       UICondition condition = UICondition.CreateFromClassName("ApplicationFrameWindow").OrWith(UICondition.CreateFromClassName("Windows.UI.Core.CoreWindow"));
+      var forceMatch = GetForceMatchTitleCondition(forceMatchAppTitle);
+      if (forceMatch != null)
+      {
+        condition = condition.OrWith(forceMatch);
+      }
 
       var coreWindow = UAPApp.Launch(appName, condition);
       var rootWindow = GetTopLevelWindow(coreWindow);
       return new Application(new Element(rootWindow), coreWindow.ProcessId);
     }
 
-    public IApplication LaunchLegacyApp(string filename, string arguments, string workingDirectory)
+    public IApplication LaunchLegacyApp(string filename, string arguments, string workingDirectory, string forceMatchAppTitle)
     {
+      var forceMatch = GetForceMatchTitleCondition(forceMatchAppTitle);
+
       // refer to https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo.-ctor?view=netcore-3.1#System_Diagnostics_ProcessStartInfo__ctor_System_String_System_String_
       ProcessStartInfo startInfo;
 
@@ -71,11 +83,13 @@ namespace WinAppDriver.Infra.Communication
         while (retry-- > 0)
         {
           // check if the new opened window
-          if (windowOpenedWaiter.Source != null && windowOpenedWaiter.Source.ProcessId == process.Id)
-          {
-            // found
+          if (windowOpenedWaiter.Source != null)
+          {    
             var root = GetTopLevelWindow(windowOpenedWaiter.Source);
-            return new Application(new Element(root), process.Id);
+            if (windowOpenedWaiter.Source.ProcessId == process.Id || (forceMatch != null && root.Matches(forceMatch)))
+            {
+              return new Application(new Element(root), process.Id);
+            }
           }
           Task.Delay(sleepTimer).Wait(sleepTimer);
         }
@@ -83,6 +97,11 @@ namespace WinAppDriver.Infra.Communication
       }
 
       var condition = UICondition.Create(UIProperty.Get(ActionStrings.ProcessId), process.Id);
+      if (forceMatch != null)
+      {
+        condition = condition.OrWith(forceMatch);
+      }
+
       var matched = UIObject.Root.Children.FindMultiple(condition).FirstOrDefault();
       if (matched != null)
       {
@@ -130,12 +149,12 @@ namespace WinAppDriver.Infra.Communication
       else if (app.Contains("!"))
       {
         Debug.WriteLine("Start UWPApp " + app);
-        return LaunchModernApp(capabilities.app);
+        return LaunchModernApp(capabilities.app, capabilities.forceMatchAppTitle);
       }
       else
       {
         Debug.WriteLine("Start Legacy app " + capabilities.ToString());
-        return LaunchLegacyApp(app, capabilities.appArguments, capabilities.appWorkingDir);
+        return LaunchLegacyApp(app, capabilities.appArguments, capabilities.appWorkingDir, capabilities.forceMatchAppTitle);
       }
 
     }

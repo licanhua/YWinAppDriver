@@ -17,5 +17,6 @@ namespace WinAppDriver
     public string attachToTopLevelWindowClassName;
     public string appArguments;
     public string appWorkingDir;
+    public string forceMatchAppTitle;
   }
 }
