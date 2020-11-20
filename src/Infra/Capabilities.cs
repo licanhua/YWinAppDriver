@@ -18,5 +18,6 @@ namespace WinAppDriver
     public string appArguments;
     public string appWorkingDir;
     public string forceMatchAppTitle;
+    public string forceMatchClassName;
   }
 }

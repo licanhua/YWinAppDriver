@@ -24,16 +24,24 @@ namespace WinAppDriver.Infra.Communication
       return uiObject;
     }
 
-    private UICondition GetForceMatchTitleCondition(string forceMatchAppTitle)
+    private UICondition GetForceMatchCondition(string forceMatchAppTitle, string forceMatchClassName)
     {
-      return string.IsNullOrEmpty(forceMatchAppTitle) ? null : UICondition.CreateFromName(forceMatchAppTitle);
+      if (string.IsNullOrEmpty(forceMatchAppTitle))
+      {
+        return string.IsNullOrEmpty(forceMatchClassName) ? null : UICondition.CreateFromClassName(forceMatchClassName);
+      }
+      else if (string.IsNullOrEmpty(forceMatchClassName))
+      {
+        return UICondition.CreateFromName(forceMatchAppTitle);
+      }
+      return UICondition.CreateFromName(forceMatchAppTitle).AndWith(UICondition.CreateFromClassName(forceMatchClassName));
     }
 
     // refer https://github.com/microsoft/microsoft-ui-xaml/blob/40531c714f8003bf0d341a0729fa04dd2ed87710/test/testinfra/MUXTestInfra/Infra/Application.cs#L269
-    public IApplication LaunchModernApp(string appName, string forceMatchAppTitle)
+    public IApplication LaunchModernApp(string appName, string forceMatchAppTitle, string forceMatchClassName)
     {
       UICondition condition = UICondition.CreateFromClassName("ApplicationFrameWindow").OrWith(UICondition.CreateFromClassName("Windows.UI.Core.CoreWindow"));
-      var forceMatch = GetForceMatchTitleCondition(forceMatchAppTitle);
+      var forceMatch = GetForceMatchCondition(forceMatchAppTitle, forceMatchClassName);
       if (forceMatch != null)
       {
         condition = condition.OrWith(forceMatch);
@@ -44,9 +52,9 @@ namespace WinAppDriver.Infra.Communication
       return new Application(new Element(rootWindow), coreWindow.ProcessId);
     }
 
-    public IApplication LaunchLegacyApp(string filename, string arguments, string workingDirectory, string forceMatchAppTitle)
+    public IApplication LaunchLegacyApp(string filename, string arguments, string workingDirectory, string forceMatchAppTitle, string forceMatchClassName)
     {
-      var forceMatch = GetForceMatchTitleCondition(forceMatchAppTitle);
+      var forceMatch = GetForceMatchCondition(forceMatchAppTitle, forceMatchClassName);
 
       // refer to https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo.-ctor?view=netcore-3.1#System_Diagnostics_ProcessStartInfo__ctor_System_String_System_String_
       ProcessStartInfo startInfo;
@@ -149,12 +157,12 @@ namespace WinAppDriver.Infra.Communication
       else if (app.Contains("!"))
       {
         Debug.WriteLine("Start UWPApp " + app);
-        return LaunchModernApp(capabilities.app, capabilities.forceMatchAppTitle);
+        return LaunchModernApp(capabilities.app, capabilities.forceMatchAppTitle, capabilities.forceMatchClassName);
       }
       else
       {
         Debug.WriteLine("Start Legacy app " + capabilities.ToString());
-        return LaunchLegacyApp(app, capabilities.appArguments, capabilities.appWorkingDir, capabilities.forceMatchAppTitle);
+        return LaunchLegacyApp(app, capabilities.appArguments, capabilities.appWorkingDir, capabilities.forceMatchAppTitle, capabilities.forceMatchClassName);
       }
 
     }

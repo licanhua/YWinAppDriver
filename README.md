@@ -242,6 +242,7 @@ Below are the capabilities that can be used to create Windows Application Driver
 | attachToTopLevelWindowClassName  	| app should be "Root", Existing application top level window to attach to. if you are using WinAppDriver, please use appTopLevelWindow    	| `0xB822E2`                                            	|
 | appWorkingDir      	| Application working directory (Classic apps only)     	| `C:\Temp`                                             	|
 | forceMatchAppTitle	| If app is launched, but have problem to match it, YWinAppDriver do the last try to match with the application title	| Calculator                                               	|
+| forceMatchClassName	| If app is launched, but have problem to match it, YWinAppDriver do the last try to match with the class name	| Calculator                                               	|
 
 ## Known issue
 
