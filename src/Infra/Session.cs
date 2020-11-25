@@ -303,12 +303,16 @@ namespace WinAppDriver.Infra
       }
     }
 
-    public string TakeScreenshot()
+    public string TakeScreenshot(int x, int y, int height, int width)
     {
-      using var bitmap = new Bitmap(1920, 1080);
+      x = Math.Max(0, x);
+      y = Math.Max(0, y);
+      height = Math.Max(1, height);
+      width = Math.Max(1, width);
+      using var bitmap = new Bitmap(width, height);
       using (var g = Graphics.FromImage(bitmap))
       {
-        g.CopyFromScreen(0, 0, 0, 0,
+        g.CopyFromScreen(x, y, 0, 0,
         bitmap.Size, CopyPixelOperation.SourceCopy);
       }
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Xml;
 using WinAppDriver.Infra.Result;
@@ -40,5 +41,9 @@ namespace WinAppDriver.Infra.Communication
     bool ElementEquals(IElement element);
     object GetUIObject();
     public IElement GetFocusedElement();
+    // UI Element screen size
+    Rectangle GetBoundingRectangle();
+    // Windows desktop screen size
+    Rectangle GetDesktopRectangle();
   }
 }
