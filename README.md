@@ -6,7 +6,7 @@ This repo is an open source asp.net core implementation of WinAppDriver and it's
 
 I name this project YWinAppDriver(yet another WinAppDriver).
 
-## Project Status: 0.2.2
+## Project Status: 0.2.x
    Most of functionalities(except Pen, Touch and Mouse) are ready and you should be able to switch from WinAppDriver to YWinAppDriver without any(or With little) change. [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs) defines all the endpoints.
 
    I successfully made [CalculatorTest](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest) and [WebDriverAPI](https://github.com/licanhua/YWinAppDriver/tree/main/test/WebDriverAPI) work which comes from [WinAppDriver samples](https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest) and [WinAppDriver test](https://github.com/microsoft/WinAppDriver/tree/master/Tests/WebDriverAPI)
@@ -17,12 +17,6 @@ I name this project YWinAppDriver(yet another WinAppDriver).
   - logs. Complete
   - XPath. Complete. For the XPath syntax, refer to https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256086(v=vs.100)
 
-## Not ready features
-Below features are not ready yet
-- Mouse and Touch Input code completed, but I didn't fully test it. WinUI functionality in [InputHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/master/test/testinfra/MUXTestInfra/Common/InputHelper.cs)
-- Integration testing with appium
-- Extension the WinAppDriver functionality by ExecuteScript
-
 ## Download & Run YWinAppDriver
 - Download and compile
 
@@ -32,6 +26,7 @@ There are two ways to get the WinAppDriver.exe:
 
 - Lauch WinAppDriver.exe
 Generally speaking, WinAppDriver user would have two settings: http://127.0.0.1:4723 or http://127.0.0.1:4723/wd/hub.
+Note: [dotnet-core runtime](https://dotnet.microsoft.com/download/dotnet-core/3.1) is required, please install 3.1 or late it if you have problem to run WinAppDriver.exe
 
 By default, YWinAppDriver is http://127.0.0.1:4723. You can change the port number and basepath easily:
 1. CLI
@@ -116,7 +111,8 @@ Because YWinAppDriver is for desktop application other than browser, `no` below 
 |maybe|POST	|/session/:sessionId/refresh	|Refresh the current page.
 |maybe|POST	|/session/:sessionId/execute	|Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.
 |maybe|POST|	/session/:sessionId/execute_async	|Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.
-|complete|GET|	/session/:sessionId/screenshot	|Take a screenshot of the current page.(Implementation: Full screen snapshot only)
+|complete|GET|	/session/:sessionId/screenshot	|Take a screenshot of the current page
+|complete|GET|	/session/:sessionId/element/:elementId/screenshot	|Take a screenshot of the element
 |no|GET|	/session/:sessionId/ime/available_engines	|List all available engines on the machine.
 |no|GET|	/session/:sessionId/ime/active_engine	|Get the name of the active IME engine.
 |no|GET|	/session/:sessionId/ime/activated	|Indicates whether IME input is active at the moment (not if it's available.
@@ -170,14 +166,14 @@ Because YWinAppDriver is for desktop application other than browser, `no` below 
 |completed|POST|	/session/:sessionId/buttondown	|Click and hold the left mouse button (at the coordinates set by the last moveto command).
 |completed|POST|	/session/:sessionId/buttonup	|Releases the mouse button previously held (where the mouse is currently at).
 |completed|POST|	/session/:sessionId/doubleclick	|Double-clicks at the current mouse coordinates (set by moveto).
-|not tested|POST|	/session/:sessionId/touch/click	|Single tap on the touch enabled device.
-|not tested|POST|	/session/:sessionId/touch/down	|Finger down on the screen.
-|not tested|POST|	/session/:sessionId/touch/up	|Finger up on the screen.
-|not tested|POST|	session/:sessionId/touch/move	|Finger move on the screen.
+|completed|POST|	/session/:sessionId/touch/click	|Single tap on the touch enabled device.
+|completed|POST|	/session/:sessionId/touch/down	|Finger down on the screen.
+|completed|POST|	/session/:sessionId/touch/up	|Finger up on the screen.
+|completed|POST|	session/:sessionId/touch/move	|Finger move on the screen.
 |in progress|POST|	session/:sessionId/touch/scroll	|Scroll on the touch screen using finger based motion events.
 |in progress|POST|	session/:sessionId/touch/scroll	|Scroll on the touch screen using finger based motion events.
-|not testeds|POST|	session/:sessionId/touch/doubleclick	|Double tap on the touch screen using finger motion events.
-|not tested|POST|	session/:sessionId/touch/longclick	|Long press on the touch screen using finger motion events.
+|completed|POST|	session/:sessionId/touch/doubleclick	|Double tap on the touch screen using finger motion events.
+|completed|POST|	session/:sessionId/touch/longclick	|Long press on the touch screen using finger motion events.
 |in progress|POST|	session/:sessionId/touch/flick	|Flick on the touch screen using finger motion events.
 |in progress|POST|	session/:sessionId/touch/flick	|Flick on the touch screen using finger motion events.
 |no|GET	|/session/:sessionId/location	|Get the current geo location.
@@ -242,12 +238,17 @@ Below are the capabilities that can be used to create Windows Application Driver
 | attachToTopLevelWindowClassName  	| app should be "Root", Existing application top level window to attach to. if you are using WinAppDriver, please use appTopLevelWindow    	| `0xB822E2`                                            	|
 | appWorkingDir      	| Application working directory (Classic apps only)     	| `C:\Temp`                                             	|
 | forceMatchAppTitle	| If app is launched, but have problem to match it, YWinAppDriver do the last try to match with the application title	| Calculator                                               	|
-| forceMatchClassName	| If app is launched, but have problem to match it, YWinAppDriver do the last try to match with the class name	| Calculator                                               	|
+| forceMatchClassName	| If app is launched, but have problem to match it, YWinAppDriver do the last try to match with the class name	| Chrome_WidgetWin_1                                               	|
 
-## Known issue
+## YWinAppDriver addressed some WinAppDriver 1.2 issues and fixed them
 
-### Window is not moved exactly the position you want.
+### WinAppDriver has problem to start c:\windows\system32\calc.exe, PostMan, or Notepad++ [issue 1372](https://github.com/microsoft/WinAppDriver/issues/1372)
+In YWinAppDriver, you can workaround the problem with the capabilites like below.
+```
+"forceMatchAppTitle": "Calculator"
+"forceMatchClassName":"Notepad++"
+```
 
-The window is moved, but it didn't pass the API testing. I guess the Window position is not the same as the control position, so there is some adjustment before the move. But I didn't find this API yet.'
-/session/:sessionId/window/:windowHandle/position
-/session/:sessionId/window/:windowHandle/size
+### Appium desktop can't show all controls WinAppDriver provided
+ [Appium Desktop](https://github.com/appium/appium-desktop) is a great tool to inspect the app's elements and it's very easy to learn and use it.
+ Currently WinAppDriver can't show all elements. I don't know if it's the issue of WinAppDriver or Appium, but YWinAppDriver doesn't have this problem.

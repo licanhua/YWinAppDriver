@@ -9,6 +9,7 @@ using Microsoft.Windows.Apps.Test.Foundation.Patterns;
 using Microsoft.Windows.Apps.Test.Foundation.Waiters;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,7 +27,7 @@ namespace WinAppDriver.Infra.Communication
     const string UNIQID = "UniqId";
 
     private readonly UIObject _uiObject;
-    private readonly string id;
+    private string _id;
     private void EnsureTimeoutSettting(int msTimeout)
     {
       if (msTimeout == 0)
@@ -41,16 +42,18 @@ namespace WinAppDriver.Infra.Communication
       }
     }
 
-    public Element(UIObject uIObject, bool uniqId = false)
+    public void GenerateGuidAsId()
+    {
+      _id = Guid.NewGuid().ToString();
+    }
+    public Element(UIObject uIObject)
     {
       _uiObject = uIObject;
-      if (_uiObject != null && !uniqId)
+ 
+      _id = _uiObject.RuntimeId;
+      if (_id == null)
       {
-        id = _uiObject.RuntimeId;
-      }
-      if (id == null)
-      {
-        id = Guid.NewGuid().ToString();
+        GenerateGuidAsId();
       }
     }
 
@@ -157,7 +160,7 @@ namespace WinAppDriver.Infra.Communication
 
     public string GetId()
     {
-      return id;
+      return _id;
     }
 
     public bool IsSelected()
@@ -236,11 +239,18 @@ namespace WinAppDriver.Infra.Communication
       return _uiObject.Name;
     }
 
+    // Add an indirect node to make appiumdesktop v1.18.3 happy
+    private void BuildXmlDoc(XmlDocument doc, XmlNode node)
+    {
+      var body = doc.CreateElement("Body");
+      body.AppendChild(node);
+      doc.AppendChild(body);
+    }
     public XmlDocument GetXmlDocument()
     {
       var doc = new XmlDocument();
       var node = BuildXmlNode(doc, _uiObject, null);
-      doc.AppendChild(node);
+      BuildXmlDoc(doc, node);
       return doc;
     }
 
@@ -250,7 +260,7 @@ namespace WinAppDriver.Infra.Communication
       
       var doc = new XmlDocument();
       var xmlNode = BuildXmlNode(doc, _uiObject, uniqIdCache);
-      doc.AppendChild(xmlNode);
+      BuildXmlDoc(doc, xmlNode);
 
       var node = doc.SelectSingleNode(xpath);
       if (node == null)
@@ -271,7 +281,7 @@ namespace WinAppDriver.Infra.Communication
 
       var doc = new XmlDocument();
       var xmlNode = BuildXmlNode(doc, _uiObject, uniqIdCache);
-      doc.AppendChild(xmlNode);
+      BuildXmlDoc(doc, xmlNode);
 
       var nodes = doc.SelectNodes(xpath);
       foreach (XmlNode node in nodes)
@@ -302,7 +312,12 @@ namespace WinAppDriver.Infra.Communication
     {
       var element = doc.CreateElement(GetXamlNodeTag(obj));
       element.SetAttribute("AutomationId", System.Net.WebUtility.HtmlEncode(obj.AutomationId));
-      element.SetAttribute("Location", System.Net.WebUtility.HtmlEncode(obj.BoundingRectangle.ToString()));
+      element.SetAttribute("x", System.Net.WebUtility.HtmlEncode(obj.BoundingRectangle.X.ToString()));
+      element.SetAttribute("y", System.Net.WebUtility.HtmlEncode(obj.BoundingRectangle.Y.ToString()));
+      element.SetAttribute("width", System.Net.WebUtility.HtmlEncode(obj.BoundingRectangle.Width.ToString()));
+      element.SetAttribute("height", System.Net.WebUtility.HtmlEncode(obj.BoundingRectangle.Height.ToString()));
+      element.SetAttribute("IsOffScreen", System.Net.WebUtility.HtmlEncode(obj.IsOffscreen.ToString()));
+      element.SetAttribute("IsEnabled", System.Net.WebUtility.HtmlEncode(obj.IsEnabled.ToString()));
       element.SetAttribute("ClassName", System.Net.WebUtility.HtmlEncode(obj.ClassName));
       element.SetAttribute("LocalizedControlType", System.Net.WebUtility.HtmlEncode(obj.LocalizedControlType));
       element.SetAttribute("Name", System.Net.WebUtility.HtmlEncode(obj.Name));
@@ -310,7 +325,11 @@ namespace WinAppDriver.Infra.Communication
 
       if (uniqIdCache != null)
       {
-        var e = new Element(obj, true);
+        var e = new Element(obj);
+        if (uniqIdCache.ContainsKey(e.GetId()))
+        {
+          e.GenerateGuidAsId();
+        }
         element.SetAttribute(UNIQID, e.GetId());
         uniqIdCache[e.GetId()] = e;
       }
@@ -324,7 +343,7 @@ namespace WinAppDriver.Infra.Communication
 
     public string GetAttribute(LocatorStrategy locator)
     {
-      if (locator == LocatorStrategy.Id) return id;
+      if (locator == LocatorStrategy.Id) return _id;
       else if (locator == LocatorStrategy.AccessibilityId) return _uiObject.AutomationId;
       else if (locator == LocatorStrategy.ClassName) return _uiObject.ClassName;
       else if (locator == LocatorStrategy.TagName) return _uiObject.LocalizedControlType;
@@ -390,7 +409,7 @@ namespace WinAppDriver.Infra.Communication
     }
     public IElement GetWindowHandle()
     {
-      return new Element(GetActiveWindow(), true);
+      return new Element(GetActiveWindow());
     }
 
     private IEnumerable<UIObject> GetWindows()
@@ -412,7 +431,7 @@ namespace WinAppDriver.Infra.Communication
 
     public IEnumerable<IElement> GetWindowHandles()
     {
-      return GetWindows().Select(window => new Element(window, true));
+      return GetWindows().Select(window => new Element(window));
     }
 
     public void SetFocus()
@@ -476,7 +495,7 @@ namespace WinAppDriver.Infra.Communication
       // support https://github.com/microsoft/WinAppDriver/blob/master/Tests/WebDriverAPI/ElementAttribute.cs
       if (attributeName == ActionStrings.RuntimeId)
       {
-        return id;
+        return _id;
       }
       else if (attributeName == "name")
       {
@@ -501,6 +520,16 @@ namespace WinAppDriver.Infra.Communication
     public IEnumerable<IElement> GetChildren()
     {
       return _uiObject.Children.Select(item => new Element(item));
+    }
+
+    public Rectangle GetBoundingRectangle()
+    {
+      return _uiObject.BoundingRectangle;
+    }
+
+    public Rectangle GetDesktopRectangle()
+    {
+      return UIObject.Root.BoundingRectangle;
     }
   }
 }

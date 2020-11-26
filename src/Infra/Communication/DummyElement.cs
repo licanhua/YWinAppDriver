@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Xml;
 using WinAppDriver.Infra.Result;
@@ -149,6 +150,16 @@ namespace WinAppDriver.Infra.Communication
     }
 
     public void SendKeys(string keys)
+    {
+      throw new NoSuchWindow();
+    }
+
+    public Rectangle GetBoundingRectangle()
+    {
+      throw new NoSuchWindow();
+    }
+
+    public Rectangle GetDesktopRectangle()
     {
       throw new NoSuchWindow();
     }

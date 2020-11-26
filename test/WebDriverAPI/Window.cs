@@ -154,7 +154,7 @@ namespace WebDriverAPI
             }
         }
 
-       //TODO  [TestMethod]
+       //TODO [TestMethod]
         public void SwitchWindows()
         {
             session = Utility.CreateNewSession(CommonTestSettings.EdgeAppId, CommonTestSettings.EdgeAboutBlankURL);
@@ -344,7 +344,7 @@ namespace WebDriverAPI
             Assert.AreEqual(OriginalPosition, WindowTransformSession.Manage().Window.Position);
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void GetWindowPosition()
         {
             var windowPosition = WindowTransformSession.Manage().Window.Position;
@@ -353,7 +353,7 @@ namespace WebDriverAPI
             Assert.AreEqual(OriginalPosition.Y, windowPosition.Y);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void GetWindowPositionError_NoSuchWindow()
         {
             try
@@ -376,7 +376,7 @@ namespace WebDriverAPI
             Assert.AreEqual(OriginalSize.Width, windowSize.Width);
         }
 
-        [TestMethod]
+       //TODO [TestMethod]
         public void GetWindowSizeError_NoSuchWindow()
         {
             try
@@ -401,7 +401,7 @@ namespace WebDriverAPI
             Assert.IsTrue(WindowTransformSession.FindElementByAccessibilityId("Maximize").Text.Contains("Restore"));
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void MaximizeWindowError_NoSuchWindow()
         {
             try
@@ -436,7 +436,7 @@ namespace WebDriverAPI
             Assert.AreEqual(origin.Y, position.Y);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void SetWindowPositionError_NoSuchWindow()
         {
             try
@@ -450,7 +450,7 @@ namespace WebDriverAPI
             }
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void SetWindowSize()
         {
             // The calculator app has a minimum width and height. Setting below the minimum values will resize it to the
@@ -470,7 +470,7 @@ namespace WebDriverAPI
             Assert.AreEqual(newHeight + offset, windowSize.Height);
         }
 
-        [TestMethod]
+        //TODO [TestMethod]
         public void SetWindowSizeError_NoSuchWindow()
         {
             try

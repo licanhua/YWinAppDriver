@@ -330,7 +330,14 @@ namespace WinAppDriver.Controllers
       return ExecuteCommand(Command.TakeScreenshot, sessionId, null, null);
     }
 
-  [HttpPost]
+    [HttpGet]
+    [Route("{sessionId}/element/{elementId}/screenshot")]
+    public IActionResult TakeScreenshot(string sessionId, string elementId)
+    {
+      return ExecuteCommand(Command.TakeScreenshot, sessionId, null, elementId);
+    }
+
+    [HttpPost]
     [Route("{sessionId}/timeouts/async_script")]
     [Route("{sessionId}/url")]
     [Route("{sessionId}/forward")]
@@ -357,7 +364,6 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpGet]
-    [Route("{sessionId}/element/{elementId}/screenshot")]
     [Route("{sessionId}/url")]
     [Route("{sessionId}/cookie")]
     [Route("{sessionId}/element/{id}/location_in_view")]
