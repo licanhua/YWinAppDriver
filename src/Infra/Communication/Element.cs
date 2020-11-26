@@ -23,7 +23,7 @@ namespace WinAppDriver.Infra.Communication
   public class Element : IElement
   {
     static Regex TagNameRegExpr = new Regex("^[a-zA-Z0-9 ]*$");
-    const string TAGUNKNOWN = "Unknown";
+    const string TAGUNKNOWN = "Window"; // match with WinAppDriver
     const string UNIQID = "UniqId";
 
     private readonly UIObject _uiObject;
