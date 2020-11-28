@@ -182,6 +182,7 @@ namespace WinAppDriver.Infra.Communication
     public void Click()
     {
       EnsureNotOffScreen();
+      /*
       foreach (var pattern in _uiObject.GetSupportedPatterns())
       {
         if (pattern.Id == InvokePattern.Pattern.Id)
@@ -191,13 +192,15 @@ namespace WinAppDriver.Infra.Communication
         }
       }
       _uiObject.Click();
-
+      */
+      PointerInput.Click(_uiObject);
     }
 
     public void DoubleClick()
     {
       EnsureNotOffScreen();
-      _uiObject.DoubleClick();
+      //_uiObject.DoubleClick();
+      PointerInput.DoubleClick(_uiObject);
     }
 
     public bool IsStaleElement()
