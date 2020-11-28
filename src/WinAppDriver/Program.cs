@@ -26,7 +26,8 @@ namespace WinAppDriver
             .ConfigureAppConfiguration((hostingContext, config) =>
             {
               config.AddCommandLine(args, new Dictionary<string, string>() {
-                                            { "--basepath", "BasePath"}
+                                            { "--basepath", "BasePath"},
+                                            { "--logpath", "LogPath"},
                                           });
             })
             .ConfigureWebHostDefaults(webBuilder =>
