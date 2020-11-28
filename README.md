@@ -34,6 +34,11 @@ By default, YWinAppDriver is http://127.0.0.1:4723. You can change the port numb
 run `WinAppDriver.exe --urls http://127.0.0.1:4723 --basepath /wd/hub`
 
 
+A complete command line:
+```
+WinAppDriver.exe --urls http://127.0.0.1:4723 --basepath /wd/hub --logpath logs
+```
+
 2. From Visual Studio
 
 There are two [settings](docs/images/LaunchFromVS.png) are ready for you. `IIS Express /wd/hub` is http://127.0.0.1:4723/wd/hub
@@ -45,22 +50,6 @@ There are two [settings](docs/images/LaunchFromVS.png) are ready for you. `IIS E
 "Basepath": "/wd/hub"
 
 ```
-
-
-Logs are in `Logs/WinAppDriver-{Date}.txt`.
-If you run it from visual studio, there is no logs. If you want it, just remove `else` from below code 
-```
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-      }
-      else
-      {
-        loggerFactory.AddFile("Logs/WinAppDriver-{Date}.txt");
-      }
-```
-
-
 
 - Build and run the CalcatorTest in [examples](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest)
 Please run the test, please make sure Calculator is in Standard mode.

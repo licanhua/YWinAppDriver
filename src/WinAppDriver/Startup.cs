@@ -54,9 +54,13 @@ namespace WinAppDriver
       {
         app.UseDeveloperExceptionPage();
       }
-      else
+
+      var logPath= Configuration["LogPath"];
+      if (!string.IsNullOrEmpty(logPath))
       {
-        loggerFactory.AddFile("Logs/WinAppDriver-{Date}.txt");
+        var file = logPath + "\\WinAppDriver-{Date}.log";
+        Console.WriteLine("LogPath: " + logPath);
+        loggerFactory.AddFile(file);
       }
 
       var basepath = Configuration["BasePath"];

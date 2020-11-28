@@ -53,6 +53,10 @@ namespace WinAppDriver
       var text = await new StreamReader(context.Response.Body).ReadToEndAsync();
       context.Response.Body.Seek(0, SeekOrigin.Begin);
 
+      // trim the log for screenshot
+      if (context.Request.Path.ToString().EndsWith("screenshot"))
+        text = text.Substring(0, 100) + "...";
+
       _logger.LogInformation(
                              $"Response {context.Response.StatusCode}: {context.Request.Host} " +
                              $"{context.Request.Path} " +
