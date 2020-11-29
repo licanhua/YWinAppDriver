@@ -19,7 +19,7 @@ namespace WinAppDriver.Infra.Communication
       throw new NoSuchWindow();
     }
 
-    public void Click()
+    public void Click(bool clickWithInvoke)
     {
       throw new NoSuchWindow();
     }

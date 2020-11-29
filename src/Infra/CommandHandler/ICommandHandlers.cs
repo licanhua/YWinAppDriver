@@ -36,6 +36,7 @@ namespace WinAppDriver.Infra.CommandHandler
     GetWindowPosition,
     MaximizeWindow,
     TakeScreenshot,
+    ClickOnElement,
   }
 
   public interface ICommandHandlers

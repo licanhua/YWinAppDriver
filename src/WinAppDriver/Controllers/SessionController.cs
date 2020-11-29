@@ -138,7 +138,7 @@ namespace WinAppDriver.Controllers
     [Route("{sessionId}/element/{elementId}/click")]
     public IActionResult ElementClick(string sessionId, string elementId)
     {
-      return ExecuteCommand(sessionId, elementId, (element) => { element.Click(); });
+      return ExecuteCommand(Command.ClickOnElement, sessionId, null, elementId);
     }
 
     [HttpGet]

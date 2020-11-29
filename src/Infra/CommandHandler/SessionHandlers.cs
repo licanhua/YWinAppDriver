@@ -6,6 +6,7 @@ using Microsoft.Windows.Apps.Test.Foundation;
 using System.Collections.Generic;
 using WinAppDriver.Infra.Communication;
 using WinAppDriver.Infra.Result;
+using System;
 
 namespace WinAppDriver.Infra.CommandHandler
 {
@@ -235,6 +236,15 @@ namespace WinAppDriver.Infra.CommandHandler
     protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string windowHandle)
     {
       session.GetWindow(windowHandle).MaximizeWindow();
+      return null;
+    }
+  }
+
+  class ClickHandler : SessionCommandHandlerBase<object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, string elementId)
+    {
+      session.FindElement(elementId).Click(Convert.ToBoolean(session.GetCapabilities().clickWithInvoke));
       return null;
     }
   }

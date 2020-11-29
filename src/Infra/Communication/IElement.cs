@@ -31,7 +31,7 @@ namespace WinAppDriver.Infra.Communication
     public void SetFocus();
     public void CloseActiveWindow();
     public string GetTitle();
-    public void Click();
+    public void Click(bool clickWithInvoke);
     public void DoubleClick();
     public void Clear();
     SizeResult GetSize();

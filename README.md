@@ -54,6 +54,11 @@ There are two [settings](docs/images/LaunchFromVS.png) are ready for you. `IIS E
 - Build and run the CalcatorTest in [examples](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest)
 Please run the test, please make sure Calculator is in Standard mode.
 
+## nodejs Examples:
+[wdio + YWinAppDriver/WinAppDriver](https://github.com/licanhua/wdio-winappdriver-example)
+[selenium + YWinAppDriver/WinAppDriver](https://github.com/react-native-windows/selenium-appium/tree/master/example)
+
+
 ## Knowledge for contributors
 1. [Asp.Net Core](https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-3.1) 
 
@@ -228,6 +233,7 @@ Below are the capabilities that can be used to create Windows Application Driver
 | appWorkingDir      	| Application working directory (Classic apps only)     	| `C:\Temp`                                             	|
 | forceMatchAppTitle	| If app is launched, but have problem to match it, YWinAppDriver do the last try to match with the application title	| Calculator                                               	|
 | forceMatchClassName	| If app is launched, but have problem to match it, YWinAppDriver do the last try to match with the class name	| Chrome_WidgetWin_1                                               	|
+| clickWithInvoke   	| Use Inovke other than click to get better performance  	| true/false   	|
 
 ## YWinAppDriver addressed some WinAppDriver 1.2 issues and fixed them
 
@@ -241,3 +247,7 @@ In YWinAppDriver, you can workaround the problem with the capabilites like below
 ### Appium desktop can't show all controls WinAppDriver provided
  [Appium Desktop](https://github.com/appium/appium-desktop) is a great tool to inspect the app's elements and it's very easy to learn and use it.
  Currently WinAppDriver can't show all elements. I don't know if it's the issue of WinAppDriver or Appium, but YWinAppDriver doesn't have this problem.
+
+ ## YWinAppDriver Known issue
+ ### The Click is slow than WinAppDriver
+ You can set capabilities {clickWithInvoke: true}, it will be very fast. The down side is it will not close the flyout like Menu Windows until you click somewhere else.

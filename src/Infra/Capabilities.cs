@@ -19,5 +19,6 @@ namespace WinAppDriver
     public string appWorkingDir;
     public string forceMatchAppTitle;
     public string forceMatchClassName;
+    public string clickWithInvoke; // Invoke has better performance over click.
   }
 }

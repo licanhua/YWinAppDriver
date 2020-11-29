@@ -179,27 +179,28 @@ namespace WinAppDriver.Infra.Communication
       throw new NotImplementedException("Not implement yet, what control are you using>");
     }
 
-    public void Click()
+    public void Click(bool clickWithInvoke)
     {
       EnsureNotOffScreen();
-      /*
-      foreach (var pattern in _uiObject.GetSupportedPatterns())
+      if (clickWithInvoke)
       {
-        if (pattern.Id == InvokePattern.Pattern.Id)
+        try
         {
-          new Button(_uiObject).Invoke(); // Invoke has better performance than click. I guess click is synchronized but invoke is not
-          return;
+          new Button(_uiObject).Invoke(); // Invoke has better performance than click.
+        } catch (Exception e)
+        {
+          Console.WriteLine("Fail to invoke the element, it's possible that you are clicking on flyout " + e.Message);
         }
       }
-      _uiObject.Click();
-      */
-      PointerInput.Click(_uiObject);
+      else
+      {
+        PointerInput.Click(_uiObject);
+      }
     }
 
     public void DoubleClick()
     {
       EnsureNotOffScreen();
-      //_uiObject.DoubleClick();
       PointerInput.DoubleClick(_uiObject);
     }
 
