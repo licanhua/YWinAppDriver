@@ -6,16 +6,12 @@ This repo is an open source asp.net core implementation of WinAppDriver and it's
 
 I name this project YWinAppDriver(yet another WinAppDriver).
 
-## Project Status: 0.2.x
-   Most of functionalities(except Pen, Touch and Mouse) are ready and you should be able to switch from WinAppDriver to YWinAppDriver without any(or With little) change. [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs) defines all the endpoints.
+[![Build Status](https://dev.azure.com/licanhua/YWinAppDriver/_apis/build/status/licanhua.YWinAppDriver?branchName=main)](https://dev.azure.com/licanhua/YWinAppDriver/_build/latest?definitionId=2&branchName=main)
 
-   I successfully made [CalculatorTest](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest) and [WebDriverAPI](https://github.com/licanhua/YWinAppDriver/tree/main/test/WebDriverAPI) work which comes from [WinAppDriver samples](https://github.com/microsoft/WinAppDriver/tree/master/Samples/C%23/CalculatorTest) and [WinAppDriver test](https://github.com/microsoft/WinAppDriver/tree/master/Tests/WebDriverAPI)
+## Project Status: 0.2.x
+   Most of the functionalities are ready and you should be able to switch from WinAppDriver to YWinAppDriver without any(or With little) change. [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs) defines all the endpoints it supported. 
    
-   If you'd like to use JavaScript to author the test case, I verified [selenium appium example](https://github.com/react-native-windows/selenium-appium/tree/master/example), and it can integrate with YWinAppDriver.
-  
-  - keyboard Input support. completed. Similar functionality as WinUI did on [KeyboardHelper.cs](https://github.com/microsoft/microsoft-ui-xaml/blob/9b264ff73eeea18f6e13abe0b8ad9395b1c0138b/test/testinfra/MUXTestInfra/Common/KeyboardHelper.cs#L109)
-  - logs. Complete
-  - XPath. Complete. For the XPath syntax, refer to https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256086(v=vs.100)
+For the XPath syntax, refer to https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256086(v=vs.100)
 
 ## Download & Run YWinAppDriver
 - Download and compile
@@ -54,8 +50,11 @@ There are two [settings](docs/images/LaunchFromVS.png) are ready for you. `IIS E
 - Build and run the CalcatorTest in [examples](https://github.com/licanhua/YWinAppDriver/tree/main/examples/CalculatorTest)
 Please run the test, please make sure Calculator is in Standard mode.
 
-## nodejs Examples:
+## nodejs YWinAppDriver/WinAppDriver examples:
+If you are authoring the test case with Jest, Jasmine or any other JavaScript framework, you can switch between YWinAppDriver and WinAppDriver very easily.
+
 [wdio + YWinAppDriver/WinAppDriver](https://github.com/licanhua/wdio-winappdriver-example)
+
 [selenium + YWinAppDriver/WinAppDriver](https://github.com/react-native-windows/selenium-appium/tree/master/example)
 
 
