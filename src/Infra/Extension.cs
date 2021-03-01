@@ -165,28 +165,17 @@ namespace WinAppDriver.Infra
       TouchAction touchAction = (TouchAction)Enum.Parse(typeof(TouchAction), action);
       if (touchAction == TouchAction.Up)
       {
-        using (InputController.Activate(PointerInputType.MultiTouch))
-        {
-          PointerInput.Move(ToPoint(req.x, req.y));
-          PointerInput.Release(PointerButtons.Primary);
-        }
-
+        PointerInput.Move(ToPoint(req.x, req.y));
+        PointerInput.Release(PointerButtons.Primary);
       }
       else if (touchAction == TouchAction.Move)
       {
-        using (InputController.Activate(PointerInputType.MultiTouch))
-        {
-          PointerInput.Move(ToPoint(req.x, req.y));
-        }
+        PointerInput.Move(ToPoint(req.x, req.y));
       }
       else if (touchAction == TouchAction.Down)
       {
-        using (InputController.Activate(PointerInputType.MultiTouch))
-        {
-          PointerInput.Move(ToPoint(req.x, req.y));
-          PointerInput.Press(PointerButtons.Primary);
-        }
-
+        PointerInput.Move(ToPoint(req.x, req.y));
+        PointerInput.Press(PointerButtons.Primary);
       }
       else throw new InvalidArgumentException();
     }
