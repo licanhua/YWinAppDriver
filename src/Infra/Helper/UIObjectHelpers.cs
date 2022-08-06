@@ -42,13 +42,16 @@ namespace WinAppDriver.Infra.Helper
                 }
 
                 if (element == null)
+                {
+                    // use same error message format as in WINUI_ERROR_MESSAGE_PREFIX
                     throw new UIObjectNotFoundException($"Unable to find {className} in {topWindow}");
+                }
             }
 
             return element;
         }
 
-        public static void LogObjectTree(UIObject root = null)
+        public static void LogObjectTree(UIObject root)
         {
             LogObject(0, root);
 
