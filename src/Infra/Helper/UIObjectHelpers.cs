@@ -22,7 +22,7 @@ namespace WinAppDriver.Infra.Helper
             return GetTopLevelUIObject(element, 5, className);
         }
 
-        public static UIObject GetTopLevelUIObject(UIObject topWindow, int timeout, string className)
+        public static UIObject GetTopLevelUIObject(UIObject topWindow, int timeoutInMilliseconds, string className)
         {
             UIObject element = null;
             var controlType = (ControlType)topWindow.GetProperty(UIProperty.Get("ControlType"));
@@ -42,13 +42,13 @@ namespace WinAppDriver.Infra.Helper
                 var windowCondition = UICondition.CreateFromClassName(className)
                     .AndWith(UICondition.CreateFromName(topWindow.Name));
 
-                while (timeout > 0
+                while (timeoutInMilliseconds > 0
                        && !topWindow.Children.TryFind(
                            windowCondition, out element))
                 {
                     Thread.Sleep(100);
 
-                    timeout -= 100;
+                    timeoutInMilliseconds -= 100;
                 }
 
                 if (element == null)
