@@ -4,15 +4,11 @@
 using Microsoft.Windows.Apps.Test.Foundation;
 using Microsoft.Windows.Apps.Test.Foundation.Waiters;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Windows.Apps.Test.Automation;
-using Microsoft.Windows.Apps.Test.Foundation.Utilities;
 using WinAppDriver.Infra.Helper;
+using WinAppDriver.Infra.ModernApp;
 
 namespace WinAppDriver.Infra.Communication
 {
@@ -49,11 +45,13 @@ namespace WinAppDriver.Infra.Communication
 
 
         // refer https://github.com/microsoft/microsoft-ui-xaml/blob/40531c714f8003bf0d341a0729fa04dd2ed87710/test/testinfra/MUXTestInfra/Infra/Application.cs#L269
-        public IApplication LaunchModernApp(string appName, string forceMatchAppTitle, string forceMatchClassName)
+        public IApplication LaunchModernApp(string appName, string arguments, string forceMatchClassName,
+            string forceMatchAppTitle)
         {
             UICondition condition = UICondition.CreateFromClassName("ApplicationFrameWindow")
                 .OrWith(UICondition.CreateFromClassName("Windows.UI.Core.CoreWindow"))
                 .OrWith(UICondition.CreateFromClassName("WinUIDesktopWin32WindowClass"));
+
             var forceMatch = GetForceMatchCondition(forceMatchAppTitle, forceMatchClassName);
             if (forceMatch != null)
             {
@@ -62,24 +60,12 @@ namespace WinAppDriver.Infra.Communication
 
             try
             {
-                var coreWindow = UAPApp.Launch(appName, condition);
-                var rootWindow = GetTopLevelWindow(coreWindow);
-                return new Application(new Element(rootWindow), coreWindow.ProcessId);
-            }
-            catch (UIObjectNotFoundException e) when (e.Message.StartsWith(UIObjectHelpers.WINUI_ERROR_MESSAGE_PREFIX))
-            {
-                // this is a winui app, recover from exception
-                var (name, className) = UIObjectHelpers.ParseErrorMessage(e.Message);
-                UICondition topLevelWindowCondition =
-                    UICondition.CreateFromClassName(className).AndWith(UICondition.CreateFromName(name));
-                if (!UIObject.Root.Descendants.TryFind(topLevelWindowCondition, out var element))
-                {
-                    throw new InvalidOperationException(
-                        $"{nameof(topLevelWindowCondition)} didn't match an element.");
-                }
+                var launchedApp = ModernAppManager.Launch(appName, arguments, condition);
 
-                var coreWindow = UIObjectHelpers.GetTopLevelUIObject(element, UIObjectHelpers.WINUI_CLASS_NAME);
+                var coreWindow = UIObjectHelpers.GetTopLevelUIObject(launchedApp,
+                    new[] { UIObjectHelpers.UWP_CLASS_NAME, UIObjectHelpers.WINUI_CLASS_NAME });
                 var rootWindow = GetTopLevelWindow(coreWindow);
+
                 return new Application(new Element(rootWindow), coreWindow.ProcessId);
             }
             catch
@@ -202,8 +188,8 @@ namespace WinAppDriver.Infra.Communication
             else if (app.Contains("!"))
             {
                 Debug.WriteLine("Start UWPApp " + app);
-                return LaunchModernApp(capabilities.app, capabilities.forceMatchAppTitle,
-                    capabilities.forceMatchClassName);
+                return LaunchModernApp(capabilities.app, capabilities.appArguments, capabilities.forceMatchClassName,
+                    capabilities.forceMatchAppTitle);
             }
             else
             {

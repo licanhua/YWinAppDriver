@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Microsoft.Windows.Apps.Test.Automation;
 using Microsoft.Windows.Apps.Test.Foundation;
@@ -8,10 +9,10 @@ namespace WinAppDriver.Infra.Helper
 {
     internal class UIObjectHelpers
     {
-        public const string WINUI_ERROR_MESSAGE_PREFIX = "Unable to find Windows.UI.Core.CoreWindow in ";
+        public const string UWP_CLASS_NAME = "Windows.UI.Core.CoreWindow";
         public const string WINUI_CLASS_NAME = "WinUIDesktopWin32WindowClass";
 
-        public static UIObject GetTopLevelUIObject(UIObject topWindow, string className,
+        public static UIObject GetTopLevelUIObject(UIObject topWindow, string[] classNames,
             int timeoutInMilliseconds = 300)
         {
             UIObject element = null;
@@ -23,28 +24,34 @@ namespace WinAppDriver.Infra.Helper
                     $"{nameof(topWindow)} isn't of type {ControlType.Window}.");
             }
 
-            if (topWindow.ClassName.Equals(className, StringComparison.OrdinalIgnoreCase))
+            if (classNames.Any((className) =>
+                    topWindow.ClassName.Equals(className, StringComparison.OrdinalIgnoreCase)))
             {
                 element = topWindow;
             }
             else
             {
-                var windowCondition = UICondition.CreateFromClassName(className)
-                    .AndWith(UICondition.CreateFromName(topWindow.Name));
-
-                while (timeoutInMilliseconds > 0
-                       && !topWindow.Children.TryFind(
-                           windowCondition, out element))
+                foreach (var className in classNames)
                 {
-                    Thread.Sleep(100);
+                    var currentTimeout = timeoutInMilliseconds;
 
-                    timeoutInMilliseconds -= 100;
+                    var windowCondition = UICondition.CreateFromClassName(className)
+                        .AndWith(UICondition.CreateFromName(topWindow.Name));
+
+                    while (currentTimeout > 0
+                           && !topWindow.Children.TryFind(
+                               windowCondition, out element))
+                    {
+                        Thread.Sleep(100);
+
+                        currentTimeout -= 100;
+                    }
                 }
 
                 if (element == null)
                 {
-                    // use same error message format as in WINUI_ERROR_MESSAGE_PREFIX
-                    throw new UIObjectNotFoundException($"Unable to find {className} in {topWindow}");
+                    throw new UIObjectNotFoundException(
+                        $"Unable to find {string.Join("|", classNames)} in {topWindow}");
                 }
             }
 
@@ -84,21 +91,6 @@ namespace WinAppDriver.Infra.Helper
 
                 return value;
             }
-        }
-
-
-        public static (string name, string className) ParseErrorMessage(string errorMessage)
-        {
-            // Unable to find Windows.UI.Core.CoreWindow in {<name>, <class name>, }
-            var context = errorMessage.Substring(WINUI_ERROR_MESSAGE_PREFIX.Length + 1);
-            var parts = context.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
-            if (parts.Length != 3)
-            {
-                throw new Exception("Failed to identify winui name & class name");
-            }
-
-            return (parts[0].Trim(), parts[1].Trim());
         }
     }
 }
