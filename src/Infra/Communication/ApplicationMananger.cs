@@ -70,14 +70,21 @@ namespace WinAppDriver.Infra.Communication
             {
                 // this is a winui app, recover from exception
                 var (name, className) = UIObjectHelpers.ParseErrorMessage(e.Message);
-                var coreWindow = UIObjectHelpers.GetTopLevelUIObject(
-                    UICondition.CreateFromClassName(className).AndWith(UICondition.CreateFromName(name)),
-                    UIObjectHelpers.WINUI_CLASS_NAME);
+                UICondition topLevelWindowCondition =
+                    UICondition.CreateFromClassName(className).AndWith(UICondition.CreateFromName(name));
+                if (!UIObject.Root.Descendants.TryFind(topLevelWindowCondition, out var element))
+                {
+                    throw new InvalidOperationException(
+                        $"{nameof(topLevelWindowCondition)} didn't match an element.");
+                }
+
+                var coreWindow = UIObjectHelpers.GetTopLevelUIObject(element, UIObjectHelpers.WINUI_CLASS_NAME);
                 var rootWindow = GetTopLevelWindow(coreWindow);
                 return new Application(new Element(rootWindow), coreWindow.ProcessId);
             }
-            catch (Exception e)
+            catch
             {
+                // dump ui object tree to make debugging easier
                 UIObjectHelpers.LogObjectTree(UIObject.Root);
 
                 throw;

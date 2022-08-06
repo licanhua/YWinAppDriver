@@ -11,18 +11,8 @@ namespace WinAppDriver.Infra.Helper
         public const string WINUI_ERROR_MESSAGE_PREFIX = "Unable to find Windows.UI.Core.CoreWindow in ";
         public const string WINUI_CLASS_NAME = "WinUIDesktopWin32WindowClass";
 
-        public static UIObject GetTopLevelUIObject(UICondition topLevelWindowCondition, string className)
-        {
-            if (!UIObject.Root.Descendants.TryFind(topLevelWindowCondition, out var element))
-            {
-                throw new InvalidOperationException(
-                    $"{nameof(topLevelWindowCondition)} didn't match an element.");
-            }
-
-            return GetTopLevelUIObject(element, 300, className);
-        }
-
-        public static UIObject GetTopLevelUIObject(UIObject topWindow, int timeoutInMilliseconds, string className)
+        public static UIObject GetTopLevelUIObject(UIObject topWindow, string className,
+            int timeoutInMilliseconds = 300)
         {
             UIObject element = null;
             var controlType = (ControlType)topWindow.GetProperty(UIProperty.Get("ControlType"));
