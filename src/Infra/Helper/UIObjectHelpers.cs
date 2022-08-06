@@ -19,7 +19,7 @@ namespace WinAppDriver.Infra.Helper
                     $"{nameof(topLevelWindowCondition)} didn't match an element.");
             }
 
-            return GetTopLevelUIObject(element, 5, className);
+            return GetTopLevelUIObject(element, 300, className);
         }
 
         public static UIObject GetTopLevelUIObject(UIObject topWindow, int timeoutInMilliseconds, string className)
