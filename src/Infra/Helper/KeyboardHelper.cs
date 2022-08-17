@@ -5,8 +5,6 @@ using System.Text;
 
 namespace WinAppDriver.Infra.Communication
 {
-  
-
   class KeyboardHelper
   {
     // https://github.com/SeleniumHQ/selenium/wiki/JsonWireProtocol#sessionsessionidelementidvalue
@@ -17,18 +15,18 @@ namespace WinAppDriver.Infra.Communication
     public const char TAB = '\uE004';
     public const char CLEAR = '\uE005';
     public const char RETURN = '\uE006';
-    public const char ENTER = '\uE007'; 
+    public const char ENTER = '\uE007';
     public const char SHIFT = '\uE008';
-    public const char CONTROL = '\uE009'; 
+    public const char CONTROL = '\uE009';
     public const char ALT = '\uE00A';
     public const char PAUSE = '\uE00B';
-    public const char ESCAPE = '\uE00C'; 
+    public const char ESCAPE = '\uE00C';
     public const char SPACE = '\uE00D';
-    public const char PAGEUP = '\uE00E'; 
+    public const char PAGEUP = '\uE00E';
     public const char PAGEDOWN = '\uE00F';
-    public const char END = '\uE010'; 
+    public const char END = '\uE010';
     public const char HOME = '\uE011';
-    public const char LEFTARROW = '\uE012'; 
+    public const char LEFTARROW = '\uE012';
     public const char UPARROW = '\uE013';
     public const char RIGHTARROW = '\uE014';
     public const char DOWNARROW = '\uE015';
@@ -68,36 +66,36 @@ namespace WinAppDriver.Infra.Communication
 
     //https://github.com/microsoft/microsoft-ui-xaml/blob/c46d28b3e706a24a5b89ec110ac2e93a9a86aa58/test/testinfra/MUXTestInfra/Common/KeyboardHelper.cs#L58
     private static Dictionary<char, string> keyToKeyStringDictionary = new Dictionary<char, string>()
-        {
-            { ENTER, "{ENTER}" },
-            { ESCAPE, "{ESC}" },
-            { TAB, "{TAB}" },
-            { UPARROW, "{UP}" },
-            { DOWNARROW, "{DOWN}" },
-            { LEFTARROW, "{LEFT}" },
-            { RIGHTARROW, "{RIGHT}" },
-            { PAGEUP, "{PGUP}" },
-            { PAGEDOWN, "{PGDN}" },
-            { HOME, "{HOME}" },
-            { END, "{END}" },
-            { SPACE, "{SPACE}" },
-            { BACKSPACE, "{BACKSPACE}" },
-            { F10, "{F10}" },
-            { F9, "{F9}" },
-            { F8, "{F8}" },
-            { F7, "{F7}" },
-            { F6, "{F6}" },
-            { F5, "{F5}" },
-            { F4, "{F4}" },
-            { F3, "{F3}" },
-            { F2, "{F2}" },
-            { F1, "{F1}" },
-            { RETURN, "{RETURN}" },
-            { DELETE, "{DELETE}" },
-        };
+    {
+      { ENTER, "{ENTER}" },
+      { ESCAPE, "{ESC}" },
+      { TAB, "{TAB}" },
+      { UPARROW, "{UP}" },
+      { DOWNARROW, "{DOWN}" },
+      { LEFTARROW, "{LEFT}" },
+      { RIGHTARROW, "{RIGHT}" },
+      { PAGEUP, "{PGUP}" },
+      { PAGEDOWN, "{PGDN}" },
+      { HOME, "{HOME}" },
+      { END, "{END}" },
+      { SPACE, "{SPACE}" },
+      { BACKSPACE, "{BACKSPACE}" },
+      { F10, "{F10}" },
+      { F9, "{F9}" },
+      { F8, "{F8}" },
+      { F7, "{F7}" },
+      { F6, "{F6}" },
+      { F5, "{F5}" },
+      { F4, "{F4}" },
+      { F3, "{F3}" },
+      { F2, "{F2}" },
+      { F1, "{F1}" },
+      { RETURN, "{RETURN}" },
+      { DELETE, "{DELETE}" },
+    };
 
-    
-    public static string  TranslateKey(string keys)
+
+    public static string TranslateKey(string keys)
     {
       keys = Keyboard.EscapeSpecialCharacters(keys);
       StringBuilder sb = new StringBuilder();
@@ -107,7 +105,8 @@ namespace WinAppDriver.Infra.Communication
       bool ctrDown = false;
       bool winDown = false;
 
-      Action<char> modifyKey = (key) => {
+      Action<char> modifyKey = (key) =>
+      {
         if (key == ALT)
         {
           altDown = !altDown;
@@ -126,9 +125,9 @@ namespace WinAppDriver.Infra.Communication
         else if (key == WIN)
         {
           winDown = !winDown;
-          sb.Append(winDown? "{WIN DOWN}" : "WIN UP");
+          sb.Append(winDown ? "{WIN DOWN}" : "WIN UP");
         }
-      }; 
+      };
       foreach (var key in keys)
       {
         if (key == NULL)
@@ -152,9 +151,8 @@ namespace WinAppDriver.Infra.Communication
           sb.Append(key);
         }
       }
+
       return sb.ToString();
     }
   }
-
-  
 }

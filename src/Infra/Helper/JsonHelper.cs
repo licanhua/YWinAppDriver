@@ -5,20 +5,20 @@ using Newtonsoft.Json;
 
 namespace WinAppDriver.Infra.Utils
 {
-    class JsonHelper
+  class JsonHelper
+  {
+    public static T Deserialize<T>(object obj)
     {
-        public static T Deserialize<T>(object obj)
-        {
-            //JsonSerializerSettings settings = new JsonSerializerSettings();
-            //settings.MissingMemberHandling = MissingMemberHandling.Error;
-            //return JsonConvert.DeserializeObject<T>(obj.ToString(), settings);
-            return JsonConvert.DeserializeObject<T>(obj.ToString());
-        }
-
-
-        public static string Serialize<T>(T obj)
-        {
-            return JsonConvert.SerializeObject(obj);
-        }
+      //JsonSerializerSettings settings = new JsonSerializerSettings();
+      //settings.MissingMemberHandling = MissingMemberHandling.Error;
+      //return JsonConvert.DeserializeObject<T>(obj.ToString(), settings);
+      return JsonConvert.DeserializeObject<T>(obj.ToString());
     }
+
+
+    public static string Serialize<T>(T obj)
+    {
+      return JsonConvert.SerializeObject(obj);
+    }
+  }
 }
