@@ -4,11 +4,11 @@
 using Microsoft.Windows.Apps.Test.Foundation;
 using Microsoft.Windows.Apps.Test.Foundation.Waiters;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using WinAppDriver.Infra.Helper;
+using WinAppDriver.Infra.ModernApp;
 
 namespace WinAppDriver.Infra.Communication
 {
@@ -18,9 +18,11 @@ namespace WinAppDriver.Infra.Communication
     {
       if (uiObject == null) return null;
 
-      while (uiObject.Parent != UIObject.Root) {
+      while (uiObject.Parent != UIObject.Root)
+      {
         uiObject = uiObject.Parent;
       }
+
       return uiObject;
     }
 
@@ -28,31 +30,55 @@ namespace WinAppDriver.Infra.Communication
     {
       if (string.IsNullOrEmpty(forceMatchAppTitle))
       {
-        return string.IsNullOrEmpty(forceMatchClassName) ? null : UICondition.CreateFromClassName(forceMatchClassName);
+        return string.IsNullOrEmpty(forceMatchClassName)
+          ? null
+          : UICondition.CreateFromClassName(forceMatchClassName);
       }
       else if (string.IsNullOrEmpty(forceMatchClassName))
       {
         return UICondition.CreateFromName(forceMatchAppTitle);
       }
-      return UICondition.CreateFromName(forceMatchAppTitle).AndWith(UICondition.CreateFromClassName(forceMatchClassName));
+
+      return UICondition.CreateFromName(forceMatchAppTitle)
+        .AndWith(UICondition.CreateFromClassName(forceMatchClassName));
     }
 
+
     // refer https://github.com/microsoft/microsoft-ui-xaml/blob/40531c714f8003bf0d341a0729fa04dd2ed87710/test/testinfra/MUXTestInfra/Infra/Application.cs#L269
-    public IApplication LaunchModernApp(string appName, string forceMatchAppTitle, string forceMatchClassName)
+    public IApplication LaunchModernApp(string appName, string arguments, string forceMatchClassName,
+      string forceMatchAppTitle)
     {
-      UICondition condition = UICondition.CreateFromClassName("ApplicationFrameWindow").OrWith(UICondition.CreateFromClassName("Windows.UI.Core.CoreWindow"));
+      UICondition condition = UICondition.CreateFromClassName("ApplicationFrameWindow")
+        .OrWith(UICondition.CreateFromClassName("Windows.UI.Core.CoreWindow"))
+        .OrWith(UICondition.CreateFromClassName("WinUIDesktopWin32WindowClass"));
+
       var forceMatch = GetForceMatchCondition(forceMatchAppTitle, forceMatchClassName);
       if (forceMatch != null)
       {
         condition = condition.OrWith(forceMatch);
       }
 
-      var coreWindow = UAPApp.Launch(appName, condition);
-      var rootWindow = GetTopLevelWindow(coreWindow);
-      return new Application(new Element(rootWindow), coreWindow.ProcessId);
+      try
+      {
+        var launchedApp = ModernAppManager.Launch(appName, arguments, condition);
+
+        var coreWindow = UIObjectHelpers.GetTopLevelUIObject(launchedApp,
+          new[] { UIObjectHelpers.UWP_CLASS_NAME, UIObjectHelpers.WINUI_CLASS_NAME });
+        var rootWindow = GetTopLevelWindow(coreWindow);
+
+        return new Application(new Element(rootWindow), coreWindow.ProcessId);
+      }
+      catch
+      {
+        // dump ui object tree to make debugging easier
+        UIObjectHelpers.LogObjectTree(UIObject.Root);
+
+        throw;
+      }
     }
 
-    public IApplication LaunchLegacyApp(string filename, string arguments, string workingDirectory, string forceMatchAppTitle, string forceMatchClassName)
+    public IApplication LaunchLegacyApp(string filename, string arguments, string workingDirectory,
+      string forceMatchAppTitle, string forceMatchClassName)
     {
       var forceMatch = GetForceMatchCondition(forceMatchAppTitle, forceMatchClassName);
 
@@ -83,6 +109,7 @@ namespace WinAppDriver.Infra.Communication
         {
           throw new AppLaunchException("Fail to start legacy process");
         }
+
         windowOpenedWaiter.TryWait(TimeSpan.FromSeconds(10));
 
         int retry = 5;
@@ -92,16 +119,17 @@ namespace WinAppDriver.Infra.Communication
         {
           // check if the new opened window
           if (windowOpenedWaiter.Source != null)
-          {    
+          {
             var root = GetTopLevelWindow(windowOpenedWaiter.Source);
-            if (windowOpenedWaiter.Source.ProcessId == process.Id || (forceMatch != null && root.Matches(forceMatch)))
+            if (windowOpenedWaiter.Source.ProcessId == process.Id ||
+                (forceMatch != null && root.Matches(forceMatch)))
             {
               return new Application(new Element(root), process.Id);
             }
           }
+
           Task.Delay(sleepTimer).Wait(sleepTimer);
         }
-
       }
 
       var condition = UICondition.Create(UIProperty.Get(ActionStrings.ProcessId), process.Id);
@@ -123,7 +151,7 @@ namespace WinAppDriver.Infra.Communication
       }
     }
 
-      
+
     public IApplication LaunchApplication(Capabilities capabilities)
     {
       var app = capabilities.app;
@@ -134,7 +162,9 @@ namespace WinAppDriver.Infra.Communication
       {
         var attachToTopLevelWindowClassName = capabilities.attachToTopLevelWindowClassName;
 
-        Debug.WriteLine("LaunchApplication attach to " + attachToTopLevelWindowClassName == null ? "Root" : "window with ClassName" + attachToTopLevelWindowClassName);
+        Debug.WriteLine("LaunchApplication attach to " + attachToTopLevelWindowClassName == null
+          ? "Root"
+          : "window with ClassName" + attachToTopLevelWindowClassName);
 
         if (String.IsNullOrEmpty(attachToTopLevelWindowClassName))
         {
@@ -146,7 +176,8 @@ namespace WinAppDriver.Infra.Communication
           var matched = UIObject.Root.Children.FindMultiple(condition).FirstOrDefault();
           if (matched == null)
           {
-            throw new AppLaunchException("There is no window match with class name " + attachToTopLevelWindowClassName);
+            throw new AppLaunchException("There is no window match with class name " +
+                                         attachToTopLevelWindowClassName);
           }
           else
           {
@@ -157,14 +188,15 @@ namespace WinAppDriver.Infra.Communication
       else if (app.Contains("!"))
       {
         Debug.WriteLine("Start UWPApp " + app);
-        return LaunchModernApp(capabilities.app, capabilities.forceMatchAppTitle, capabilities.forceMatchClassName);
+        return LaunchModernApp(capabilities.app, capabilities.appArguments, capabilities.forceMatchClassName,
+          capabilities.forceMatchAppTitle);
       }
       else
       {
         Debug.WriteLine("Start Legacy app " + capabilities.ToString());
-        return LaunchLegacyApp(app, capabilities.appArguments, capabilities.appWorkingDir, capabilities.forceMatchAppTitle, capabilities.forceMatchClassName);
+        return LaunchLegacyApp(app, capabilities.appArguments, capabilities.appWorkingDir,
+          capabilities.forceMatchAppTitle, capabilities.forceMatchClassName);
       }
-
     }
   }
 }
