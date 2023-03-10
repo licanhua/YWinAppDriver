@@ -68,4 +68,10 @@ namespace WinAppDriver
 
     public double height;
   }
+
+  public class PathFileReq
+  {
+    public string path { get; set; }
+    public string data { get; set; }
+  }
 }

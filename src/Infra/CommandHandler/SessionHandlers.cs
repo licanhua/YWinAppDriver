@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using WinAppDriver.Infra.Communication;
 using WinAppDriver.Infra.Result;
 using System;
+using System.IO;
 
 namespace WinAppDriver.Infra.CommandHandler
 {
@@ -246,6 +247,51 @@ namespace WinAppDriver.Infra.CommandHandler
     {
       session.FindElement(elementId).Click(Convert.ToBoolean(session.GetCapabilities().clickWithInvoke));
       return null;
+    }
+  }
+
+  public class DevicePushFileHandler : SessionCommandHandlerBase<PathFileReq, object>
+  {
+    protected override object ExecuteSessionCommand(ISessionManager sessionManager, ISession session, PathFileReq req, string elementId)
+    {
+      if (string.IsNullOrWhiteSpace(req.path))
+      {
+        throw new ArgumentException($"Invalid path: Null or whitespace");
+      }
+
+      if (string.IsNullOrWhiteSpace(req.data))
+      {
+        throw new ArgumentException($"Invalid file content: Null or whitespace");
+      }
+
+      byte[] fileContent = Convert.FromBase64String(req.data);
+
+      string directory = Path.GetDirectoryName(req.path);
+      if (!Directory.Exists(directory))
+      {
+        Directory.CreateDirectory(directory);
+      }
+
+      File.WriteAllBytes(req.path, fileContent);
+      return null;
+    }
+  }
+
+  public class DevicePullFileHandler : SessionCommandHandlerBase<PathFileReq, string>
+  {
+    protected override string ExecuteSessionCommand(ISessionManager sessionManager, ISession session, PathFileReq req, string elementId)
+    {
+      if (string.IsNullOrWhiteSpace(req.path))
+      {
+        throw new ArgumentException($"Invalid path: Null or whitespace");
+      }
+
+      if (!File.Exists(req.path))
+      {
+        throw new FileNotFoundException("The requested file doesn't exist.", req.path);
+      }
+
+      return Convert.ToBase64String(File.ReadAllBytes(req.path));
     }
   }
 }

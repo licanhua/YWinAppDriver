@@ -396,6 +396,20 @@ namespace WinAppDriver.Controllers
     }
 
     [HttpPost]
+    [Route("{sessionId}/appium/device/push_file")]
+    public IActionResult SessionDevicePushFile(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.DevicePushFile, sessionId, content, null);
+    }
+
+    [HttpPost]
+    [Route("{sessionId}/appium/device/pull_file")]
+    public IActionResult SessionDevicePullFile(string sessionId, [FromBody] object content)
+    {
+      return ExecuteCommand(Command.DevicePullFile, sessionId, content, null);
+    }
+
+    [HttpPost]
     [Route("{sessionId}/moveto")]
     public IActionResult SessionMoveTo(string sessionId, [FromBody] object content)
     {
