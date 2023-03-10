@@ -37,6 +37,8 @@ namespace WinAppDriver.Infra.CommandHandler
     MaximizeWindow,
     TakeScreenshot,
     ClickOnElement,
+    DevicePushFile,
+    DevicePullFile
   }
 
   public interface ICommandHandlers

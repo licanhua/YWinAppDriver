@@ -32,6 +32,7 @@ namespace WinAppDriver.IntegrationTest
     public const string Edge = "Microsoft.MicrosoftEdge_8wekyb3d8bbwe!MicrosoftEdge";
     public const string AlarmClock = "Microsoft.WindowsAlarms_8wekyb3d8bbwe!App";
     public const string Notepad = "c:\\windows\\system32\\notepad.exe";
+    public const string WinVer = "C:\\Windows\\System32\\winver.exe";
   }
   class Helpers
   {
