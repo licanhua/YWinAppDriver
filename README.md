@@ -8,6 +8,9 @@ I name this project YWinAppDriver(yet another WinAppDriver).
 
 [![Build Status](https://dev.azure.com/licanhua/YWinAppDriver/_apis/build/status/licanhua.YWinAppDriver?branchName=main)](https://dev.azure.com/licanhua/YWinAppDriver/_build/latest?definitionId=2&branchName=main)
 
+## Project Status: 0.3.x
+Use .Net 6 instead of .net core 3.1
+
 ## Project Status: 0.2.x
    Most of the functionalities are ready and you should be able to switch from WinAppDriver to YWinAppDriver without any(or With little) change. [SessionController.cs](https://github.com/licanhua/YWinAppDriver/blob/main/src/WinAppDriver/Controllers/SessionController.cs) defines all the endpoints it supported. 
    
